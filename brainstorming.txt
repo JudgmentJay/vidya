@@ -1,0 +1,28 @@
+Table cells:
+
+name (string)
+release date (date)
+genre (string)
+duration (HLTB) (number)
+platform(s) (array)
+status (array)
+	- playing/replaying (replaying would be playing + played)
+	- backlog
+	- played
+	- dropped
+		- could probably treat the UI for dropped games in some way... grey out?
+date(s) completed (array)
+hours played (number)
+number of playthroughs (number)
+score (number)
+
+-----
+
+Two major sections... 'played this year' and 'backlog'
+	- You can choose to have both, one, or none visible. If both are visible, 2 column layout and number of columns are shortened. If only one shown, show all columns
+	- Maybe have the columns fixed height and scrollable?
+
+If you add 'playing' to a game's status, bring up a propmpt that lets you choose platform
+
+If a game is currently in 'playing' status, add two buttons.. 'Finished it!' and 'Dropped it'
+	- If you click finished it, it adds 1 to the number of playthroughs column and lets you record the # of hours you spent playing it which also adds to the hours played column
