@@ -72,3 +72,17 @@ button {
 ::-moz-focus-inner {
 	border: 0;
 }
+
+::-webkit-scrollbar {
+	width: 5px;
+}
+
+::-webkit-scrollbar-track {
+	display: none;
+}
+
+@media only screen and (min-width: 2500px) {
+	::-webkit-scrollbar {
+		width: 10px;
+	}
+}

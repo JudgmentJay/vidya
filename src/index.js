@@ -1,16 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { ModalProvider } from './context/modal'
+
+import Vidya from './components/Vidya'
+
 import './css/main.scss'
 
-require.context('./img', true, /\.(png|jpe?g|gif|svg)$/)
+require.context('./img', true, /\.(jpe?g|png|gif|svg|webp)$/)
 
 const App = () => {
 	return (
-		<div>
-			Hello World!
-		</div>
+		<ModalProvider>
+			<Vidya />
+		</ModalProvider>
 	)
 }
 
-ReactDOM.render(<App />, document.getElementById('app'))
+ReactDOM.render(<App />, document.getElementById('vidya'))
