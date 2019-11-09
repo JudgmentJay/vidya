@@ -14,7 +14,7 @@ module.exports = merge(common, {
 				include: /src/
 			},
 			{
-				test: /\.(png|jpe?g|gif|svg)$/,
+				test: /\.(jpe?g|png|gif|svg|webp)$/,
 				use: [
 					{
 						loader: 'file-loader',

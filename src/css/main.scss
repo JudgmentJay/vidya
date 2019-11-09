@@ -1,1 +1,992 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhai|Open+Sans&display=swap');
 @import './reset.scss';
+
+$themes: (
+	bloodborne: (
+		"background": url(../img/background-bb.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-bb-m.webp) black center bottom no-repeat,
+		"accent1": #6e697b,
+		"accent2": #d13f31,
+		"fontColor": #20263c
+	),
+	hyperLightDrifter: (
+		"background": url(../img/background-hld.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-hld-m.webp) black center bottom no-repeat,
+		"accent1": #47508b,
+		"accent2": #d26398,
+		"fontColor": #1e2e47
+	),
+	darkSouls: (
+		"background": url(../img/background-ds.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-ds-m.webp) black center bottom no-repeat,
+		"accent1": #81a7c9,
+		"accent2": #bf7b2a,
+		"fontColor": #031c23
+	),
+	hollowKnight: (
+		"background": url(../img/background-hk.webp) black center center no-repeat,
+		"background-mobile": url(../img/background-hk-m.webp) black center center no-repeat,
+		"accent1": #09272b,
+		"accent2": #a24558,
+		"fontColor": #061a20
+	),
+	journey: (
+		"background": url(../img/background-journey.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-journey-m.webp) black center bottom no-repeat,
+		"accent1": #e2b26b,
+		"accent2": #a84535,
+		"fontColor": #704537
+	),
+	muramasa: (
+		"background": url(../img/background-muramasa.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-muramasa-m.webp) black center bottom no-repeat,
+		"accent1": #ecba67,
+		"accent2": #c85158,
+		"fontColor": #471e18
+	),
+	sekiro: (
+		"background": url(../img/background-sekiro.webp) black center center no-repeat,
+		"background-mobile": url(../img/background-sekiro-m.webp) black center center no-repeat,
+		"accent1": #505976,
+		"accent2": #a85684,
+		"fontColor": #212639
+	),
+	metroid: (
+		"background": url(../img/background-metroid.webp) black center center no-repeat,
+		"background-mobile": url(../img/background-metroid-m.webp) black center center no-repeat,
+		"accent1": #56545f,
+		"accent2": #efeb83,
+		"fontColor": #1a161a
+	),
+	zelda: (
+		"background": url(../img/background-zelda.webp) black center center no-repeat,
+		"background-mobile": url(../img/background-zelda-m.webp) black center center no-repeat,
+		"accent1": #fadbc7,
+		"accent2": #7c6aa4,
+		"fontColor": #783d35
+	),
+	ffix: (
+		"background": url(../img/background-ffix.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-ffix-m.webp) black center bottom no-repeat,
+		"accent1": #553230,
+		"accent2": #c35530,
+		"fontColor": #3a2124
+	)
+);
+
+$gapSize: 10px;
+$itemPadding: 5px;
+
+@mixin themify($themes: $themes) {
+	@each $theme, $attribute in $themes {
+		body.#{$theme} {
+			color: map-get($attribute, 'fontColor');
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+
+			.background {
+				background: map-get($attribute, 'background-mobile');
+				background-size: cover;
+			}
+
+			.navBar, .box {
+				border: 2px solid #{map-get($attribute, 'accent2')};
+			}
+
+			.gameDataTable {
+				&__divider {
+					&:after {
+						background-color: #{map-get($attribute, 'fontColor')};
+					}
+				}
+			}
+
+			.modal {
+				color: map-get($attribute, 'fontColor');
+
+				border: 2px solid map-get($attribute, 'accent2');
+
+				&__close {
+					fill: map-get($attribute, 'fontColor');
+				}
+
+				&::-webkit-scrollbar-thumb {
+					background-color: map-get($attribute, 'accent2'); 
+				}
+			}
+
+			.gameInfo__star--full {
+				color: map-get($attribute, 'accent2');
+			}
+		}
+
+		@media only screen and (min-width: 1400px) {
+			body.#{$theme} {
+				.background {
+					background: map-get($attribute, 'background');
+					background-size: cover;
+				}
+
+				.navBar, .box {
+					border: 2px solid #{map-get($attribute, 'accent1')};
+	
+					&::-webkit-scrollbar-thumb {
+						background-color: map-get($attribute, 'accent1');
+					}
+	
+					&:hover {
+						border: 2px solid #{map-get($attribute, 'accent2')};
+	
+						&::-webkit-scrollbar-thumb {
+							background-color: map-get($attribute, 'accent2'); 
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+body {
+	min-height: 100%;
+	padding: $gapSize;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	font-family: 'Open Sans', Arial, sans-serif;
+
+	&.modal-is-open {
+		overflow-y: hidden;
+	}
+}
+
+h1 {
+	margin-bottom: $gapSize;
+	padding: 0 $gapSize;
+
+	font-family: 'Baloo Bhai', cursive;
+	font-size: 2.4em;
+
+	cursor: default;
+}
+
+h2 {
+	margin-bottom: $gapSize * 2;
+	padding: 0 40px;
+
+	font-family: 'Baloo Bhai', cursive;
+	font-size: 2.4em;
+	text-align: center;
+
+	cursor: default;
+}
+
+h3 {
+	margin-bottom: $gapSize;
+
+	font-weight: 600;
+
+	cursor: default;
+}
+
+.column {
+	position: relative;
+	z-index: 1;
+
+	margin-bottom: $gapSize;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+}
+
+.navBar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: $gapSize;
+
+	font-size: 1.6em;
+	font-weight: 600;
+
+	background: rgba(255, 255, 255, 0.65);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+
+	&__item {
+		width: calc(100% / 4);
+		display: inline-block;
+		padding: $gapSize;
+
+		text-align: center;
+
+		cursor: pointer;
+
+		&.is-selected {
+			background: rgba(255, 255, 255, 0.5);
+		}
+	}
+}
+
+.box {
+	margin-bottom: $gapSize;
+	padding: $gapSize 0 calc(#{$gapSize} - #{$itemPadding});
+
+	background: rgba(255, 255, 255, 0.65);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+
+	&--stats {
+		padding: $gapSize 0;
+	}
+}
+
+.gameDataTable {
+	width: 100%;
+	table-layout: fixed;
+
+	&__header {
+		padding: 0 $gapSize #{$gapSize / 2};
+
+		font-size: 1.4em;
+		font-weight: 600;
+
+		cursor: default;
+	}
+
+	&__cell {
+		padding: $itemPadding $gapSize;
+
+		font-size: 1.4em;
+	}
+
+	&__title {
+		overflow: hidden;
+
+		text-align: left;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		&--dropped {
+			text-decoration: line-through;
+		}
+	}
+
+	&__hours, &__allPlayedHours, &__small {
+		display: none;
+	}
+
+	&__date {
+		width: 155px;
+		text-align: right;
+	}
+
+	&__game {
+		cursor: pointer;
+	}
+
+	&__divider {
+		display: flex;
+		align-items: center;
+		padding: #{$gapSize * 2} 0;
+
+		font-weight: 600;
+
+		cursor: default;
+
+		&:after {
+			content: '';
+
+			display: block;
+			width: 100%;
+			height: 1px;
+			margin-left: $gapSize;
+			opacity: 0.5
+		}
+	}
+}
+
+.statsBox {
+	margin-bottom: $gapSize * 2;
+	padding: 0 $gapSize;
+
+	font-size: 1.4em;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+
+	&__stat {
+		display: block;
+		margin-bottom: $gapSize;
+
+		cursor: default;
+
+		&--linked {
+			cursor: pointer;
+		}
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+}
+
+#modalBackground {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 2;
+
+	background: rgba(0, 0, 0, 0.85);
+}
+
+.modal {
+	position: fixed;
+	top: $gapSize;
+	left: $gapSize;
+	z-index: 3;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: calc(100% - #{$gapSize * 2});
+	height: calc(100% - #{$gapSize * 2});
+	padding: $gapSize;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	font-weight: 600;
+
+	background: rgba(255, 255, 255, 0.65);
+	box-shadow: 0 0 35px rgba(0, 0, 0, 0.75);
+
+	&__fieldSet {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__statusButton {
+		display: inline-block;
+		width: calc((100% / 3) - 1%);
+		margin: 0 0 #{$gapSize * 2} 0;
+		padding: $gapSize;
+
+		font-size: 1.6em;
+		text-align: center;
+
+		background: rgba(255, 255, 255, 0.5);
+		border: 2px solid #aaa;
+
+		cursor: pointer;
+
+		&.is-selected, &:hover {
+			background: rgba(255, 255, 255, 1);
+		}
+	}
+
+	&__field {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0 0 $gapSize 0;
+
+		&:last-of-type {
+			margin: 0;
+		}
+	}
+
+	&__label {
+		flex-basis: 120px;
+		flex-shrink: 0;
+		margin-right: $gapSize;
+
+		font-size: 1.4em;
+		text-align: right;
+	}
+
+	&__input {
+		flex-basis: 100%;
+		padding: 7px;
+
+		font-size: 1.4em;
+
+		background: #fff;
+		border: 2px solid #aaa;
+
+		&--search {
+			margin-right: 5px;
+			padding: 9px;
+		}
+
+		&.is-invalid {
+			border: 2px solid red;
+		}
+
+		&:focus {
+			border: 2px solid #666;
+			outline: 0;
+		}
+	}
+
+	&__buttons {
+		margin-top: auto;
+		padding-top: $gapSize;
+	}
+
+	&__button {
+		width: 100%;
+		margin: 0 0 $gapSize 0;
+		padding: $gapSize $gapSize * 2;
+
+		font-size: 1.6em;
+
+		background: #fff;
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+
+		&--search {
+			flex-basis: 125px;
+			flex-shrink: 0;
+			width: auto;
+
+			border: 2px solid #aaa;
+		}
+	}
+
+	&__close {
+		position: absolute;
+		top: $gapSize;
+		right: $gapSize;
+
+		width: 15px;
+		height: 15px;
+
+		cursor: pointer;
+	}
+}
+
+.gameInfo {
+	text-align: center;
+
+	&__starRating {
+		margin-bottom: $gapSize;
+	}
+
+	&__star {
+		font-size: 3em;
+
+		cursor: default;
+	}
+
+	&__stat {
+		display: block;
+		margin-bottom: $gapSize;
+
+		font-size: 2em;
+
+		cursor: default;
+
+		&--playthroughs {
+			cursor: pointer;
+		}
+	}
+}
+
+.modalTable {
+	width: 100%;
+
+	&__header {
+		padding: 0 #{$gapSize / 2} $gapSize;
+
+		font-size: 1.4em;
+		text-align: left;
+
+		cursor: default;
+	}
+
+	&__dataRow {
+		&:nth-child(2n) {
+			background: rgba(255, 255, 255, 0.15);
+		}
+	}
+
+	&__cell {
+		padding: #{$gapSize / 2};
+
+		font-size: 1.4em;
+	}
+}
+
+.playthroughsTable {
+	&__dataRow {
+		cursor: default;
+	}
+
+	&__dateStarted {
+		display: none;
+	}
+
+	&__hours, &__platform {
+		text-align: center;
+	}
+
+	&__dropped {
+		text-decoration: line-through;
+	}
+}
+
+.searchResults {
+	&__header {
+		margin-top: #{$gapSize * 2};
+	}
+
+	&__noneFound {
+		margin-top: #{$gapSize * 2};
+
+		font-size: 2em;
+		text-align: center;
+	}
+}
+
+.searchResultsTable {
+	&__dataRow {
+		overflow: hidden;
+
+		text-align: left;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		cursor: pointer;
+	}
+}
+
+.background {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 0;
+
+	width: 100vw;
+	height: 100vh;
+}
+
+@include themify;
+
+@media (min-width: 1000px) {
+	h1, h2 {
+		font-size: 3em;
+	}
+
+	.navBar {
+		font-size: 2.2em;
+	}
+
+	.gameDataTable {
+		&__header, &__cell {
+			font-size: 2em;
+		}
+
+		&__hours, &__allPlayedHours {
+			display: table-cell;
+			width: 80px;
+
+			text-align: center;
+		}
+
+		&__date {
+			width: 210px;
+		}
+	}
+
+	.statsBox {
+		font-size: 2em;
+	}
+
+	.modal {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		display: block;
+		width: 750px;
+		height: auto;
+		max-height: calc(100% - #{$gapSize * 2});
+		padding: $gapSize * 2;
+
+		&__statusButton {
+			padding: $gapSize #{$gapSize * 2};
+
+			font-size: 2em;
+		}
+
+		&__input {
+			font-size: 1.8em;
+		}
+
+		&__label {
+			flex-basis: 150px;
+
+			font-size: 1.8em;
+		}
+
+		&__buttons {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			margin-top: 0;
+			padding-top: #{$gapSize * 2};
+		}
+
+		&__button {
+			width: auto;
+			margin: 0 #{$gapSize / 2};
+
+			font-size: 2em;
+		}
+
+		&__close {
+			top: $gapSize * 2;
+			right: $gapSize * 2;
+
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	.modalTable {
+		&__header {
+			padding: 0 $gapSize $gapSize;
+			font-size: 1.8em;
+		}
+
+		&__cell {
+			padding: $gapSize;
+
+			font-size: 1.8em;
+		}
+	}
+
+	.playthroughsTable {
+		&__dateStarted {
+			display: table-cell;
+		}
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	body, html {
+		width: 100%;
+		height: 100%;
+		overflow-y: hidden;
+	}
+
+	h1 {
+		font-size: 2.4em;
+	}
+
+	#vidya {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		height: 100%;
+	}
+
+	.column {
+		display: flex;
+		flex-direction: column;
+		width: calc((100% / 3) - ((#{$gapSize} * 2) / 3));
+		height: 100%;
+		margin-bottom: 0;
+
+		&--twoCol {
+			&:first-of-type {
+				width: calc((100% / 3) - (#{$gapSize * 2} / 3));
+			}
+
+			&:last-of-type {
+				width: calc(100% - ((100% / 3) - (#{$gapSize * 2} / 3) + #{$gapSize}));
+			}
+		}
+	}
+
+	.navBar {
+		font-size: 1.6em;
+
+		&__item {
+			&:hover {
+				background: rgba(255, 255, 255, 0.5);
+			}
+		}
+	}
+
+	.box {
+		overflow-x: hidden;
+		overflow-y: auto;
+
+		&--stats {
+			flex-basis: 50%;
+		}
+	}
+
+	.gameDataTable {
+		&__header, &__cell {
+			font-size: 1.4em;
+		}
+
+		&__game {	
+			&:hover {
+				background: rgba(255, 255, 255, 0.5);
+			}
+		}
+
+		&__hours {
+			width: 62px;
+			text-align: center;
+		}
+
+		&__allPlayedHours {
+			width: 80px;
+		}
+
+		&__small {
+			display: table-cell;
+			width: 80px;
+
+			text-align: center;
+		}
+
+		&__date {
+			width: 155px;
+		}
+	}
+
+	.statsBox {
+		font-size: 1.4em;
+	}
+
+	.searchResultsTable {
+		&__dataRow {
+			&:hover {
+				background: rgba(255, 255, 255, 0.5);
+			}
+		}
+	}
+
+	.noshrink {
+		flex-shrink: 0;
+	}
+}
+
+@media only screen and (min-width: 2000px) {
+	h1 {
+		font-size: 3em;
+	}
+
+	.navBar {
+		font-size: 2.2em;
+	}
+
+	.gameDataTable {
+		&__header, &__cell {
+			font-size: 2em;
+		}
+
+		&__hours {
+			width: 80px;
+		}
+
+		&__allPlayedHours, &__small {
+			width: 105px;
+		}
+
+		&__date {
+			width: 210px;
+		}
+	}
+
+	.statsBox {
+		font-size: 2em;
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	$gapSize: 20px;
+
+	body {
+		padding: $gapSize;
+	}
+
+	h1 {
+		margin-bottom: $gapSize;
+		padding: 0 $gapSize;
+	}
+
+	.column {
+		width: calc((100% / 3) - ((#{$gapSize} * 2) / 3));
+
+		&--twoCol {
+			&:first-of-type {
+				width: calc((100% / 3) - (#{$gapSize * 2} / 3));
+			}
+
+			&:last-of-type {
+				width: calc(100% - ((100% / 3) - (#{$gapSize * 2} / 3) + #{$gapSize}));
+			}
+		}
+	}
+
+	.navBar {
+		margin-bottom: $gapSize;
+	}
+
+	.box {
+		margin-bottom: $gapSize;
+		padding: $gapSize 0 calc(#{$gapSize} - #{$itemPadding});
+	}
+
+	.gameDataTable {
+		&__header {
+			padding: 0 $gapSize #{$gapSize / 2};
+		}
+
+		&__cell {
+			padding: $itemPadding $gapSize;
+		}
+
+		&__hours {
+			width: 100px;
+		}
+
+		&__allPlayedHours, &__small {
+			width: 125px;
+		}
+
+		&__date {
+			width: 230px;
+		}
+
+		&__divider {
+			padding-top: $gapSize;
+		}
+	}
+
+	.statsBox {
+		padding: 0 $gapSize;
+	}
+
+	.modal {
+		max-height: calc(100% - #{$gapSize * 2});
+	}
+}
+
+@media only screen and (min-width: 3000px) {
+	h1 {
+		font-size: 3.6em;
+	}
+
+	.navBar {
+		font-size: 2.8em;
+	}
+
+	.gameDataTable {
+		&__header, &__cell {
+			font-size: 2.6em;
+		}
+
+		&__hours {
+			width: 120px;
+		}
+
+		&__allPlayedHours, &__small {
+			width: 150px;
+		}
+
+		&__date {
+			width: 285px;
+		}
+	}
+
+	.statsBox {
+		font-size: 2.6em;
+	}
+
+	.gameInfo {
+		&__stat {
+			font-size: 2.4em;
+		}
+	}
+
+	.modal {
+		width: 1000px;
+
+		&__statusButton {
+			font-size: 2.4em;
+		}
+
+		&__input {
+			font-size: 2.2em;
+		}
+
+		&__label {
+			flex-basis: 185px;
+
+			font-size: 2.2em;
+		}
+
+		&__button {
+			font-size: 2.4em;
+		}
+	}
+
+	.modalTable {
+		&__header {
+			font-size: 2.2em;
+		}
+
+		&__cell {
+			font-size: 2.2em;
+		}
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	h1, h2 {
+		font-size: 4.2em;
+	}
+
+	.navBar {
+		font-size: 3.4em;
+	}
+
+	.gameDataTable {
+		&__header, &__cell {
+			font-size: 3.2em;
+		}
+
+		&__hours {
+			width: 135px;
+		}
+
+		&__allPlayedHours, &__small {
+			width: 175px;
+		}
+
+		&__date {
+			width: 345px;
+		}
+	}
+
+	.statsBox {
+		font-size: 3.2em;
+	}
+}

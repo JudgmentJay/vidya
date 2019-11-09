@@ -1,0 +1,55 @@
+import React, { useContext } from 'react'
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
+
+import { ModalContext } from '../context/modal'
+
+const Playthroughs = ({ setView }) => {
+	const modalContext = useContext(ModalContext)
+
+	const game = modalContext.game
+
+	return (
+		<React.Fragment>
+			<h2>{game.title} Playthroughs</h2>
+
+			<table className="modalTable playthroughsTable" cellPadding="0" cellSpacing="0">
+				<thead>
+					<tr>
+						<th className="modalTable__header playthroughsTable__dateStarted">Date Started</th>
+						<th className="modalTable__header">Date Finished</th>
+						<th className="modalTable__header playthroughsTable__hours">Hours</th>
+						<th className="modalTable__header playthroughsTable__platform">Platform</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						game.playthroughs.map((playthrough, i) => {
+							const dateFinishedClasses = classNames('modalTable__cell', { 'playthroughsTable__dropped': !playthrough.timesCompleted })
+
+							return (
+								<tr className="modalTable__dataRow playthroughsTable__dataRow" key={`playthrough-${i}`}>
+									<td className="modalTable__cell playthroughsTable__dateStarted">{playthrough.dateStarted}</td>
+									<td className={dateFinishedClasses}>{playthrough.dateFinished ? playthrough.dateFinished : '--'}</td>
+									<td className="modalTable__cell playthroughsTable__hours">{playthrough.hoursPlayed ? playthrough.hoursPlayed : '--'}</td>
+									<td className="modalTable__cell playthroughsTable__platform">{playthrough.platform}</td>
+								</tr>
+							)
+						})
+					}
+				</tbody>
+			</table>
+
+			<div className="modal__buttons">
+				<button className="modal__button" onClick={() => setView('home')}>Back</button>
+				<button className="modal__button" onClick={() => setView('addplaythrough')}>Add Playthrough</button>
+			</div>
+		</React.Fragment>
+	)
+}
+
+Playthroughs.propTypes = {
+	setView: PropTypes.func.isRequired
+}
+
+export default Playthroughs
