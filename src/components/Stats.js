@@ -4,17 +4,19 @@ import PropTypes from 'prop-types'
 import { ModalContext } from '../context/modal'
 
 const Stats = ({
-	year,
-	games
+	initialYear,
+	games,
+	id
 }) => {
 	const modalContext = useContext(ModalContext)
 
+	const [view, setView] = useState({ section: 'stats', year: initialYear ? initialYear : 'all' })
 	const [data, setData] = useState({ beatenGames: 0, totalHoursPlayed: 0, totalPlaythroughs: 0, platformData: [], topGamesByHoursPlayed: [], topGamesByPlaythroughCount: [], averageScore: 0 })
 
 	useEffect(() => {
-		const relevantGames = !year
+		const relevantGames = view.year === 'all'
 			? games.filter((game) => !game.playing && game.playthroughs.length > 0)
-			: games.filter((game) => !game.playing && game.playthroughs.length > 0 && game.playthroughs.some((playthrough) => new Date(playthrough.dateFinished).getFullYear() === year))
+			: games.filter((game) => !game.playing && game.playthroughs.length > 0 && game.playthroughs.some((playthrough) => new Date(playthrough.dateFinished).getFullYear() === view.year))
 
 		const beatenGames = relevantGames.filter((game) => game.playthroughs.some((playthrough) => playthrough.timesCompleted > 0)).length
 		let totalHoursPlayed = 0
@@ -30,9 +32,9 @@ const Stats = ({
 			let gameHoursPlayed = 0
 			let timesCompleted = 0
 
-			const relevantPlaythroughs = !year
+			const relevantPlaythroughs = view.year === 'all'
 				? game.playthroughs.filter((playthrough) => playthrough.dateFinished)
-				: game.playthroughs.filter((playthrough) => playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === year)
+				: game.playthroughs.filter((playthrough) => playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === view.year)
 
 			relevantPlaythroughs.forEach((playthrough) => {
 				totalHoursPlayed += playthrough.hoursPlayed
@@ -110,59 +112,98 @@ const Stats = ({
 		const averageScore = (totalPoints / scores.length).toFixed(1)
 
 		setData({ beatenGames, totalPlaythroughs, totalHoursPlayed, platformData, topGamesByHoursPlayed, topGamesByPlaythroughCount, averageScore })
-	}, [year, games])
+	}, [view.year, games])
+
+	const statYears = []
+
+	games.forEach((game) => {
+		game.playthroughs.forEach((playthrough) => {
+			if (playthrough.dateFinished && !statYears.includes(new Date(playthrough.dateFinished).getFullYear())) {
+				statYears.push(new Date(playthrough.dateFinished).getFullYear())
+			}
+		})
+	})
+
+	const getHeader = () => {
+		if (initialYear) {
+			return <h1 className="clickable"><span onClick={() => setView({ section: 'years', year: view.year })}>{view.year}</span> Stats</h1>
+		} else {
+			return <h1>2015&ndash;Present Stats</h1>
+		}
+	}
 
 	return (
 		<div className="box box--stats">
-			<h1>{year ? year : '2015-Present'} Stats</h1>
+			{ view.section === 'stats' &&
+				<React.Fragment>
+					{getHeader()}
 
-			<div className="statsBox">
-				<h3>Totals</h3>
+					<div className="statsBox">
+						<h3>Totals</h3>
 
-				<span className="statsBox__stat">Games completed: {data.beatenGames}</span>
-				<span className="statsBox__stat">Playthroughs completed: {data.totalPlaythroughs}</span>
-				<span className="statsBox__stat">Hours Played: {data.totalHoursPlayed}</span>
-				<span className="statsBox__stat">Average Game Score: {data.averageScore}</span>
-			</div>
+						<span className="statsBox__stat">Games completed: {data.beatenGames}</span>
+						<span className="statsBox__stat">Playthroughs completed: {data.totalPlaythroughs}</span>
+						<span className="statsBox__stat">Hours Played: {data.totalHoursPlayed}</span>
+						<span className="statsBox__stat">Average Game Score: {data.averageScore}</span>
+					</div>
 
-			<div className="statsBox">
-				<h3>Most Played Games (Hours)</h3>
+					<div className="statsBox">
+						<h3>Most Played Games (Hours)</h3>
 
-				{
-					data.topGamesByHoursPlayed.map((game, i) => {
-						return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_GAME_MODAL', game: game.gameData })} key={`${year ? year : 'alltime'}-stats-mostHoursPlayed-${i}`}>{i + 1}. {game.gameData.title} - {game.hoursPlayed}</span>
-					})
-				}
-			</div>
+						{
+							data.topGamesByHoursPlayed.map((game, i) => {
+								return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game: game.gameData })} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostHoursPlayed-${i}`}>{i + 1}. {game.gameData.title} - {game.hoursPlayed}</span>
+							})
+						}
+					</div>
 
-			{data.topGamesByPlaythroughCount.length > 0 &&
-				<div className="statsBox">
-					<h3>Most Played Games (Playthroughs)</h3>
+					{data.topGamesByPlaythroughCount.length > 0 &&
+						<div className="statsBox">
+							<h3>Most Played Games (Playthroughs)</h3>
 
-					{
-						data.topGamesByPlaythroughCount.map((game, i) => {
-							return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_GAME_MODAL', game: game.gameData})} key={`${year ? year : 'alltime'}-stats-mostPlaythroughs-${i}`}>{i + 1}. {game.gameData.title} - {game.timesCompleted}</span>
-						})
+							{
+								data.topGamesByPlaythroughCount.map((game, i) => {
+									return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game: game.gameData})} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostPlaythroughs-${i}`}>{i + 1}. {game.gameData.title} - {game.timesCompleted}</span>
+								})
+							}
+						</div>
 					}
-				</div>
+
+					<div className="statsBox">
+						<h3>Top Platforms Played</h3>
+
+						{
+							data.platformData.map((platform, i) => {
+								return <span className="statsBox__stat" key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-platform-${i}`}>{i + 1}. {platform.platform} - {platform.count}</span>
+							})
+						}
+					</div>
+				</React.Fragment>
 			}
 
-			<div className="statsBox">
-				<h3>Top Platforms Played</h3>
+			{ view.section === 'years' &&
+				<React.Fragment>
+					<h1>Select a Year</h1>
 
-				{
-					data.platformData.map((platform, i) => {
-						return <span className="statsBox__stat" key={`${year ? year : 'alltime'}-stats-platform-${i}`}>{i + 1}. {platform.platform} - {platform.count}</span>
-					})
-				}
-			</div>
+					<div className="statsBox">
+						<ul className="statsBox__yearList">
+							{
+								statYears.sort((yearA, yearB) => yearB - yearA).map((year, i) => {
+									return <li className={`statsBox__year ${year === view.year ? 'is-selected' : ''}`} onClick={() => setView({ section: 'stats', year })} key={`${id}-yearSelect-${i}`}><span>{year}</span></li>
+								})
+							}
+						</ul>
+					</div>
+				</React.Fragment>
+			}
 		</div>
 	)
 }
 
 Stats.propTypes = {
-	year: PropTypes.number,
-	games: PropTypes.array.isRequired
+	initialYear: PropTypes.number,
+	games: PropTypes.array.isRequired,
+	id: PropTypes.string
 }
 
 export default Stats

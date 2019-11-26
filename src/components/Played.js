@@ -31,7 +31,7 @@ const Played = ({
 			})
 
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_GAME_MODAL', game})} key={`played-${i}`}>
+				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game})} key={`played-${i}`}>
 					<td className={titleClasses}>{game.title}</td>
 					<td className="gameDataTable__cell gameDataTable__hours">{hoursPlayedThisYear}</td>
 					<td className="gameDataTable__cell gameDataTable__date">{game.playthroughs[0].dateFinished}</td>

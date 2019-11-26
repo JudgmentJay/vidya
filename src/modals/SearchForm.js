@@ -6,11 +6,16 @@ import { ModalContext } from '../context/modal'
 
 import { validateForm } from '../util/validation'
 
-const Search = ({ games }) => {
+const SearchForm = ({
+	games,
+	searchTerm,
+	setSearchTerm,
+	searchResults,
+	setSearchResults,
+	setView
+}) => {
 	const modalContext = useContext(ModalContext)
 
-	const [searchTerm, setSearchTerm] = useState('')
-	const [searchResults, setSearchResults] = useState({ games: [], searched: false })
 	const [invalidFields, setInvalidFields] = useState([])
 
 	const searchTermRef = useRef(null)
@@ -43,6 +48,12 @@ const Search = ({ games }) => {
 		setSearchResults({ games: filteredGames, searched: true })
 	}
 
+	const handleToggleGame = (game) => {
+		modalContext.dispatch({ type: 'ADD_GAME_TO_MODAL', game })
+
+		setView('info')
+	}
+
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') {
 			handleSubmitForm()
@@ -68,7 +79,7 @@ const Search = ({ games }) => {
 							{
 								searchResults.games.map((game, i) => {
 									return (
-										<tr className="modalTable__dataRow searchResultsTable__dataRow" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_GAME_MODAL', game})} key={`searchResult-${i}`}>
+										<tr className="modalTable__dataRow searchResultsTable__dataRow" onClick={() => handleToggleGame(game)} key={`searchResult-${i}`}>
 											<td className="modalTable__cell">{game.title}</td>
 										</tr>
 									)
@@ -86,8 +97,13 @@ const Search = ({ games }) => {
 	)
 }
 
-Search.propTypes = {
-	games: PropTypes.array.isRequired
+SearchForm.propTypes = {
+	games: PropTypes.array.isRequired,
+	searchTerm: PropTypes.string,
+	setSearchTerm: PropTypes.func.isRequired,
+	searchResults: PropTypes.object.isRequired,
+	setSearchResults: PropTypes.func.isRequired,
+	setView: PropTypes.func.isRequired
 }
 
-export default Search
+export default SearchForm

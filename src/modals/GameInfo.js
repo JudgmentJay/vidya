@@ -70,6 +70,7 @@ const GameInfo = ({ setView }) => {
 			</div>
 
 			<div className="modal__buttons">
+				{ modalContext.modalType === 'search' && <button className="modal__button" onClick={() => setView('search')}>Back</button> }
 				<button className="modal__button" onClick={() => setView('edit')}>Edit Game</button>
 				{ (Boolean(!game.playing) && new Date(game.releaseDate) < new Date()) && <button className="modal__button" onClick={() => setView('start')}>Start New Playthrough</button> }
 				{ Boolean(game.playing) && <button className="modal__button" onClick={() => setView('finish')}>Finish Playthrough</button> }

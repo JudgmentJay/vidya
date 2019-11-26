@@ -18,7 +18,7 @@ const Backlog = ({
 			}
 
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_GAME_MODAL', game})} key={`backlog-${game.title}`}>
+				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game})} key={`backlog-${game.title}`}>
 					<td className="gameDataTable__cell gameDataTable__title">{game.title}</td>
 					<td className="gameDataTable__cell gameDataTable__date">{releaseDate}</td>
 				</tr>

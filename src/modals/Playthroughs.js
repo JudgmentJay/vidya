@@ -41,7 +41,7 @@ const Playthroughs = ({ setView }) => {
 			</table>
 
 			<div className="modal__buttons">
-				<button className="modal__button" onClick={() => setView('home')}>Back</button>
+				<button className="modal__button" onClick={() => setView('info')}>Back</button>
 				<button className="modal__button" onClick={() => setView('addplaythrough')}>Add Playthrough</button>
 			</div>
 		</React.Fragment>

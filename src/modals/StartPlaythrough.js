@@ -92,7 +92,7 @@ const FinishPlaythrough = ({
 			</div>
 
 			<div className="modal__buttons">
-				<button className="modal__button" onClick={() => setView('home')}>Back</button>
+				<button className="modal__button" onClick={() => setView('info')}>Back</button>
 				<button className="modal__button" onClick={() => handleSubmitForm('startPlaythrough')}>Start playthrough</button>
 			</div>
 		</React.Fragment>

@@ -103,7 +103,7 @@ const EditGame = ({
 			}
 
 			<div className="modal__buttons">
-				<button className="modal__button" onClick={() => setView('home')}>Back</button>
+				<button className="modal__button" onClick={() => setView('info')}>Back</button>
 				<button className="modal__button" onClick={() => handleSubmitForm()}>Update Game</button>
 			</div>
 		</React.Fragment>

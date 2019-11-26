@@ -11,8 +11,7 @@ import AllPlayed from './AllPlayed'
 import Stats from './Stats'
 import Modal from '../modals/Modal'
 import AddGame from '../modals/AddGame'
-import ViewGame from '../modals/ViewGame'
-import Search from '../modals/Search'
+import ViewAndSearch from '../modals/ViewAndSearch'
 
 const Vidya = () => {
 	const modalContext = useContext(ModalContext)
@@ -157,16 +156,19 @@ const Vidya = () => {
 							<section className={columnClasses}>
 								<Stats games={data.gameData} />
 								<Stats
-									year={currentYear}
-									games={data.gameData} />
+									initialYear={currentYear}
+									games={data.gameData}
+									id="statsBoxOne" />
 							</section>
 							<section className={columnClasses}>
 								<Stats
-									year={currentYear - 1}
-									games={data.gameData} />
+									initialYear={currentYear - 1}
+									games={data.gameData}
+									id="statsBoxTwo" />
 								<Stats
-									year={currentYear - 2}
-									games={data.gameData} />
+									initialYear={currentYear - 2}
+									games={data.gameData}
+									id="statsBoxThree" />
 							</section>
 						</React.Fragment>
 					}
@@ -177,15 +179,11 @@ const Vidya = () => {
 						</Modal>
 					}
 
-					{ (modalVisible && modalType === 'view') &&
+					{ (modalVisible && modalType !== 'add') &&
 						<Modal>
-							<ViewGame fetchGameData={fetchGameData} />
-						</Modal>
-					}
-
-					{ (modalVisible && modalType === 'search') &&
-						<Modal>
-							<Search games={data.gameData} />
+							<ViewAndSearch
+								games={data.gameData}
+								fetchGameData={fetchGameData} />
 						</Modal>
 					}
 				</React.Fragment>

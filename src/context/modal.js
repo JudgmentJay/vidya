@@ -48,10 +48,10 @@ const modalReducer = (state, action) => {
 	switch (action.type) {
 		case 'TOGGLE_ADD_GAME_MODAL':
 			return {...state, modalVisible: true}
-		case 'TOGGLE_VIEW_GAME_MODAL':
-			return {...state, modalVisible: true, modalType: 'view', game: action.game}
-		case 'TOGGLE_SEARCH_MODAL':
-			return {...state, modalVisible: true, modalType: 'search'}
+		case 'TOGGLE_VIEW_AND_SEARCH_MODAL':
+			return {...state, modalVisible: true, modalType: action.modalType, game: action.game ? action.game : blankGame}
+		case 'ADD_GAME_TO_MODAL':
+			return {...state, game: action.game}
 		case 'CLOSE_MODAL':
 			return {...state, modalVisible: false, modalType: 'add', game: blankGame}
 		default:

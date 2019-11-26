@@ -21,7 +21,7 @@ const Nav = ({
 			<span className={allClasses} onClick={() => setView('allplayed')}>All</span>
 			<span className={statsClasses} onClick={() => setView('stats')}>Stats</span>
 			<span className={navBarItemClass} onClick={(() => modalContext.dispatch({ type: 'TOGGLE_ADD_GAME_MODAL' }))}>Add</span>
-			<span className={navBarItemClass} onClick={(() => modalContext.dispatch({ type: 'TOGGLE_SEARCH_MODAL' }))}>Search</span>
+			<span className={navBarItemClass} onClick={(() => modalContext.dispatch({ type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'search' }))}>Search</span>
 		</nav>
 	)
 }

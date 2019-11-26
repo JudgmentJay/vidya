@@ -170,6 +170,14 @@ h1 {
 	font-size: 2.4em;
 
 	cursor: default;
+
+	&.clickable span {
+		display: inline-block;
+
+		border-bottom: 2px solid;
+
+		cursor: pointer;
+	}
 }
 
 h2 {
@@ -256,6 +264,16 @@ h3 {
 		font-weight: 600;
 
 		cursor: default;
+
+		&.is-active-sort span {
+			border-bottom: 2px solid;
+		}
+	}
+
+	&--allPlayed {
+		.gameDataTable__header {
+			cursor: pointer;
+		}
 	}
 
 	&__cell {
@@ -332,6 +350,27 @@ h3 {
 
 		&:last-of-type {
 			margin-bottom: 0;
+		}
+	}
+
+	&__yearList {
+		margin: 0;
+		padding: 0;
+
+		list-style: none;
+	}
+
+	&__year {
+		margin-bottom: $gapSize;
+
+		cursor: pointer;
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+
+		&.is-selected span {
+			border-bottom: 2px solid;
 		}
 	}
 }

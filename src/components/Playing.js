@@ -9,7 +9,7 @@ const Playing = ({ games }) => {
 	const generateGameRows = () => {
 		return games.map((game, i) => {
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_GAME_MODAL', game})} key={`playing-${i}`}>
+				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game})} key={`playing-${i}`}>
 					<td className="gameDataTable__cell gameDataTable__title">{game.title}</td>
 					<td className="gameDataTable__cell gameDataTable__date">{game.playthroughs[0].dateStarted}</td>
 				</tr>
