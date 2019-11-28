@@ -6,35 +6,36 @@ import { ModalContext } from '../context/modal'
 
 const Played = ({
 	games,
+	playthroughs,
 	year
 }) => {
 	const modalContext = useContext(ModalContext)
 
 	const generateGameRows = () => {
-		return games.map((game, i) => {
-			let hoursPlayedThisYear = 0
-			let finishedThisYear = false
+		const gamesPlayed = []
 
-			game.playthroughs.forEach((playthrough) => {
-				if (new Date(playthrough.dateFinished).getFullYear() === year) {
-					hoursPlayedThisYear += playthrough.hoursPlayed
-				}
-
-				if (!finishedThisYear && playthrough.timesCompleted) {
-					finishedThisYear = true
-				}
-			})
+		return playthroughs.map((playthrough, i) => {
+			const game = games.find((game) => game.id === playthrough.gameId)
+			const gameTitle = game.title
 
 			const titleClasses = classNames({
 				'gameDataTable__cell gameDataTable__title': true,
-				'gameDataTable__title--dropped': !finishedThisYear
+				'gameDataTable__title--dropped': playthrough.timesCompleted === 0
 			})
 
+			const displayTitle = !gamesPlayed.includes(gameTitle)
+				? gameTitle
+				: `((${gameTitle}))`
+
+			if (!gamesPlayed.includes(gameTitle)) {
+				gamesPlayed.push(gameTitle)
+			}
+
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game})} key={`played-${i}`}>
-					<td className={titleClasses}>{game.title}</td>
-					<td className="gameDataTable__cell gameDataTable__hours">{hoursPlayedThisYear}</td>
-					<td className="gameDataTable__cell gameDataTable__date">{game.playthroughs[0].dateFinished}</td>
+				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`played-${i}`}>
+					<td className={titleClasses}>{displayTitle}</td>
+					<td className="gameDataTable__cell gameDataTable__hours">{playthrough.hoursPlayed}</td>
+					<td className="gameDataTable__cell gameDataTable__date">{playthrough.dateFinished}</td>
 				</tr>
 			)
 		})
@@ -44,24 +45,31 @@ const Played = ({
 		<div className="box">
 			<h1>Games played in {year}</h1>
 
-			<table className="gameDataTable" cellPadding="0" cellSpacing="0">
-				<thead>
-					<tr>
-						<th className="gameDataTable__header gameDataTable__title">Title</th>
-						<th className="gameDataTable__header gameDataTable__hours">Hours</th>
-						<th className="gameDataTable__header gameDataTable__date">Finished</th>
-					</tr>
-				</thead>
-				<tbody>
-					{ generateGameRows() }
-				</tbody>
-			</table>
+			{ playthroughs.length > 0 &&
+				<table className="gameDataTable" cellPadding="0" cellSpacing="0">
+					<thead>
+						<tr>
+							<th className="gameDataTable__header gameDataTable__title">Title</th>
+							<th className="gameDataTable__header gameDataTable__hours">Hours</th>
+							<th className="gameDataTable__header gameDataTable__date">Finished</th>
+						</tr>
+					</thead>
+					<tbody>
+						{generateGameRows()}
+					</tbody>
+				</table>
+			}
+
+			{ playthroughs.length === 0 &&
+				<div id="emptyBox">Nothing yet!</div>
+			}
 		</div>
 	)
 }
 
 Played.propTypes = {
 	games: PropTypes.array.isRequired,
+	playthroughs: PropTypes.array.isRequired,
 	year: PropTypes.number
 }
 

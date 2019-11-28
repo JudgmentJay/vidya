@@ -7,20 +7,23 @@ import { fetchData } from '../util/fetch'
 
 import { ModalContext } from '../context/modal'
 
-const AddPlaythrough = ({
+const EditPlaythrough = ({
 	setView,
 	fetchGameData
 }) => {
 	const modalContext = useContext(ModalContext)
 
-	const game = modalContext.game
+	const {
+		game,
+		playthrough
+	} = modalContext
 
 	const [password, setPassword] = useState('')
-	const [dateStarted, setDateStarted] = useState('')
-	const [dateFinished, setDateFinished] = useState('')
-	const [hoursPlayed, setHoursPlayed] = useState('')
-	const [timesCompleted, setTimesCompleted] = useState('0')
-	const [platform, setPlatform] = useState('')
+	const [dateStarted, setDateStarted] = useState(playthrough.dateStarted)
+	const [dateFinished, setDateFinished] = useState(playthrough.dateFinished)
+	const [hoursPlayed, setHoursPlayed] = useState(playthrough.hoursPlayed.toString())
+	const [timesCompleted, setTimesCompleted] = useState(playthrough.timesCompleted.toString())
+	const [platform, setPlatform] = useState(playthrough.platform)
 	const [invalidFields, setInvalidFields] = useState([])
 
 	const dateStartedRef = useRef(null)
@@ -45,11 +48,11 @@ const AddPlaythrough = ({
 		if (newInvalidFields.length) {
 			setInvalidFields(newInvalidFields)
 		} else {
-			addPlaythrough()
+			editPlaythrough()
 		}
 	}
 
-	const addPlaythrough = () => {
+	const editPlaythrough = () => {
 		const data = {
 			password,
 			dateStarted,
@@ -67,7 +70,7 @@ const AddPlaythrough = ({
 			}, 20)
 		}
 
-		fetchData(`games/playthroughs/add/${game.id}`, 'POST', data, callback)
+		fetchData(`games/playthroughs/edit/${playthrough.id}`, 'PUT', data, callback)
 	}
 
 	const inputFieldClass = 'modal__input'
@@ -79,7 +82,7 @@ const AddPlaythrough = ({
 
 	return (
 		<React.Fragment>
-			<h2>Add {game.title} Playthrough</h2>
+			<h2>Update {game.title} Playthrough</h2>
 
 			<div className="modal__field">
 				<label className="modal__label" htmlFor="password">Password</label>
@@ -108,15 +111,16 @@ const AddPlaythrough = ({
 
 			<div className="modal__buttons">
 				<button className="modal__button" onClick={() => setView('playthroughs')}>Back</button>
-				<button className="modal__button" onClick={() => handleSubmitForm()}>Add</button>
+				<button className="modal__button modal__button--delete" onClick={() => setView('deleteplaythrough')}>Delete</button>
+				<button className="modal__button" onClick={() => handleSubmitForm()}>Update</button>
 			</div>
 		</React.Fragment>
 	)
 }
 
-AddPlaythrough.propTypes = {
+EditPlaythrough.propTypes = {
 	setView: PropTypes.func.isRequired,
 	fetchGameData: PropTypes.func.isRequired
 }
 
-export default AddPlaythrough
+export default EditPlaythrough

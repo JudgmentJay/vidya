@@ -6,72 +6,76 @@ import { ModalContext } from '../context/modal'
 const Stats = ({
 	initialYear,
 	games,
-	id
+	playthroughs
 }) => {
 	const modalContext = useContext(ModalContext)
 
 	const [view, setView] = useState({ section: 'stats', year: initialYear ? initialYear : 'all' })
-	const [data, setData] = useState({ beatenGames: 0, totalHoursPlayed: 0, totalPlaythroughs: 0, platformData: [], topGamesByHoursPlayed: [], topGamesByPlaythroughCount: [], averageScore: 0 })
+	const [data, setData] = useState({ gamesPlayed: 0, gamesCompleted: 0, totalHoursPlayed: 0, totalPlaythroughs: 0, platformData: [], topGamesByHoursPlayed: [], topGamesByPlaythroughCount: [], averageScore: 0 })
 
 	useEffect(() => {
 		const relevantGames = view.year === 'all'
-			? games.filter((game) => !game.playing && game.playthroughs.length > 0)
-			: games.filter((game) => !game.playing && game.playthroughs.length > 0 && game.playthroughs.some((playthrough) => new Date(playthrough.dateFinished).getFullYear() === view.year))
+			? games.filter((game) => game.playthroughs.some((playthrough) => playthrough.dateFinished))
+			: games.filter((game) => game.playthroughs.some((playthrough) => {
+				return playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === view.year
+			}))
 
-		const beatenGames = relevantGames.filter((game) => game.playthroughs.some((playthrough) => playthrough.timesCompleted > 0)).length
+		const gamesPlayed = relevantGames.length
+		const gamesCompleted = view.year === 'all'
+			? relevantGames.filter((game) => game.playthroughs.some((playthrough) => playthrough.timesCompleted)).length
+			: relevantGames.filter((game) => {
+				const completedPlaythroughs = game.playthroughs.filter((playthrough) => playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === view.year && playthrough.timesCompleted)
+
+				return completedPlaythroughs.length > 0
+			}).length
+
 		let totalHoursPlayed = 0
 		let totalPlaythroughs = 0
-		const tempPlatformData = {}
-		const platformData = []
+
 		const topGamesByHoursPlayed = []
 		const topGamesByPlaythroughCount = []
 		const scores = []
+		const platforms = {}
 
 		relevantGames.forEach((game) => {
-			const usedPlatforms = []
-			let gameHoursPlayed = 0
+			let hoursPlayed = 0
 			let timesCompleted = 0
 
-			const relevantPlaythroughs = view.year === 'all'
+			const relevantGamePlaythroughs = view.year === 'all'
 				? game.playthroughs.filter((playthrough) => playthrough.dateFinished)
 				: game.playthroughs.filter((playthrough) => playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === view.year)
 
-			relevantPlaythroughs.forEach((playthrough) => {
+			relevantGamePlaythroughs.forEach((playthrough) => {
+				hoursPlayed += playthrough.hoursPlayed
 				totalHoursPlayed += playthrough.hoursPlayed
-				totalPlaythroughs += playthrough.timesCompleted
+
 				timesCompleted += playthrough.timesCompleted
+				totalPlaythroughs += playthrough.timesCompleted
 
-				gameHoursPlayed += playthrough.hoursPlayed
-
-				if (!usedPlatforms.includes(playthrough.platform)) {
-					if (tempPlatformData[playthrough.platform]) {
-						tempPlatformData[playthrough.platform].count++
-					} else {
-						tempPlatformData[playthrough.platform] = {}
-						tempPlatformData[playthrough.platform].count = 1
-					}
-
-					usedPlatforms.push(playthrough.platform)
+				if (!platforms[playthrough.platform]) {
+					platforms[playthrough.platform] = 1
+				} else {
+					platforms[playthrough.platform] += 1
 				}
 			})
 
-			if (topGamesByHoursPlayed.length < 3) {
+			if (topGamesByHoursPlayed.length < 5) {
 				topGamesByHoursPlayed.push({
 					gameData: game,
-					hoursPlayed: gameHoursPlayed
+					hoursPlayed: hoursPlayed
 				})
 			} else {
 				topGamesByHoursPlayed.sort((gameA, gameB) => gameA.hoursPlayed - gameB.hoursPlayed)
 
-				if (topGamesByHoursPlayed[0].hoursPlayed < gameHoursPlayed) {
+				if (topGamesByHoursPlayed[0].hoursPlayed < hoursPlayed) {
 					topGamesByHoursPlayed.splice(0, 1, {
 						gameData: game,
-						hoursPlayed: gameHoursPlayed
+						hoursPlayed: hoursPlayed
 					})
 				}
 			}
 
-			if (topGamesByPlaythroughCount.length < 3) {
+			if (topGamesByPlaythroughCount.length < 5) {
 				if (timesCompleted > 1) {
 					topGamesByPlaythroughCount.push({
 						gameData: game,
@@ -81,7 +85,7 @@ const Stats = ({
 			} else {
 				topGamesByPlaythroughCount.sort((gameA, gameB) => gameA.timesCompleted - gameB.timesCompleted)
 
-				if (timesCompleted > 1 && timesCompleted > topGamesByPlaythroughCount[0].timesCompleted) {
+				if (timesCompleted && timesCompleted > topGamesByPlaythroughCount[0].timesCompleted) {
 					topGamesByPlaythroughCount.splice(0, 1, {
 						gameData: game,
 						timesCompleted
@@ -92,36 +96,59 @@ const Stats = ({
 			scores.push(game.score)
 		})
 
-		Object.keys(tempPlatformData).forEach((platform) => {
-			platformData.push({
-				platform,
-				count: tempPlatformData[platform].count
-			})
+		const platformData = Object.entries(platforms).sort((platformA, platformB) => {
+			if (platformA[1] < platformB[1]) return 1
+			if (platformA[1] > platformB[1]) return -1
+
+			if (platformA[0].toLowerCase() < platformB[0].toLowerCase()) return 1
+			if (platformA[0].toLowerCase() > platformB[0].toLowerCase()) return -1
+
+			return 0
 		})
 
-		platformData.sort((platformA, platformB) => platformB.count - platformA.count)
+		topGamesByHoursPlayed.sort((gameA, gameB) => {
+			if (gameB.hoursPlayed > gameA.hoursPlayed) return 1
+			if (gameB.hoursPlayed < gameA.hoursPlayed) return -1
 
-		if (platformData.length > 3) {
-			platformData.splice(3, platformData.length - 3)
-		}
+			if (gameB.gameData.title.toLowerCase() < gameA.gameData.title.toLowerCase()) return 1
+			if (gameB.gameData.title.toLowerCase() > gameA.gameData.title.toLowerCase()) return -1
 
-		topGamesByHoursPlayed.sort((gameA, gameB) => gameB.hoursPlayed - gameA.hoursPlayed)
-		topGamesByPlaythroughCount.sort((gameA, gameB) => gameB.timesCompleted - gameA.timesCompleted)
+			return 0
+		})
+
+		topGamesByPlaythroughCount.sort((gameA, gameB) => {
+			if (gameB.timesCompleted > gameA.timesCompleted) return 1
+			if (gameB.timesCompleted < gameA.timesCompleted) return -1
+
+			if (gameB.gameData.title.toLowerCase() < gameA.gameData.title.toLowerCase()) return 1
+			if (gameB.gameData.title.toLowerCase() > gameA.gameData.title.toLowerCase()) return -1
+
+			return 0
+		})
 
 		const totalPoints = scores.reduce((acc, cur) => acc + cur)
 		const averageScore = (totalPoints / scores.length).toFixed(1)
 
-		setData({ beatenGames, totalPlaythroughs, totalHoursPlayed, platformData, topGamesByHoursPlayed, topGamesByPlaythroughCount, averageScore })
+		setData({
+			gamesPlayed,
+			gamesCompleted,
+			totalPlaythroughs,
+			totalHoursPlayed,
+			platformData,
+			topGamesByHoursPlayed,
+			topGamesByPlaythroughCount,
+			averageScore
+		})
 	}, [view.year, games])
 
-	const statYears = []
+	const availableYears = []
 
-	games.forEach((game) => {
-		game.playthroughs.forEach((playthrough) => {
-			if (playthrough.dateFinished && !statYears.includes(new Date(playthrough.dateFinished).getFullYear())) {
-				statYears.push(new Date(playthrough.dateFinished).getFullYear())
-			}
-		})
+	playthroughs.forEach((playthrough) => {
+		const playthroughYear = playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear()
+
+		if (playthroughYear && !availableYears.includes(playthroughYear)) {
+			availableYears.push(playthroughYear)
+		}
 	})
 
 	const getHeader = () => {
@@ -141,7 +168,7 @@ const Stats = ({
 					<div className="statsBox">
 						<h3>Totals</h3>
 
-						<span className="statsBox__stat">Games completed: {data.beatenGames}</span>
+						<span className="statsBox__stat">Games played: {data.gamesPlayed} ({data.gamesCompleted} complete, {data.gamesPlayed - data.gamesCompleted} dropped)</span>
 						<span className="statsBox__stat">Playthroughs completed: {data.totalPlaythroughs}</span>
 						<span className="statsBox__stat">Hours Played: {data.totalHoursPlayed}</span>
 						<span className="statsBox__stat">Average Game Score: {data.averageScore}</span>
@@ -152,7 +179,7 @@ const Stats = ({
 
 						{
 							data.topGamesByHoursPlayed.map((game, i) => {
-								return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game: game.gameData })} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostHoursPlayed-${i}`}>{i + 1}. {game.gameData.title} - {game.hoursPlayed}</span>
+								return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game: game.gameData })} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostHoursPlayed-${i}`}>{i + 1}. {game.gameData.title} - {game.hoursPlayed}</span>
 							})
 						}
 					</div>
@@ -163,7 +190,7 @@ const Stats = ({
 
 							{
 								data.topGamesByPlaythroughCount.map((game, i) => {
-									return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game: game.gameData})} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostPlaythroughs-${i}`}>{i + 1}. {game.gameData.title} - {game.timesCompleted}</span>
+									return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game: game.gameData})} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostPlaythroughs-${i}`}>{i + 1}. {game.gameData.title} - {game.timesCompleted}</span>
 								})
 							}
 						</div>
@@ -174,7 +201,7 @@ const Stats = ({
 
 						{
 							data.platformData.map((platform, i) => {
-								return <span className="statsBox__stat" key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-platform-${i}`}>{i + 1}. {platform.platform} - {platform.count}</span>
+								return <span className="statsBox__stat" key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-platform-${i}`}>{i + 1}. {platform[0]} - {platform[1]}</span>
 							})
 						}
 					</div>
@@ -188,8 +215,12 @@ const Stats = ({
 					<div className="statsBox">
 						<ul className="statsBox__yearList">
 							{
-								statYears.sort((yearA, yearB) => yearB - yearA).map((year, i) => {
-									return <li className={`statsBox__year ${year === view.year ? 'is-selected' : ''}`} onClick={() => setView({ section: 'stats', year })} key={`${id}-yearSelect-${i}`}><span>{year}</span></li>
+								availableYears.sort((yearA, yearB) => yearB - yearA).map((year, i) => {
+									return (
+										<li className={`statsBox__year ${year === view.year ? 'is-selected' : ''}`} onClick={() => setView({ section: 'stats', year })} key={`yearSelect-${i}`}>
+											<span>{year}</span>
+										</li>
+									)
 								})
 							}
 						</ul>
@@ -203,7 +234,7 @@ const Stats = ({
 Stats.propTypes = {
 	initialYear: PropTypes.number,
 	games: PropTypes.array.isRequired,
-	id: PropTypes.string
+	playthroughs: PropTypes.array.isRequired
 }
 
 export default Stats

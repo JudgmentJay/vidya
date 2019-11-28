@@ -6,18 +6,9 @@ const ModalContext = React.createContext()
 const ModalProvider = ({ children }) => {
 	const initialState = {
 		modalVisible: false,
-		modalType: 'add',
-		game: {
-			title: '',
-			releaseDate: '',
-			score: 0,
-			playthroughCount: 0,
-			status: 'backlog',
-			dateStarted: '',
-			dateFinished: '',
-			hoursPlayed: 0,
-			platform: ''
-		}
+		modalType: '',
+		game: {},
+		playthrough: {}
 	}
 
 	const [modalStatus, dispatch] = useReducer(modalReducer, initialState)
@@ -26,6 +17,7 @@ const ModalProvider = ({ children }) => {
 		modalVisible: modalStatus.modalVisible,
 		modalType: modalStatus.modalType,
 		game: modalStatus.game,
+		playthrough: modalStatus.playthrough,
 		dispatch: dispatch
 	}
 
@@ -33,29 +25,15 @@ const ModalProvider = ({ children }) => {
 }
 
 const modalReducer = (state, action) => {
-	const blankGame = {
-		title: '',
-		releaseDate: '',
-		score: 0,
-		playthroughCount: 0,
-		status: 'backlog',
-		dateStarted: '',
-		dateFinished: '',
-		hoursPlayed: 0,
-		platform: ''
-	}
-
 	switch (action.type) {
-		case 'TOGGLE_ADD_GAME_MODAL':
-			return {...state, modalVisible: true}
-		case 'TOGGLE_VIEW_AND_SEARCH_MODAL':
-			return {...state, modalVisible: true, modalType: action.modalType, game: action.game ? action.game : blankGame}
-		case 'ADD_GAME_TO_MODAL':
+		case 'OPEN_MODAL':
+			return {...state, modalVisible: true, modalType: action.modalType, game: action.game ? action.game : {}}
+		case 'ADD_GAME':
 			return {...state, game: action.game}
+		case 'ADD_PLAYTHROUGH':
+			return {...state, playthrough: action.playthrough}
 		case 'CLOSE_MODAL':
-			return {...state, modalVisible: false, modalType: 'add', game: blankGame}
-		default:
-			return state
+			return {modalVisible: false, modalType: '', game: {}, playthrough: {}}
 	}
 }
 

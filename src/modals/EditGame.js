@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { validateForm } from '../util/validation'
+import { fetchData } from '../util/fetch'
 
 import { ModalContext } from '../context/modal'
 
@@ -53,25 +54,15 @@ const EditGame = ({
 			score
 		}
 
-		fetch(`http://localhost:3010/games/edit/${game.id}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		}).then(response => {
-			if (response.status === 400) {
-				alert('Invalid Password')
-			} else if (response.status === 400) {
-				console.log('Bad Response')
-			} else if (response.ok) {
-				fetchGameData()
+		const callback = () => {
+			fetchGameData()
 
-				setTimeout(() => {
-					modalContext.dispatch({ type: 'CLOSE_MODAL' })
-				}, 20)
-			}
-		})
+			setTimeout(() => {
+				modalContext.dispatch({ type: 'CLOSE_MODAL' })
+			}, 20)
+		}
+
+		fetchData(`games/edit/${game.id}`, 'PUT', data, callback)
 	}
 
 	const inputFieldClass = 'modal__input'
@@ -104,7 +95,8 @@ const EditGame = ({
 
 			<div className="modal__buttons">
 				<button className="modal__button" onClick={() => setView('info')}>Back</button>
-				<button className="modal__button" onClick={() => handleSubmitForm()}>Update Game</button>
+				{ game.playthroughs.length === 0 && <button className="modal__button modal__button--delete" onClick={() => setView('deletegame')}>Delete</button> }
+				<button className="modal__button" onClick={() => handleSubmitForm()}>Update</button>
 			</div>
 		</React.Fragment>
 	)

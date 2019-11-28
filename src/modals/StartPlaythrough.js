@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { validateForm } from '../util/validation'
+import { fetchData } from '../util/fetch'
 
 import { ModalContext } from '../context/modal'
 
@@ -49,25 +50,15 @@ const FinishPlaythrough = ({
 			platform
 		}
 
-		fetch(`http://localhost:3010/games/playthrough-start/${game.id}`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		}).then(response => {
-			if (response.status === 400) {
-				alert('Invalid Password')
-			} else if (response.status === 400) {
-				console.log('Bad Response')
-			} else if (response.ok) {
-				fetchGameData()
+		const callback = () => {
+			fetchGameData()
 
-				setTimeout(() => {
-					modalContext.dispatch({ type: 'CLOSE_MODAL' })
-				}, 20)
-			}
-		})
+			setTimeout(() => {
+				modalContext.dispatch({ type: 'CLOSE_MODAL' })
+			}, 20)
+		}
+
+		fetchData(`games/playthroughs/start/${game.id}`, 'POST', data, callback)
 	}
 
 	const inputFieldClass = 'modal__input'

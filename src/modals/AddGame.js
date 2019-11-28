@@ -2,9 +2,10 @@ import React, { useContext, useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { ModalContext } from '../context/modal'
-
 import { validateForm } from '../util/validation'
+import { fetchData } from '../util/fetch'
+
+import { ModalContext } from '../context/modal'
 
 const AddGame = ({ fetchGameData }) => {
 	const modalContext = useContext(ModalContext)
@@ -79,25 +80,15 @@ const AddGame = ({ fetchGameData }) => {
 			data.platform = platform
 		}
 
-		fetch(`http://localhost:3010/games/add`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		}).then(response => {
-			if (response.status === 400) {
-				alert('Invalid Password')
-			} else if (response.status === 400) {
-				console.log('Bad Response')
-			} else if (response.ok) {
-				fetchGameData()
+		const callback = () => {
+			fetchGameData()
 
-				setTimeout(() => {
-					modalContext.dispatch({ type: 'CLOSE_MODAL' })
-				}, 20)
-			}
-		})
+			setTimeout(() => {
+				modalContext.dispatch({ type: 'CLOSE_MODAL' })
+			}, 20)
+		}
+
+		fetchData('games/add', 'POST', data, callback)
 	}
 
 	const statusButtonClass = 'modal__statusButton'

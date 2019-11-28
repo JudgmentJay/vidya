@@ -9,6 +9,16 @@ const Playthroughs = ({ setView }) => {
 
 	const game = modalContext.game
 
+	const handlePlaythroughClick = (playthrough) => {
+		if (playthrough.dateFinished) {
+			modalContext.dispatch({ type: 'ADD_PLAYTHROUGH', playthrough })
+
+			setView('editplaythrough')
+		} else {
+			setView('finishplaythrough')
+		}
+	}
+
 	return (
 		<React.Fragment>
 			<h2>{game.title} Playthroughs</h2>
@@ -19,6 +29,7 @@ const Playthroughs = ({ setView }) => {
 						<th className="modalTable__header playthroughsTable__dateStarted">Date Started</th>
 						<th className="modalTable__header">Date Finished</th>
 						<th className="modalTable__header playthroughsTable__hours">Hours</th>
+						<th className="modalTable__header playthroughsTable__timesCompleted">Fin</th>
 						<th className="modalTable__header playthroughsTable__platform">Platform</th>
 					</tr>
 				</thead>
@@ -28,10 +39,11 @@ const Playthroughs = ({ setView }) => {
 							const dateFinishedClasses = classNames('modalTable__cell', { 'playthroughsTable__dropped': !playthrough.timesCompleted })
 
 							return (
-								<tr className="modalTable__dataRow playthroughsTable__dataRow" key={`playthrough-${i}`}>
+								<tr className="modalTable__dataRow playthroughsTable__dataRow" onClick={() => handlePlaythroughClick(playthrough)} key={`playthrough-${i}`}>
 									<td className="modalTable__cell playthroughsTable__dateStarted">{playthrough.dateStarted}</td>
 									<td className={dateFinishedClasses}>{playthrough.dateFinished ? playthrough.dateFinished : '--'}</td>
 									<td className="modalTable__cell playthroughsTable__hours">{playthrough.hoursPlayed ? playthrough.hoursPlayed : '--'}</td>
+									<td className="modalTable__cell playthroughsTable__timesCompleted">{playthrough.timesCompleted}</td>
 									<td className="modalTable__cell playthroughsTable__platform">{playthrough.platform}</td>
 								</tr>
 							)

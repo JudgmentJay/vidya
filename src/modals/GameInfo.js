@@ -60,7 +60,7 @@ const GameInfo = ({ setView }) => {
 					</div>
 				}
 				<span className="gameInfo__stat">Release Date: {game.releaseDate.includes('December 31') ? new Date(game.releaseDate).getFullYear() : game.releaseDate}</span>
-				{ game.playthroughs.length > 0 &&
+				{ ((game.playthroughs.length === 1 && !game.playing) || game.playthroughs.length > 1) &&
 					<React.Fragment>
 						<span className="gameInfo__stat gameInfo__stat--playthroughs"><a onClick={() => setView('playthroughs')}>Times completed: {gameData.timesCompleted}</a></span>
 						<span className="gameInfo__stat">Hours played: {gameData.hoursPlayed}</span>
@@ -71,9 +71,9 @@ const GameInfo = ({ setView }) => {
 
 			<div className="modal__buttons">
 				{ modalContext.modalType === 'search' && <button className="modal__button" onClick={() => setView('search')}>Back</button> }
-				<button className="modal__button" onClick={() => setView('edit')}>Edit Game</button>
-				{ (Boolean(!game.playing) && new Date(game.releaseDate) < new Date()) && <button className="modal__button" onClick={() => setView('start')}>Start New Playthrough</button> }
-				{ Boolean(game.playing) && <button className="modal__button" onClick={() => setView('finish')}>Finish Playthrough</button> }
+				<button className="modal__button" onClick={() => setView('editgame')}>Edit Game</button>
+				{ (Boolean(!game.playing) && new Date(game.releaseDate) < new Date()) && <button className="modal__button" onClick={() => setView('startplaythrough')}>Start New Playthrough</button> }
+				{ Boolean(game.playing) && <button className="modal__button" onClick={() => setView('finishplaythrough')}>Finish Playthrough</button> }
 			</div>
 		</React.Fragment>
 	)

@@ -6,10 +6,13 @@ import { ModalContext } from '../context/modal'
 import SearchForm from './SearchForm'
 import GameInfo from './GameInfo'
 import EditGame from './EditGame'
+import DeleteGame from './DeleteGame'
 import StartPlaythrough from './StartPlaythrough'
 import FinishPlaythrough from './FinishPlaythrough'
 import Playthroughs from './Playthroughs'
+import EditPlaythrough from './EditPlaythrough'
 import AddPlaythrough from './AddPlaythrough'
+import DeletePlaythrough from './DeletePlaythrough'
 
 const ViewAndSearch = ({
 	games,
@@ -35,19 +38,25 @@ const ViewAndSearch = ({
 
 			{ view === 'info' && <GameInfo setView={setView} /> }
 
-			{ view === 'edit' &&
+			{ view === 'editgame' &&
 				<EditGame
 					setView={setView}
 					fetchGameData={fetchGameData} />
 			}
 
-			{ view === 'start' &&
+			{ view === 'deletegame' &&
+				<DeleteGame
+					setView={setView}
+					fetchGameData={fetchGameData} />
+			}
+
+			{ view === 'startplaythrough' &&
 				<StartPlaythrough
 					setView={setView}
 					fetchGameData={fetchGameData} />
 			}
 
-			{ view === 'finish' &&
+			{ view === 'finishplaythrough' &&
 				<FinishPlaythrough
 					setView={setView}
 					fetchGameData={fetchGameData} />
@@ -55,8 +64,20 @@ const ViewAndSearch = ({
 
 			{ view === 'playthroughs' && <Playthroughs setView={setView} /> }
 
+			{ view === 'editplaythrough' &&
+				<EditPlaythrough
+					setView={setView}
+					fetchGameData={fetchGameData} />
+			}
+
 			{ view === 'addplaythrough' &&
 				<AddPlaythrough
+					setView={setView}
+					fetchGameData={fetchGameData} />
+			}
+
+			{ view === 'deleteplaythrough' &&
+				<DeletePlaythrough
 					setView={setView}
 					fetchGameData={fetchGameData} />
 			}

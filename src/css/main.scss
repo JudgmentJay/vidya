@@ -219,7 +219,8 @@ h3 {
 	font-size: 1.6em;
 	font-weight: 600;
 
-	background: rgba(255, 255, 255, 0.65);
+	background: rgba(255, 255, 255, 0.5);
+	backdrop-filter: blur(3px);
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
 
 	&__item {
@@ -241,7 +242,8 @@ h3 {
 	margin-bottom: $gapSize;
 	padding: $gapSize 0 calc(#{$gapSize} - #{$itemPadding});
 
-	background: rgba(255, 255, 255, 0.65);
+	background: rgba(255, 255, 255, 0.5);
+	backdrop-filter: blur(3px);
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
 
 	&:last-of-type {
@@ -326,6 +328,15 @@ h3 {
 			opacity: 0.5
 		}
 	}
+}
+
+#emptyBox {
+	padding: 0 $gapSize $itemPadding;
+
+	font-size: 1.4em;
+	font-weight: 600;
+
+	cursor: default;
 }
 
 .statsBox {
@@ -486,10 +497,16 @@ h3 {
 
 		font-size: 1.6em;
 
-		background: #fff;
+		background: white;
 
 		&:last-of-type {
 			margin-bottom: 0;
+		}
+
+		&--delete {
+			color: white;
+
+			background: red;
 		}
 
 		&--search {
@@ -567,14 +584,16 @@ h3 {
 
 .playthroughsTable {
 	&__dataRow {
-		cursor: default;
+		cursor: pointer;
 	}
 
-	&__dateStarted {
+	&__dateStarted, &__timesCompleted {
 		display: none;
 	}
 
 	&__hours, &__platform {
+		width: 70px;
+
 		text-align: center;
 	}
 
@@ -644,6 +663,10 @@ h3 {
 		&__date {
 			width: 210px;
 		}
+	}
+
+	#emptyBox {
+		font-size: 2em;
 	}
 
 	.statsBox {
@@ -716,8 +739,16 @@ h3 {
 	}
 
 	.playthroughsTable {
-		&__dateStarted {
+		&__dateStarted, &__timesCompleted {
 			display: table-cell;
+		}
+
+		&__timesCompleted {
+			text-align: center;
+		}
+
+		&__hours, &__timesCompleted, &__platform {
+			width: 95px;
 		}
 	}
 }
@@ -771,10 +802,6 @@ h3 {
 	.box {
 		overflow-x: hidden;
 		overflow-y: auto;
-
-		&--stats {
-			flex-basis: 50%;
-		}
 	}
 
 	.gameDataTable {
@@ -806,6 +833,18 @@ h3 {
 
 		&__date {
 			width: 155px;
+		}
+	}
+
+	#emptyBox {
+		font-size: 1.4em;
+	}
+
+	.playthroughsTable {
+		&__dataRow {
+			&:hover {
+				background: rgba(255, 255, 255, 0.5);
+			}
 		}
 	}
 
@@ -851,6 +890,10 @@ h3 {
 		&__date {
 			width: 210px;
 		}
+	}
+
+	#emptyBox {
+		font-size: 2em;
 	}
 
 	.statsBox {
@@ -919,6 +962,10 @@ h3 {
 		}
 	}
 
+	#emptyBox {
+		padding: 0 $gapSize $itemPadding;
+	}
+
 	.statsBox {
 		padding: 0 $gapSize;
 	}
@@ -953,6 +1000,10 @@ h3 {
 		&__date {
 			width: 285px;
 		}
+	}
+
+	#emptyBox {
+		font-size: 2.6em;
 	}
 
 	.statsBox {
@@ -996,6 +1047,12 @@ h3 {
 			font-size: 2.2em;
 		}
 	}
+
+	.playthroughsTable {
+		&__hours, &__timesPlayed, &__platform {
+			width: 115px;
+		}
+	}
 }
 
 @media only screen and (min-width: 3500px) {
@@ -1022,6 +1079,48 @@ h3 {
 
 		&__date {
 			width: 345px;
+		}
+	}
+
+	#emptyBox {
+		font-size: 3.2em;
+	}
+
+	.modal {
+		width: 1250px;
+
+		&__statusButton {
+			font-size: 2.8em;
+		}
+
+		&__input {
+			font-size: 2.6em;
+		}
+
+		&__label {
+			flex-basis: 185px;
+
+			font-size: 2.6em;
+		}
+
+		&__button {
+			font-size: 2.8em;
+		}
+	}
+
+	.modalTable {
+		&__header {
+			font-size: 2.6em;
+		}
+
+		&__cell {
+			font-size: 2.6em;
+		}
+	}
+
+	.playthroughsTable {
+		&__hours, &__timesCompleted, &__platform {
+			width: 135px;
 		}
 	}
 

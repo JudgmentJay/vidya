@@ -48,8 +48,8 @@ const SearchForm = ({
 		setSearchResults({ games: filteredGames, searched: true })
 	}
 
-	const handleToggleGame = (game) => {
-		modalContext.dispatch({ type: 'ADD_GAME_TO_MODAL', game })
+	const handleGameClick = (game) => {
+		modalContext.dispatch({ type: 'ADD_GAME', game })
 
 		setView('info')
 	}
@@ -79,7 +79,7 @@ const SearchForm = ({
 							{
 								searchResults.games.map((game, i) => {
 									return (
-										<tr className="modalTable__dataRow searchResultsTable__dataRow" onClick={() => handleToggleGame(game)} key={`searchResult-${i}`}>
+										<tr className="modalTable__dataRow searchResultsTable__dataRow" onClick={() => handleGameClick(game)} key={`searchResult-${i}`}>
 											<td className="modalTable__cell">{game.title}</td>
 										</tr>
 									)

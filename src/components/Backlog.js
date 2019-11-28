@@ -9,16 +9,14 @@ const Backlog = ({
 }) => {
 	const modalContext = useContext(ModalContext)
 
-	const generateGameRows = () => {
+	const generateGameRows = (games) => {
 		return games.map((game) => {
-			let releaseDate = game.releaseDate
-
-			if (releaseDate.includes('December 31')) {
-				releaseDate = new Date(releaseDate).getFullYear()
-			}
+			const releaseDate = !game.releaseDate.includes('December 31')
+				? game.releaseDate
+				: new Date(game.releaseDate).getFullYear()
 
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'TOGGLE_VIEW_AND_SEARCH_MODAL', modalType: 'view', game})} key={`backlog-${game.title}`}>
+				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`backlog-${game.title}`}>
 					<td className="gameDataTable__cell gameDataTable__title">{game.title}</td>
 					<td className="gameDataTable__cell gameDataTable__date">{releaseDate}</td>
 				</tr>
@@ -34,7 +32,7 @@ const Backlog = ({
 	return (
 		<React.Fragment>
 			{ releasedGames.length > 0 &&
-				<div className="box noshrink">
+				<div className={`box ${year ? 'noshrink' : ''}`}>
 					<h1>{year ? year : 'Older'} Backlog</h1>
 
 					<table className="gameDataTable" cellPadding="0" cellSpacing="0">
@@ -45,7 +43,7 @@ const Backlog = ({
 							</tr>
 						</thead>
 						<tbody>
-							{ generateGameRows(releasedGames) }
+							{generateGameRows(releasedGames)}
 						</tbody>
 					</table>
 				</div>
@@ -63,7 +61,7 @@ const Backlog = ({
 							</tr>
 						</thead>
 						<tbody>
-							{ generateGameRows(unreleasedGames) }
+							{generateGameRows(unreleasedGames)}
 						</tbody>
 					</table>
 				</div>

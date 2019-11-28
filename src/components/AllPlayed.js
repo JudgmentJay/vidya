@@ -28,7 +28,7 @@ const AllPlayed = ({
 
 	const headerClass = 'gameDataTable__header'
 	const titleClasses = classNames(`${headerClass} gameDataTable__title`, { 'is-active-sort': sortBy.method === 'title' })
-	const hoursClasses = classNames(`${headerClass} gameDataTable__allPlayedHours`, { 'is-active-sort': sortBy.method === 'hours' })
+	const hoursClasses = classNames(`${headerClass} gameDataTable__allPlayedHours`, { 'is-active-sort': sortBy.method === 'hoursPlayed' })
 	const timesCompletedClasses = classNames(`${headerClass} gameDataTable__small`, { 'is-active-sort': sortBy.method === 'timesCompleted' })
 	const scoreClasses = classNames(`${headerClass} gameDataTable__small`, { 'is-active-sort': sortBy.method === 'score' })
 	const platformClasses = classNames(`${headerClass} gameDataTable__small`, { 'is-active-sort': sortBy.method === 'platform' })
@@ -42,7 +42,7 @@ const AllPlayed = ({
 				<thead>
 					<tr>
 						<th className={titleClasses} onClick={() => handleSetSortBy('title')}><span>Title</span></th>
-						<th className={hoursClasses} onClick={() => handleSetSortBy('hours')}><span>Hours</span></th>
+						<th className={hoursClasses} onClick={() => handleSetSortBy('hoursPlayed')}><span>Hours</span></th>
 						<th className={timesCompletedClasses} onClick={() => handleSetSortBy('timesCompleted')}><span>Fin</span></th>
 						<th className={scoreClasses} onClick={() => handleSetSortBy('score')}><span>Score</span></th>
 						<th className={platformClasses} onClick={() => handleSetSortBy('platform')}><span>Platform</span></th>
