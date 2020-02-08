@@ -1,5 +1,7 @@
+const proxy = 'http://localhost:3010'
+
 exports.fetchAll = (callback) => {
-	fetch('http://localhost:3010/games/all')
+	fetch(`${proxy}/games/all`)
 		.then((response) => {
 			if (response.status === 404) {
 				console.log('Bad Response')
@@ -11,16 +13,16 @@ exports.fetchAll = (callback) => {
 }
 
 exports.fetchData = (path, method, data, callback) => {
-	fetch(`http://localhost:3010/${path}`, {
+	fetch(`${proxy}/${path}`, {
 		method,
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(data)
-	}).then(response => {
+	}).then((response) => {
 		if (response.status === 400) {
 			alert('Invalid Password')
-		} else if (response.status === 400) {
+		} else if (response.status === 404) {
 			console.log('Bad Response')
 		} else if (response.ok) {
 			callback()
