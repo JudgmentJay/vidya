@@ -110,7 +110,7 @@ const Vidya = () => {
 	const wishlistGamesNextYear = getBacklogGames(currentYear + 1)
 	const olderBacklogGames = getBacklogGames()
 
-	const columnClasses = classNames('column', { 'column--twoCol': view === 'allplayed' })
+	const columnClasses = classNames('column', { 'column--twoCol': view === 'details' })
 
 	return (
 		<React.Fragment>
@@ -148,7 +148,7 @@ const Vidya = () => {
 						</React.Fragment>
 					}
 
-					{ view === 'allplayed' &&
+					{ view === 'details' &&
 						<section className={columnClasses}>
 							<AllPlayed
 								games={data.gameData}

@@ -12,13 +12,13 @@ const Nav = ({
 
 	const navBarItemClass = 'navBar__item'
 	const homeClasses = classNames(navBarItemClass, { 'is-selected': view === 'home' })
-	const allClasses = classNames(navBarItemClass, { 'is-selected': view === 'allplayed' })
+	const detailsClasses = classNames(navBarItemClass, { 'is-selected': view === 'details' })
 	const statsClasses = classNames(navBarItemClass, { 'is-selected': view === 'stats' })
 
 	return (
 		<nav className="navBar noshrink">
 			<span className={homeClasses} onClick={() => setView('home')}>Home</span>
-			<span className={allClasses} onClick={() => setView('allplayed')}>All</span>
+			<span className={detailsClasses} onClick={() => setView('details')}>Details</span>
 			<span className={statsClasses} onClick={() => setView('stats')}>Stats</span>
 			<span className={navBarItemClass} onClick={(() => modalContext.dispatch({ type: 'OPEN_MODAL', modalType: 'add' }))}>Add</span>
 			<span className={navBarItemClass} onClick={(() => modalContext.dispatch({ type: 'OPEN_MODAL', modalType: 'search' }))}>Search</span>

@@ -36,7 +36,7 @@ const AllPlayed = ({
 
 	return (
 		<div className="box">
-			<h1>Games Played 2015&ndash;Present</h1>
+			<h1>Game Details 2015&ndash;Present</h1>
 
 			<table className="gameDataTable gameDataTable--allPlayed" cellPadding="0" cellSpacing="0">
 				<thead>
