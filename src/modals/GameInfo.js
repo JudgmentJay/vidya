@@ -40,6 +40,10 @@ const GameInfo = ({ setView }) => {
 		}
 	}, [game.score])
 
+	const today = new Date()
+	const releaseDate = new Date(game.releaseDate)
+	releaseDate.setDate(releaseDate.getDate() - 1)
+
 	return (
 		<React.Fragment>
 			<h2>{game.title}</h2>
@@ -72,7 +76,7 @@ const GameInfo = ({ setView }) => {
 			<div className="modal__buttons">
 				{ modalContext.modalType === 'search' && <button className="modal__button" onClick={() => setView('search')}>Back</button> }
 				<button className="modal__button" onClick={() => setView('editgame')}>Edit Game</button>
-				{ (Boolean(!game.playing) && new Date(game.releaseDate) < new Date()) && <button className="modal__button" onClick={() => setView('startplaythrough')}>Start New Playthrough</button> }
+				{ (Boolean(!game.playing) && releaseDate < today) && <button className="modal__button" onClick={() => setView('startplaythrough')}>Start New Playthrough</button> }
 				{ Boolean(game.playing) && <button className="modal__button" onClick={() => setView('finishplaythrough')}>Finish Playthrough</button> }
 			</div>
 		</React.Fragment>
