@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import { ModalContext } from '../context/modal'
 
@@ -30,19 +31,32 @@ const GameInfo = ({ setView }) => {
 		setGameData({ timesCompleted, hoursPlayed, platforms })
 	}, [game.playthroughs])
 
-	useEffect(() => {
-		const roundedScore = Math.round(game.score)
-
-		const stars = document.getElementsByClassName('gameInfo__star')
-
-		for (let i = 0; i < roundedScore; i++) {
-			stars[i].classList.add('gameInfo__star--full')
-		}
-	}, [game.score])
-
 	const today = new Date()
 	const releaseDate = new Date(game.releaseDate)
 	releaseDate.setDate(releaseDate.getDate() - 1)
+
+	console.log(game.score)
+
+	const generateStars = () => {
+		const halfStarNumber = game.score.toString().includes('.5')
+			? Math.round(game.score)
+			: null
+
+		const starClasses = []
+
+		for (let i = 0; i < 10; i++) {
+			const classes = classNames('gameInfo__star', {
+				'gameInfo__star--full': i + 1 <= Math.floor(game.score),
+				'gameInfo__star--half': halfStarNumber && halfStarNumber === i + 1
+			})
+
+			starClasses.push(classes)
+		}
+
+		return starClasses.map((classes, i) => {
+			return <span className={classes} key={`star-${i}`}></span>
+		})
+	}
 
 	return (
 		<React.Fragment>
@@ -51,16 +65,7 @@ const GameInfo = ({ setView }) => {
 			<div className="gameInfo">
 				{ game.score &&
 					<div className="gameInfo__starRating">
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
-						<span className="gameInfo__star">&#9733;</span>
+						{generateStars()}
 					</div>
 				}
 				<span className="gameInfo__stat">Release Date: {game.releaseDate.includes('December 31') ? new Date(game.releaseDate).getFullYear() : game.releaseDate}</span>

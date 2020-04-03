@@ -120,6 +120,12 @@ $itemPadding: 5px;
 			.gameInfo__star--full {
 				color: map-get($attribute, 'accent2');
 			}
+
+			.gameInfo__star--half {
+				&:after {
+					color: map-get($attribute, 'accent2');
+				}
+			}
 		}
 
 		@media only screen and (min-width: 1400px) {
@@ -540,9 +546,28 @@ h3 {
 	}
 
 	&__star {
+		position: relative;
+
 		font-size: 3em;
 
 		cursor: default;
+
+		&:before {
+			content: '\2605'
+		}
+
+		&--half {
+			&:after {
+				content: '\2605';
+
+				position: absolute;
+				left: 0;
+
+				width: 50%;
+				height: 100%;
+				overflow: hidden;
+			}
+		}
 	}
 
 	&__stat {
