@@ -1,6 +1,6 @@
 {
 	"name": "vidya",
-	"version": "1.2.10",
+	"version": "1.2.11",
 	"description": "Video game logging site",
 	"main": "index.js",
 	"private": true,

@@ -1003,6 +1003,9 @@ h3 {
 }
 
 @media only screen and (min-width: 3000px) {
+	$gapSize: 20px;
+	$itemPadding: 6px;
+
 	h1 {
 		font-size: 3.6em;
 	}
@@ -1011,9 +1014,17 @@ h3 {
 		font-size: 2.8em;
 	}
 
+	.box {
+		padding: $gapSize 0 calc(#{$gapSize} - #{$itemPadding});
+	}
+
 	.gameDataTable {
 		&__header, &__cell {
 			font-size: 2.6em;
+		}
+
+		&__cell {
+			padding: $itemPadding $gapSize;
 		}
 
 		&__hours {
@@ -1030,6 +1041,8 @@ h3 {
 	}
 
 	#emptyBox {
+		padding: 0 $gapSize $itemPadding;
+
 		font-size: 2.6em;
 	}
 
@@ -1083,6 +1096,9 @@ h3 {
 }
 
 @media only screen and (min-width: 3500px) {
+	$gapSize: 20px;
+	$itemPadding: 7px;
+
 	h1, h2 {
 		font-size: 4.2em;
 	}
@@ -1091,9 +1107,17 @@ h3 {
 		font-size: 3.4em;
 	}
 
+	.box {
+		padding: $gapSize 0 calc(#{$gapSize} - #{$itemPadding});
+	}
+
 	.gameDataTable {
 		&__header, &__cell {
 			font-size: 3.2em;
+		}
+
+		&__cell {
+			padding: $itemPadding $gapSize;
 		}
 
 		&__hours {
@@ -1110,6 +1134,8 @@ h3 {
 	}
 
 	#emptyBox {
+		padding: 0 $gapSize $itemPadding;
+
 		font-size: 3.2em;
 	}
 
