@@ -35,8 +35,6 @@ const GameInfo = ({ setView }) => {
 	const releaseDate = new Date(game.releaseDate)
 	releaseDate.setDate(releaseDate.getDate() - 1)
 
-	console.log(game.score)
-
 	const generateStars = () => {
 		const halfStarNumber = game.score.toString().includes('.5')
 			? Math.round(game.score)

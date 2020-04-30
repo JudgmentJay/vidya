@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import { ModalContext } from '../context/modal'
 
@@ -25,14 +26,23 @@ const Backlog = ({
 	}
 
 	const now = new Date()
+	const currentYear = now.getFullYear()
 
 	const releasedGames = games.filter((game) => new Date(game.releaseDate) <= now)
 	const unreleasedGames = games.filter((game) => new Date(game.releaseDate) > now)
 
+	const backlogBoxClasses = classNames('box', {
+		'noshrink': typeof year !== 'undefined'
+	})
+
+	const wishlistBoxClasses = classNames('box', {
+		'noshrink': year !== currentYear
+	})
+
 	return (
 		<React.Fragment>
 			{ releasedGames.length > 0 &&
-				<div className={`box ${year ? 'noshrink' : ''}`}>
+				<div className={backlogBoxClasses}>
 					<h1>{year ? year : 'Older'} Backlog</h1>
 
 					<table className="gameDataTable" cellPadding="0" cellSpacing="0">
@@ -50,7 +60,7 @@ const Backlog = ({
 			}
 
 			{ unreleasedGames.length > 0 &&
-				<div className="box">
+				<div className={wishlistBoxClasses}>
 					<h1>{year} Wishlist</h1>
 
 					<table className="gameDataTable" cellPadding="0" cellSpacing="0">

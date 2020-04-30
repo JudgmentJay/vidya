@@ -1,6 +1,6 @@
 {
 	"name": "vidya",
-	"version": "1.2.11",
+	"version": "1.2.12",
 	"description": "Video game logging site",
 	"main": "index.js",
 	"private": true,
@@ -30,8 +30,8 @@
 		"react-dom": "^16.13.1"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.9.0",
-		"@babel/preset-env": "^7.9.5",
+		"@babel/core": "^7.9.6",
+		"@babel/preset-env": "^7.9.6",
 		"@babel/preset-react": "^7.9.4",
 		"babel-eslint": "^10.1.0",
 		"babel-loader": "^8.1.0",
@@ -43,12 +43,12 @@
 		"eslint-plugin-react": "^7.18.3",
 		"eslint-plugin-react-hooks": "^3.0.0",
 		"file-loader": "^6.0.0",
-		"html-webpack-plugin": "^4.2.0",
+		"html-webpack-plugin": "^4.2.1",
 		"mini-css-extract-plugin": "^0.9.0",
 		"node-sass": "^4.14.0",
 		"postcss-loader": "^3.0.0",
 		"sass-loader": "^8.0.2",
-		"style-loader": "^1.2.0",
+		"style-loader": "^1.2.1",
 		"stylelint": "^13.3.3",
 		"stylelint-config-recommended": "^3.0.0",
 		"stylelint-scss": "^3.17.1",
