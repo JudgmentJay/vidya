@@ -1,7 +1,5 @@
-const proxy = 'http://localhost:3010'
-
 exports.fetchAll = (callback) => {
-	fetch(`${proxy}/games/all`)
+	fetch('/games/all')
 		.then((response) => {
 			if (response.status === 404) {
 				console.log('Bad Response')
@@ -13,7 +11,7 @@ exports.fetchAll = (callback) => {
 }
 
 exports.fetchData = (path, method, data, callback) => {
-	fetch(`${proxy}/${path}`, {
+	fetch(`/${path}`, {
 		method,
 		headers: {
 			'Content-Type': 'application/json'
