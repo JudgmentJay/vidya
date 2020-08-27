@@ -5,13 +5,11 @@ import classNames from 'classnames'
 import { ModalContext } from '../context/modal'
 
 const Playthroughs = ({ setView }) => {
-	const modalContext = useContext(ModalContext)
-
-	const game = modalContext.game
+	const { game, dispatch } = useContext(ModalContext)
 
 	const handlePlaythroughClick = (playthrough) => {
 		if (playthrough.dateFinished) {
-			modalContext.dispatch({ type: 'ADD_PLAYTHROUGH', playthrough })
+			dispatch({ type: 'ADD_PLAYTHROUGH', playthrough })
 
 			setView('editplaythrough')
 		} else {

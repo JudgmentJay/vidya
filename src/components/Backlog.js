@@ -8,7 +8,7 @@ const Backlog = ({
 	games,
 	year
 }) => {
-	const modalContext = useContext(ModalContext)
+	const { dispatch } = useContext(ModalContext)
 
 	const generateGameRows = (games) => {
 		return games.map((game) => {
@@ -17,7 +17,7 @@ const Backlog = ({
 				: new Date(game.releaseDate).getFullYear()
 
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`backlog-${game.title}`}>
+				<tr className="gameDataTable__game" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`backlog-${game.title}`}>
 					<td className="gameDataTable__cell gameDataTable__title">{game.title}</td>
 					<td className="gameDataTable__cell gameDataTable__date">{releaseDate}</td>
 				</tr>

@@ -8,7 +8,7 @@ const Stats = ({
 	games,
 	playthroughs
 }) => {
-	const modalContext = useContext(ModalContext)
+	const { dispatch } = useContext(ModalContext)
 
 	const [view, setView] = useState({ section: 'stats', year: initialYear ? initialYear : 'all' })
 	const [data, setData] = useState({ gamesPlayed: 0, gamesCompleted: 0, totalHoursPlayed: 0, totalPlaythroughs: 0, platformData: [], topGamesByHoursPlayed: [], topGamesByPlaythroughCount: [], averageScore: 0 })
@@ -179,7 +179,7 @@ const Stats = ({
 
 						{
 							data.topGamesByHoursPlayed.map((game, i) => {
-								return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game: game.gameData })} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostHoursPlayed-${i}`}>{i + 1}. {game.gameData.title} - {game.hoursPlayed}</span>
+								return <span className="statsBox__stat statsBox__stat--linked" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game: game.gameData })} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostHoursPlayed-${i}`}>{i + 1}. {game.gameData.title} - {game.hoursPlayed}</span>
 							})
 						}
 					</div>
@@ -190,7 +190,7 @@ const Stats = ({
 
 							{
 								data.topGamesByPlaythroughCount.map((game, i) => {
-									return <span className="statsBox__stat statsBox__stat--linked" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game: game.gameData})} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostPlaythroughs-${i}`}>{i + 1}. {game.gameData.title} - {game.timesCompleted}</span>
+									return <span className="statsBox__stat statsBox__stat--linked" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game: game.gameData})} key={`${view.year !== 'all' ? view.year : 'alltime'}-stats-mostPlaythroughs-${i}`}>{i + 1}. {game.gameData.title} - {game.timesCompleted}</span>
 								})
 							}
 						</div>

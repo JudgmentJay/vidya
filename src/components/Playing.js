@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import { ModalContext } from '../context/modal'
 
 const Playing = ({ games }) => {
-	const modalContext = useContext(ModalContext)
+	const { dispatch } = useContext(ModalContext)
 
 	const generateGameRows = () => {
 		return games.map((game, i) => {
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`playing-${i}`}>
+				<tr className="gameDataTable__game" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`playing-${i}`}>
 					<td className="gameDataTable__cell gameDataTable__title">{game.title}</td>
 					<td className="gameDataTable__cell gameDataTable__date">{game.playthroughs[0].dateStarted}</td>
 				</tr>

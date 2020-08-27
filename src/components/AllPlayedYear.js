@@ -10,7 +10,7 @@ const AllPlayedYear = ({
 	playthroughs,
 	sortBy
 }) => {
-	const modalContext = useContext(ModalContext)
+	const { dispatch } = useContext(ModalContext)
 
 	const getColspan = () => {
 		const windowWidth = document.body.offsetWidth
@@ -90,7 +90,7 @@ const AllPlayedYear = ({
 			const titleClasses = classNames('gameDataTable__cell gameDataTable__title', { 'gameDataTable__title--dropped': playthrough.timesCompleted === 0 })
 
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`allplayed-${year}-${i}`}>
+				<tr className="gameDataTable__game" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`allplayed-${year}-${i}`}>
 					<td className={titleClasses}>{gameTitle}</td>
 					<td className="gameDataTable__cell gameDataTable__allPlayedHours">{playthrough.hoursPlayed}</td>
 					<td className="gameDataTable__cell gameDataTable__small">{playthrough.timesCompleted}</td>

@@ -9,7 +9,7 @@ const Played = ({
 	playthroughs,
 	year
 }) => {
-	const modalContext = useContext(ModalContext)
+	const { dispatch } = useContext(ModalContext)
 
 	const generateGameRows = () => {
 		const gamesPlayed = []
@@ -32,7 +32,7 @@ const Played = ({
 			}
 
 			return (
-				<tr className="gameDataTable__game" onClick={() => modalContext.dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`played-${i}`}>
+				<tr className="gameDataTable__game" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`played-${i}`}>
 					<td className={titleClasses}>{displayTitle}</td>
 					<td className="gameDataTable__cell gameDataTable__hours">{playthrough.hoursPlayed}</td>
 					<td className="gameDataTable__cell gameDataTable__date">{playthrough.dateFinished}</td>

@@ -8,7 +8,7 @@ import { fetchData } from '../util/fetch'
 import { ModalContext } from '../context/modal'
 
 const AddGame = ({ fetchGameData }) => {
-	const modalContext = useContext(ModalContext)
+	const { dispatch } = useContext(ModalContext)
 
 	const [password, setPassword] = useState('')
 	const [status, setStatus] = useState('backlog')
@@ -84,7 +84,7 @@ const AddGame = ({ fetchGameData }) => {
 			fetchGameData()
 
 			setTimeout(() => {
-				modalContext.dispatch({ type: 'CLOSE_MODAL' })
+				dispatch({ type: 'CLOSE_MODAL' })
 			}, 20)
 		}
 
@@ -166,7 +166,7 @@ const AddGame = ({ fetchGameData }) => {
 
 			<div className="modal__buttons">
 				<button className="modal__button" onClick={() => handleSubmitForm()}>Add Game</button>
-				<button className="modal__button" onClick={() => modalContext.dispatch({ type: 'CLOSE_MODAL' })}>Cancel</button>
+				<button className="modal__button" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Cancel</button>
 			</div>
 		</React.Fragment>
 	)

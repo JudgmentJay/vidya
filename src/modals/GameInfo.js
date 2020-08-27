@@ -5,9 +5,7 @@ import classNames from 'classnames'
 import { ModalContext } from '../context/modal'
 
 const GameInfo = ({ setView }) => {
-	const modalContext = useContext(ModalContext)
-
-	const game = modalContext.game
+	const { game, modalType } = useContext(ModalContext)
 
 	const [gameData, setGameData] = useState({ timesCompleted: 0, hoursPlayed: 0, platforms: [] })
 
@@ -77,7 +75,7 @@ const GameInfo = ({ setView }) => {
 			</div>
 
 			<div className="modal__buttons">
-				{ modalContext.modalType === 'search' && <button className="modal__button" onClick={() => setView('search')}>Back</button> }
+				{ modalType === 'search' && <button className="modal__button" onClick={() => setView('search')}>Back</button> }
 				<button className="modal__button" onClick={() => setView('editgame')}>Edit Game</button>
 				{ (Boolean(!game.playing) && releaseDate < today) && <button className="modal__button" onClick={() => setView('startplaythrough')}>Start New Playthrough</button> }
 				{ Boolean(game.playing) && <button className="modal__button" onClick={() => setView('finishplaythrough')}>Finish Playthrough</button> }

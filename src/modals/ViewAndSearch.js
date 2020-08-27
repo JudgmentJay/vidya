@@ -18,9 +18,9 @@ const ViewAndSearch = ({
 	games,
 	fetchGameData
 }) => {
-	const modalContext = useContext(ModalContext)
+	const { modalType } = useContext(ModalContext)
 
-	const [view, setView] = useState(modalContext.modalType === 'view' ? 'info' : 'search')
+	const [view, setView] = useState(modalType === 'view' ? 'info' : 'search')
 	const [searchTerm, setSearchTerm] = useState('')
 	const [searchResults, setSearchResults] = useState({ games: [], searched: false })
 

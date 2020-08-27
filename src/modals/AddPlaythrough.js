@@ -11,9 +11,7 @@ const AddPlaythrough = ({
 	setView,
 	fetchGameData
 }) => {
-	const modalContext = useContext(ModalContext)
-
-	const game = modalContext.game
+	const { game, dispatch } = useContext(ModalContext)
 
 	const [password, setPassword] = useState('')
 	const [dateStarted, setDateStarted] = useState('')
@@ -63,7 +61,7 @@ const AddPlaythrough = ({
 			fetchGameData()
 
 			setTimeout(() => {
-				modalContext.dispatch({ type: 'CLOSE_MODAL' })
+				dispatch({ type: 'CLOSE_MODAL' })
 			}, 20)
 		}
 

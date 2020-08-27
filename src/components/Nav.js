@@ -8,7 +8,7 @@ const Nav = ({
 	view,
 	setView
 }) => {
-	const modalContext = useContext(ModalContext)
+	const { dispatch } = useContext(ModalContext)
 
 	const navBarItemClass = 'navBar__item'
 	const homeClasses = classNames(navBarItemClass, { 'is-selected': view === 'home' })
@@ -20,8 +20,8 @@ const Nav = ({
 			<span className={homeClasses} onClick={() => setView('home')}>Home</span>
 			<span className={detailsClasses} onClick={() => setView('details')}>Details</span>
 			<span className={statsClasses} onClick={() => setView('stats')}>Stats</span>
-			<span className={navBarItemClass} onClick={(() => modalContext.dispatch({ type: 'OPEN_MODAL', modalType: 'add' }))}>Add</span>
-			<span className={navBarItemClass} onClick={(() => modalContext.dispatch({ type: 'OPEN_MODAL', modalType: 'search' }))}>Search</span>
+			<span className={navBarItemClass} onClick={(() => dispatch({ type: 'OPEN_MODAL', modalType: 'add' }))}>Add</span>
+			<span className={navBarItemClass} onClick={(() => dispatch({ type: 'OPEN_MODAL', modalType: 'search' }))}>Search</span>
 		</nav>
 	)
 }

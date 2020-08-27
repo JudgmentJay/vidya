@@ -11,9 +11,7 @@ const EditGame = ({
 	setView,
 	fetchGameData
 }) => {
-	const modalContext = useContext(ModalContext)
-
-	const game = modalContext.game
+	const { game, dispatch } = useContext(ModalContext)
 
 	const [password, setPassword] = useState('')
 	const [title, setTitle] = useState(game.title)
@@ -58,7 +56,7 @@ const EditGame = ({
 			fetchGameData()
 
 			setTimeout(() => {
-				modalContext.dispatch({ type: 'CLOSE_MODAL' })
+				dispatch({ type: 'CLOSE_MODAL' })
 			}, 20)
 		}
 

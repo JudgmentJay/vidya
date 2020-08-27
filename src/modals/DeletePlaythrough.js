@@ -9,12 +9,7 @@ const DeletePlaythrough = ({
 	setView,
 	fetchGameData
 }) => {
-	const modalContext = useContext(ModalContext)
-
-	const {
-		game,
-		playthrough
-	} = modalContext
+	const { game, playthrough, dispatch } = useContext(ModalContext)
 
 	const [password, setPassword] = useState('')
 
@@ -25,7 +20,7 @@ const DeletePlaythrough = ({
 			fetchGameData()
 
 			setTimeout(() => {
-				modalContext.dispatch({ type: 'CLOSE_MODAL' })
+				dispatch({ type: 'CLOSE_MODAL' })
 			}, 20)
 		}
 

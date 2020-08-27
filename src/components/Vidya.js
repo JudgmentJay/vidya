@@ -16,14 +16,9 @@ import AddGame from '../modals/AddGame'
 import ViewAndSearch from '../modals/ViewAndSearch'
 
 const Vidya = () => {
-	const modalContext = useContext(ModalContext)
+	const { modalVisible, modalType } = useContext(ModalContext)
 
-	const {
-		modalVisible,
-		modalType
-	} = modalContext
-
-	const [data, setData] = useState({ gameData: [], playthroughData: [], loaded: false })
+	const [data, setData] = useState({ gameData: [], playthroughData: [] })
 	const [view, setView] = useState('home')
 
 	useEffect(() => {
@@ -48,7 +43,7 @@ const Vidya = () => {
 
 	const fetchGameData = () => {
 		const callback = (result) => {
-			setData({ gameData: result.games, playthroughData: result.playthroughs, loaded: true })
+			setData({ gameData: result.games, playthroughData: result.playthroughs })
 		}
 
 		fetchAll(callback)
@@ -107,14 +102,13 @@ const Vidya = () => {
 	const playthroughsInCurrentYear = getPlaythroughsForYear(currentYear)
 
 	const backlogGamesInCurrentYear = getBacklogGames(currentYear)
-	const wishlistGamesNextYear = getBacklogGames(currentYear + 1)
 	const olderBacklogGames = getBacklogGames()
 
 	const columnClasses = classNames('column', { 'column--twoCol': view === 'details' })
 
 	return (
 		<React.Fragment>
-			{ data.loaded &&
+			{ data.gameData.length > 0 &&
 				<React.Fragment>
 					<section className={columnClasses}>
 						<Nav
@@ -134,11 +128,6 @@ const Vidya = () => {
 									<Backlog
 										games={backlogGamesInCurrentYear}
 										year={currentYear} />
-								}
-								{ wishlistGamesNextYear.length > 0 &&
-									<Backlog
-										games={wishlistGamesNextYear}
-										year={currentYear + 1} />
 								}
 							</section>
 

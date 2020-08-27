@@ -14,7 +14,7 @@ const SearchForm = ({
 	setSearchResults,
 	setView
 }) => {
-	const modalContext = useContext(ModalContext)
+	const { dispatch } = useContext(ModalContext)
 
 	const [invalidFields, setInvalidFields] = useState([])
 
@@ -49,7 +49,7 @@ const SearchForm = ({
 	}
 
 	const handleGameClick = (game) => {
-		modalContext.dispatch({ type: 'ADD_GAME', game })
+		dispatch({ type: 'ADD_GAME', game })
 
 		setView('info')
 	}

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Open+Sans&display=swap');
 @import './reset.scss';
 
 $themes: (
@@ -104,9 +104,11 @@ $itemPadding: 5px;
 			}
 
 			.modal {
-				color: map-get($attribute, 'fontColor');
+				&__content {
+					color: map-get($attribute, 'fontColor');
 
-				border: 2px solid map-get($attribute, 'accent2');
+					border: 2px solid map-get($attribute, 'accent2');
+				}
 
 				&__close {
 					fill: map-get($attribute, 'fontColor');
@@ -172,8 +174,8 @@ h1 {
 	margin-bottom: $gapSize;
 	padding: 0 $gapSize;
 
-	font-family: monospace;
-	font-size: 2.4em;
+	font-family: 'Fira Code', monospace;
+	font-size: 1.8em;
 	font-weight: 600;
 
 	cursor: default;
@@ -191,8 +193,8 @@ h2 {
 	margin-bottom: $gapSize * 2;
 	padding: 0 40px;
 
-	font-family: monospace;
-	font-size: 2.4em;
+	font-family: 'Fira Code', monospace;
+	font-size: 1.8em;
 	font-weight: 600;
 	text-align: center;
 
@@ -228,7 +230,6 @@ h3 {
 	font-weight: 600;
 
 	background: rgba(255, 255, 255, 0.5);
-	backdrop-filter: blur(3px);
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
 
 	&__item {
@@ -250,8 +251,7 @@ h3 {
 	margin-bottom: $gapSize;
 	padding: $gapSize 0 calc(#{$gapSize} - #{$itemPadding});
 
-	background: rgba(255, 255, 255, 0.5);
-	backdrop-filter: blur(3px);
+	background: rgba(255, 255, 255, 0.6);
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
 
 	&:last-of-type {
@@ -394,36 +394,27 @@ h3 {
 	}
 }
 
-#modalBackground {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 2;
-
-	background: rgba(0, 0, 0, 0.85);
-}
-
 .modal {
-	position: fixed;
-	top: $gapSize;
-	left: $gapSize;
-	z-index: 3;
+	&__content {
+		position: fixed;
+		top: $gapSize;
+		left: $gapSize;
+		z-index: 3;
 
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	width: calc(100% - #{$gapSize * 2});
-	height: calc(100% - #{$gapSize * 2});
-	padding: $gapSize;
-	overflow-x: hidden;
-	overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		width: calc(100% - #{$gapSize * 2});
+		height: calc(100% - #{$gapSize * 2});
+		padding: $gapSize;
+		overflow-x: hidden;
+		overflow-y: auto;
 
-	font-weight: 600;
+		font-weight: 600;
 
-	background: rgba(255, 255, 255, 0.65);
-	box-shadow: 0 0 35px rgba(0, 0, 0, 0.75);
+		background: rgba(255, 255, 255, 0.65);
+		box-shadow: 0 0 35px rgba(0, 0, 0, 0.75);
+	}
 
 	&__fieldSet {
 		display: flex;
@@ -535,6 +526,17 @@ h3 {
 		height: 15px;
 
 		cursor: pointer;
+	}
+
+	&__background {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 1;
+
+		background: rgba(0, 0, 0, 0.85);
 	}
 }
 
@@ -668,11 +670,18 @@ h3 {
 
 @media (min-width: 1000px) {
 	h1, h2 {
-		font-size: 3em;
+		font-size: 2.4em;
 	}
 
 	.navBar {
 		font-size: 2.2em;
+
+		backdrop-filter: blur(3px);
+	}
+
+	.box {
+		background: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(3px);
 	}
 
 	.gameDataTable {
@@ -701,15 +710,17 @@ h3 {
 	}
 
 	.modal {
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		&__content {
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 
-		display: block;
-		width: 750px;
-		height: auto;
-		max-height: calc(100% - #{$gapSize * 2});
-		padding: $gapSize * 2;
+			display: block;
+			width: 750px;
+			height: auto;
+			max-height: calc(100% - #{$gapSize * 2});
+			padding: $gapSize * 2;
+		}
 
 		&__statusButton {
 			padding: $gapSize #{$gapSize * 2};
@@ -744,11 +755,7 @@ h3 {
 		}
 
 		&__close {
-			top: $gapSize * 2;
-			right: $gapSize * 2;
-
-			width: 20px;
-			height: 20px;
+			display: none;
 		}
 	}
 
@@ -788,7 +795,7 @@ h3 {
 	}
 
 	h1 {
-		font-size: 2.4em;
+		font-size: 1.8em;
 	}
 
 	#vidya {
@@ -894,7 +901,7 @@ h3 {
 
 @media only screen and (min-width: 2000px) {
 	h1 {
-		font-size: 3em;
+		font-size: 2.4em;
 	}
 
 	.navBar {
@@ -998,7 +1005,9 @@ h3 {
 	}
 
 	.modal {
-		max-height: calc(100% - #{$gapSize * 2});
+		&__content {
+			max-height: calc(100% - #{$gapSize * 2});
+		}
 	}
 }
 
@@ -1007,7 +1016,7 @@ h3 {
 	$itemPadding: 6px;
 
 	h1 {
-		font-size: 3.6em;
+		font-size: 3em;
 	}
 
 	.navBar {
@@ -1057,7 +1066,9 @@ h3 {
 	}
 
 	.modal {
-		width: 1000px;
+		&__content {
+			width: 1000px;
+		}
 
 		&__statusButton {
 			font-size: 2.4em;
@@ -1100,7 +1111,7 @@ h3 {
 	$itemPadding: 7px;
 
 	h1, h2 {
-		font-size: 4.2em;
+		font-size: 3.6em;
 	}
 
 	.navBar {
@@ -1140,7 +1151,9 @@ h3 {
 	}
 
 	.modal {
-		width: 1250px;
+		&__content {
+			width: 1250px;
+		}
 
 		&__statusButton {
 			font-size: 2.8em;
