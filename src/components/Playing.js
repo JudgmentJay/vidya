@@ -6,16 +6,9 @@ import { ModalContext } from '../context/modal'
 const Playing = ({ games }) => {
 	const { dispatch } = useContext(ModalContext)
 
-	const generateGameRows = () => {
-		return games.map((game, i) => {
-			return (
-				<tr className="gameDataTable__game" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`playing-${i}`}>
-					<td className="gameDataTable__cell gameDataTable__title">{game.title}</td>
-					<td className="gameDataTable__cell gameDataTable__date">{game.playthroughs[0].dateStarted}</td>
-				</tr>
-			)
-		})
-	}
+	const currentlyPlaying = games.filter((game) => game.playing).sort((gameA, gameB) => {
+		return new Date(gameA.playthroughs[0].dateStarted) - new Date(gameB.playthroughs[0].dateStarted)
+	})
 
 	return (
 		<div className="box noshrink">
@@ -30,7 +23,16 @@ const Playing = ({ games }) => {
 						</tr>
 					</thead>
 					<tbody>
-						{generateGameRows()}
+						{
+							currentlyPlaying.map((game, i) => {
+								return (
+									<tr className="gameDataTable__game" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`playing-${i}`}>
+										<td className="gameDataTable__cell gameDataTable__title">{game.title}</td>
+										<td className="gameDataTable__cell gameDataTable__date">{game.playthroughs[0].dateStarted}</td>
+									</tr>
+								)
+							})
+						}
 					</tbody>
 				</table>
 			}

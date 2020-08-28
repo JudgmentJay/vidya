@@ -8,9 +8,12 @@ import { ModalContext } from '../context/modal'
 import Nav from './Nav'
 import Playing from './Playing'
 import Played from './Played'
-import Backlog from './Backlog'
-import AllPlayed from './AllPlayed'
-import Stats from './Stats'
+import BacklogCurrentYear from './BacklogCurrentYear'
+import Wishlist from './Wishlist'
+import BacklogOld from './BacklogOld'
+import Details from './Details'
+import StatsCurrentYear from './StatsCurrentYear'
+import StatsOld from './StatsOld'
 import Modal from '../modals/Modal'
 import AddGame from '../modals/AddGame'
 import ViewAndSearch from '../modals/ViewAndSearch'
@@ -50,61 +53,10 @@ const Vidya = () => {
 	}
 
 	const now = new Date()
-	const currentYear = now.getFullYear()
 
-	const getPlaythroughsForYear = (year) => {
-		const playthroughsInCurrentYear = data.playthroughData.filter((playthrough) => {
-			return playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === year
-		})
-
-		return playthroughsInCurrentYear.sort((playthroughA, playthroughB) => {
-			const gameTitleA = data.gameData.find((game) => game.id === playthroughA.gameId).title
-			const gameTitleB = data.gameData.find((game) => game.id === playthroughB.gameId).title
-
-			if (new Date(playthroughA.dateFinished) > new Date(playthroughB.dateFinished)) return 1
-			if (new Date(playthroughA.dateFinished) < new Date(playthroughB.dateFinished)) return -1
-
-			if (gameTitleA > gameTitleB) return 1
-			if (gameTitleA < gameTitleB) return -1
-
-			return 0
-		})
-	}
-
-	const getBacklogGames = (year) => {
-		const backlogGames = data.gameData.filter((game) => game.playthroughs.length === 0)
-
-		if (year) {
-			const gameList = backlogGames.filter((game) => {
-				const startOfYear = new Date(`January 1, ${year}`)
-				const endOfYear = new Date(`January 1, ${year + 1}`)
-				const releaseDate = new Date(game.releaseDate)
-
-				return releaseDate >= startOfYear && releaseDate < endOfYear
-			})
-
-			return gameList.sort((gameA, gameB) => new Date(gameA.releaseDate) - new Date(gameB.releaseDate))
-		} else {
-			const gameList = backlogGames.filter((game) => {
-				const startOfYear = new Date(`January 1, ${currentYear}`)
-				const releaseDate = new Date(game.releaseDate)
-
-				return releaseDate < startOfYear
-			})
-
-			return gameList.sort((gameA, gameB) => new Date(gameB.releaseDate) - new Date(gameA.releaseDate))
-		}
-	}
-
-	const currentlyPlaying = data.gameData.filter((game) => game.playing).sort((gameA, gameB) => {
-		return new Date(gameA.playthroughs[0].dateStarted) - new Date(gameB.playthroughs[0].dateStarted)
+	const columnClasses = classNames('column', {
+		'column--twoCol': view === 'details'
 	})
-	const playthroughsInCurrentYear = getPlaythroughsForYear(currentYear)
-
-	const backlogGamesInCurrentYear = getBacklogGames(currentYear)
-	const olderBacklogGames = getBacklogGames()
-
-	const columnClasses = classNames('column', { 'column--twoCol': view === 'details' })
 
 	return (
 		<React.Fragment>
@@ -114,32 +66,35 @@ const Vidya = () => {
 						<Nav
 							view={view}
 							setView={setView} />
-						<Playing games={currentlyPlaying} />
+						<Playing games={data.gameData} />
 						<Played
 							games={data.gameData}
-							playthroughs={playthroughsInCurrentYear}
-							year={currentYear} />
+							playthroughs={data.playthroughData}
+							currentDate={now} />
 					</section>
 
 					{ view === 'home' &&
 						<React.Fragment>
 							<section className={columnClasses}>
-								{ backlogGamesInCurrentYear.length > 0 &&
-									<Backlog
-										games={backlogGamesInCurrentYear}
-										year={currentYear} />
-								}
+								<BacklogCurrentYear
+									games={data.gameData}
+									currentDate={now} />
+								<Wishlist
+									games={data.gameData}
+									currentDate={now} />
 							</section>
 
 							<section className={columnClasses}>
-								<Backlog games={olderBacklogGames} />
+								<BacklogOld
+									games={data.gameData}
+									currentDate={now} />
 							</section>
 						</React.Fragment>
 					}
 
 					{ view === 'details' &&
 						<section className={columnClasses}>
-							<AllPlayed
+							<Details
 								games={data.gameData}
 								playthroughs={data.playthroughData} />
 						</section>
@@ -148,23 +103,13 @@ const Vidya = () => {
 					{ view === 'stats' &&
 						<React.Fragment>
 							<section className={columnClasses}>
-								<Stats
-									games={data.gameData}
-									playthroughs={data.playthroughData} />
+								<StatsOld games={data.gameData} />
 							</section>
 							<section className={columnClasses}>
-								{ playthroughsInCurrentYear.length > 0 &&
-									<Stats
-										initialYear={currentYear}
-										games={data.gameData}
-										playthroughs={data.playthroughData} />
-								}
-								{ playthroughsInCurrentYear.length === 0 &&
-									<Stats
-										initialYear={currentYear - 1}
-										games={data.gameData}
-										playthroughs={data.playthroughData} />
-								}
+								<StatsCurrentYear
+									games={data.gameData}
+									playthroughs={data.playthroughData}
+									currentDate={now} />
 							</section>
 						</React.Fragment>
 					}

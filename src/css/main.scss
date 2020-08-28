@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@600&family=Open+Sans:wght@400;600&display=swap');
 @import './reset.scss';
 
 $themes: (
@@ -73,9 +73,6 @@ $themes: (
 		"fontColor": #3a2124
 	)
 );
-
-$gapSize: 10px;
-$itemPadding: 5px;
 
 @mixin themify($themes: $themes) {
 	@each $theme, $attribute in $themes {
@@ -157,6 +154,34 @@ $itemPadding: 5px;
 	}
 }
 
+$gapSize: 10px;
+$itemPadding: 5px;
+
+h1,
+h2,
+.yearList {
+	font-size: 1.8em;
+}
+
+.navBar,
+.emptyBox,
+.gameDataTable__divider,
+.modal__statusButton,
+.modal__button,
+.gameInfo,
+.searchResults__noneFound {
+	font-size: 1.6em;
+}
+
+.gameDataTable,
+.statsBox,
+.modal__label,
+.modal__input,
+.modalTable__header,
+.modalTable__cell {
+	font-size: 1.4em;
+}
+
 body {
 	min-height: 100%;
 	padding: $gapSize;
@@ -171,11 +196,10 @@ body {
 }
 
 h1 {
-	margin-bottom: $gapSize;
+	margin-bottom: calc(#{$gapSize} * 1.5);
 	padding: 0 $gapSize;
 
 	font-family: 'Fira Code', monospace;
-	font-size: 1.8em;
 	font-weight: 600;
 
 	cursor: default;
@@ -194,7 +218,6 @@ h2 {
 	padding: 0 40px;
 
 	font-family: 'Fira Code', monospace;
-	font-size: 1.8em;
 	font-weight: 600;
 	text-align: center;
 
@@ -226,7 +249,6 @@ h3 {
 	align-items: center;
 	margin-bottom: $gapSize;
 
-	font-size: 1.6em;
 	font-weight: 600;
 
 	background: rgba(255, 255, 255, 0.5);
@@ -270,7 +292,6 @@ h3 {
 	&__header {
 		padding: 0 $gapSize #{$gapSize / 2};
 
-		font-size: 1.4em;
 		font-weight: 600;
 
 		cursor: default;
@@ -280,7 +301,7 @@ h3 {
 		}
 	}
 
-	&--allPlayed {
+	&--details {
 		.gameDataTable__header {
 			cursor: pointer;
 		}
@@ -288,8 +309,6 @@ h3 {
 
 	&__cell {
 		padding: $itemPadding $gapSize;
-
-		font-size: 1.4em;
 	}
 
 	&__title {
@@ -304,7 +323,7 @@ h3 {
 		}
 	}
 
-	&__hours, &__allPlayedHours, &__small {
+	&__hours, &__detailsHours, &__small {
 		display: none;
 	}
 
@@ -320,7 +339,8 @@ h3 {
 	&__divider {
 		display: flex;
 		align-items: center;
-		padding: #{$gapSize * 2} 0;
+		padding: 0 $gapSize;
+		margin: calc(#{($gapSize) + $itemPadding}) 0 $gapSize;
 
 		font-weight: 600;
 
@@ -335,13 +355,16 @@ h3 {
 			margin-left: $gapSize;
 			opacity: 0.5
 		}
+
+		&--currentYear {
+			margin-top: 0;
+		}
 	}
 }
 
-#emptyBox {
+.emptyBox {
 	padding: 0 $gapSize $itemPadding;
 
-	font-size: 1.4em;
 	font-weight: 600;
 
 	cursor: default;
@@ -350,8 +373,6 @@ h3 {
 .statsBox {
 	margin-bottom: $gapSize * 2;
 	padding: 0 $gapSize;
-
-	font-size: 1.4em;
 
 	&:last-of-type {
 		margin-bottom: 0;
@@ -371,30 +392,41 @@ h3 {
 			margin-bottom: 0;
 		}
 	}
+}
 
-	&__yearList {
-		margin: 0;
-		padding: 0;
+.yearList {
+	margin: 0;
+	padding: 0 $gapSize;
 
-		list-style: none;
-	}
+	list-style: none;
 
 	&__year {
 		margin-bottom: $gapSize;
 
 		cursor: pointer;
 
-		&:last-of-type {
-			margin-bottom: 0;
+		&:hover :after {
+			content: ' \2190';
+
+			position: relative;
+			top: -3px;
 		}
 
-		&.is-selected span {
-			border-bottom: 2px solid;
+		&.is-selected :after {
+			content: ' \2190';
+
+			position: relative;
+			top: -3px;
 		}
 	}
 }
 
 .modal {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+
 	&__content {
 		position: fixed;
 		top: $gapSize;
@@ -427,7 +459,6 @@ h3 {
 		margin: 0 0 #{$gapSize * 2} 0;
 		padding: $gapSize;
 
-		font-size: 1.6em;
 		text-align: center;
 
 		background: rgba(255, 255, 255, 0.5);
@@ -456,15 +487,12 @@ h3 {
 		flex-shrink: 0;
 		margin-right: $gapSize;
 
-		font-size: 1.4em;
 		text-align: right;
 	}
 
 	&__input {
 		flex-basis: 100%;
 		padding: 7px;
-
-		font-size: 1.4em;
 
 		background: #fff;
 		border: 2px solid #aaa;
@@ -493,8 +521,6 @@ h3 {
 		width: 100%;
 		margin: 0 0 $gapSize 0;
 		padding: $gapSize $gapSize * 2;
-
-		font-size: 1.6em;
 
 		background: white;
 
@@ -550,12 +576,18 @@ h3 {
 	&__star {
 		position: relative;
 
-		font-size: 3em;
+		display: inline-block;
+
+		font-size: 30px;
+		line-height: 0.5;
 
 		cursor: default;
 
 		&:before {
-			content: '\2605'
+			content: '\2605';
+
+			display: block;
+			height: 100%;
 		}
 
 		&--half {
@@ -563,6 +595,7 @@ h3 {
 				content: '\2605';
 
 				position: absolute;
+				top: 0;
 				left: 0;
 
 				width: 50%;
@@ -575,8 +608,6 @@ h3 {
 	&__stat {
 		display: block;
 		margin-bottom: $gapSize;
-
-		font-size: 2em;
 
 		cursor: default;
 
@@ -592,7 +623,6 @@ h3 {
 	&__header {
 		padding: 0 #{$gapSize / 2} $gapSize;
 
-		font-size: 1.4em;
 		text-align: left;
 
 		cursor: default;
@@ -607,7 +637,7 @@ h3 {
 	&__cell {
 		padding: #{$gapSize / 2};
 
-		font-size: 1.4em;
+		font-weight: 400;
 	}
 }
 
@@ -639,7 +669,6 @@ h3 {
 	&__noneFound {
 		margin-top: #{$gapSize * 2};
 
-		font-size: 2em;
 		text-align: center;
 	}
 }
@@ -669,13 +698,32 @@ h3 {
 @include themify;
 
 @media (min-width: 1000px) {
-	h1, h2 {
+	h1,
+	h2,
+	.yearList {
 		font-size: 2.4em;
 	}
 
-	.navBar {
+	.navBar,
+	.emptyBox,
+	.gameDataTable__divider,
+	.gameInfo,
+	.searchResults__noneFound {
 		font-size: 2.2em;
+	}
 
+	.gameDataTable,
+	.statsBox,
+	.modal__statusButton,
+	.modal__button,
+	.modal__label,
+	.modal__input,
+	.modalTable__header,
+	.modalTable__cell {
+		font-size: 2em;
+	}
+
+	.navBar {
 		backdrop-filter: blur(3px);
 	}
 
@@ -685,11 +733,7 @@ h3 {
 	}
 
 	.gameDataTable {
-		&__header, &__cell {
-			font-size: 2em;
-		}
-
-		&__hours, &__allPlayedHours {
+		&__hours, &__detailsHours {
 			display: table-cell;
 			width: 80px;
 
@@ -699,14 +743,6 @@ h3 {
 		&__date {
 			width: 210px;
 		}
-	}
-
-	#emptyBox {
-		font-size: 2em;
-	}
-
-	.statsBox {
-		font-size: 2em;
 	}
 
 	.modal {
@@ -722,20 +758,8 @@ h3 {
 			padding: $gapSize * 2;
 		}
 
-		&__statusButton {
-			padding: $gapSize #{$gapSize * 2};
-
-			font-size: 2em;
-		}
-
-		&__input {
-			font-size: 1.8em;
-		}
-
 		&__label {
-			flex-basis: 150px;
-
-			font-size: 1.8em;
+			flex-basis: 175px;
 		}
 
 		&__buttons {
@@ -743,15 +767,12 @@ h3 {
 			justify-content: center;
 			align-items: center;
 
-			margin-top: 0;
-			padding-top: #{$gapSize * 2};
+			margin-top: $gapSize * 2;
 		}
 
 		&__button {
 			width: auto;
 			margin: 0 #{$gapSize / 2};
-
-			font-size: 2em;
 		}
 
 		&__close {
@@ -759,16 +780,19 @@ h3 {
 		}
 	}
 
+	.gameInfo {
+		&__star {
+			font-size: 40px;
+		}
+	}
+
 	.modalTable {
 		&__header {
-			padding: 0 $gapSize $gapSize;
-			font-size: 1.8em;
+			padding: 0 #{$gapSize / 1.5} $gapSize;
 		}
 
 		&__cell {
-			padding: $gapSize;
-
-			font-size: 1.8em;
+			padding: #{$gapSize / 1.5};
 		}
 	}
 
@@ -788,14 +812,26 @@ h3 {
 }
 
 @media only screen and (min-width: 1400px) {
+	h1,
+	.yearList {
+		font-size: 1.8em;
+	}
+
+	.navBar,
+	.emptyBox,
+	.gameDataTable__divider {
+		font-size: 1.6em;
+	}
+
+	.gameDataTable,
+	.statsBox {
+		font-size: 1.4em;
+	}
+
 	body, html {
 		width: 100%;
 		height: 100%;
 		overflow-y: hidden;
-	}
-
-	h1 {
-		font-size: 1.8em;
 	}
 
 	#vidya {
@@ -824,8 +860,6 @@ h3 {
 	}
 
 	.navBar {
-		font-size: 1.6em;
-
 		&__item {
 			&:hover {
 				background: rgba(255, 255, 255, 0.5);
@@ -839,10 +873,6 @@ h3 {
 	}
 
 	.gameDataTable {
-		&__header, &__cell {
-			font-size: 1.4em;
-		}
-
 		&__game {	
 			&:hover {
 				background: rgba(255, 255, 255, 0.5);
@@ -854,7 +884,7 @@ h3 {
 			text-align: center;
 		}
 
-		&__allPlayedHours {
+		&__detailsHours {
 			width: 80px;
 		}
 
@@ -870,20 +900,12 @@ h3 {
 		}
 	}
 
-	#emptyBox {
-		font-size: 1.4em;
-	}
-
 	.playthroughsTable {
 		&__dataRow {
 			&:hover {
 				background: rgba(255, 255, 255, 0.5);
 			}
 		}
-	}
-
-	.statsBox {
-		font-size: 1.4em;
 	}
 
 	.searchResultsTable {
@@ -899,44 +921,26 @@ h3 {
 	}
 }
 
-@media only screen and (min-width: 2000px) {
-	h1 {
+@media only screen and (min-width: 2500px) {
+	$gapSize: 20px;
+	$itemPadding: 5px;
+
+	h1,
+	h2,
+	.yearList {
 		font-size: 2.4em;
 	}
 
-	.navBar {
+	.navBar,
+	.emptyBox,
+	.gameDataTable__divider {
 		font-size: 2.2em;
 	}
 
-	.gameDataTable {
-		&__header, &__cell {
-			font-size: 2em;
-		}
-
-		&__hours {
-			width: 80px;
-		}
-
-		&__allPlayedHours, &__small {
-			width: 105px;
-		}
-
-		&__date {
-			width: 210px;
-		}
-	}
-
-	#emptyBox {
-		font-size: 2em;
-	}
-
+	.gameDataTable,
 	.statsBox {
 		font-size: 2em;
 	}
-}
-
-@media only screen and (min-width: 2500px) {
-	$gapSize: 20px;
 
 	body {
 		padding: $gapSize;
@@ -945,6 +949,10 @@ h3 {
 	h1 {
 		margin-bottom: $gapSize;
 		padding: 0 $gapSize;
+	}
+
+	h2 {
+		margin-bottom: $gapSize * 1.5;
 	}
 
 	.column {
@@ -968,6 +976,10 @@ h3 {
 	.box {
 		margin-bottom: $gapSize;
 		padding: $gapSize 0 calc(#{$gapSize} - #{$itemPadding});
+
+		&--stats {
+			padding: $gapSize 0;
+		}
 	}
 
 	.gameDataTable {
@@ -983,7 +995,7 @@ h3 {
 			width: 100px;
 		}
 
-		&__allPlayedHours, &__small {
+		&__detailsHours, &__small {
 			width: 125px;
 		}
 
@@ -992,15 +1004,28 @@ h3 {
 		}
 
 		&__divider {
-			padding-top: $gapSize;
+			padding: 0 $gapSize;
+			margin: calc(#{$gapSize + $itemPadding}) 0 $gapSize;
+
+			&:after {
+				margin-left: $gapSize;
+			}
+
+			&--currentYear {
+				margin-top: 0;
+			}
 		}
 	}
 
-	#emptyBox {
+	.emptyBox {
 		padding: 0 $gapSize $itemPadding;
 	}
 
 	.statsBox {
+		padding: 0 $gapSize;
+	}
+
+	.yearList {
 		padding: 0 $gapSize;
 	}
 
@@ -1011,111 +1036,37 @@ h3 {
 	}
 }
 
-@media only screen and (min-width: 3000px) {
-	$gapSize: 20px;
-	$itemPadding: 6px;
-
-	h1 {
-		font-size: 3em;
-	}
-
-	.navBar {
-		font-size: 2.8em;
-	}
-
-	.box {
-		padding: $gapSize 0 calc(#{$gapSize} - #{$itemPadding});
-	}
-
-	.gameDataTable {
-		&__header, &__cell {
-			font-size: 2.6em;
-		}
-
-		&__cell {
-			padding: $itemPadding $gapSize;
-		}
-
-		&__hours {
-			width: 120px;
-		}
-
-		&__allPlayedHours, &__small {
-			width: 150px;
-		}
-
-		&__date {
-			width: 285px;
-		}
-	}
-
-	#emptyBox {
-		padding: 0 $gapSize $itemPadding;
-
-		font-size: 2.6em;
-	}
-
-	.statsBox {
-		font-size: 2.6em;
-	}
-
-	.gameInfo {
-		&__stat {
-			font-size: 2.4em;
-		}
-	}
-
-	.modal {
-		&__content {
-			width: 1000px;
-		}
-
-		&__statusButton {
-			font-size: 2.4em;
-		}
-
-		&__input {
-			font-size: 2.2em;
-		}
-
-		&__label {
-			flex-basis: 185px;
-
-			font-size: 2.2em;
-		}
-
-		&__button {
-			font-size: 2.4em;
-		}
-	}
-
-	.modalTable {
-		&__header {
-			font-size: 2.2em;
-		}
-
-		&__cell {
-			font-size: 2.2em;
-		}
-	}
-
-	.playthroughsTable {
-		&__hours, &__timesPlayed, &__platform {
-			width: 115px;
-		}
-	}
-}
-
 @media only screen and (min-width: 3500px) {
 	$gapSize: 20px;
-	$itemPadding: 7px;
+	$itemPadding: 9px;
 
-	h1, h2 {
+	h1,
+	h2,
+	.yearList {
 		font-size: 3.6em;
 	}
 
-	.navBar {
+	.navBar,
+	.emptyBox,
+	.gameDataTable__divider,
+	.gameInfo,
+	.searchResults__noneFound {
 		font-size: 3.4em;
+	}
+
+	.gameDataTable,
+	.statsBox,
+	.modal__input,
+	.modal__label,
+	.modal__statusButton,
+	.modal__button,
+	.modalTable__header,
+	.modalTable__cell {
+		font-size: 3.2em;
+	}
+
+	h1 {
+		margin-bottom: calc(#{$gapSize} * 1.5);
 	}
 
 	.box {
@@ -1123,10 +1074,6 @@ h3 {
 	}
 
 	.gameDataTable {
-		&__header, &__cell {
-			font-size: 3.2em;
-		}
-
 		&__cell {
 			padding: $itemPadding $gapSize;
 		}
@@ -1135,7 +1082,7 @@ h3 {
 			width: 135px;
 		}
 
-		&__allPlayedHours, &__small {
+		&__detailsHours, &__small {
 			width: 175px;
 		}
 
@@ -1144,10 +1091,8 @@ h3 {
 		}
 	}
 
-	#emptyBox {
+	.emptyBox {
 		padding: 0 $gapSize $itemPadding;
-
-		font-size: 3.2em;
 	}
 
 	.modal {
@@ -1155,32 +1100,18 @@ h3 {
 			width: 1250px;
 		}
 
-		&__statusButton {
-			font-size: 2.8em;
-		}
-
-		&__input {
-			font-size: 2.6em;
-		}
-
 		&__label {
-			flex-basis: 185px;
-
-			font-size: 2.6em;
-		}
-
-		&__button {
-			font-size: 2.8em;
+			flex-basis: 285px;
 		}
 	}
 
 	.modalTable {
 		&__header {
-			font-size: 2.6em;
+			padding: 0 #{$gapSize / 1.5} $gapSize;
 		}
 
 		&__cell {
-			font-size: 2.6em;
+			padding: $gapSize / 2;
 		}
 	}
 
@@ -1188,9 +1119,5 @@ h3 {
 		&__hours, &__timesCompleted, &__platform {
 			width: 135px;
 		}
-	}
-
-	.statsBox {
-		font-size: 3.2em;
 	}
 }

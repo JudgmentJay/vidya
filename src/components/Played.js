@@ -7,33 +7,49 @@ import { ModalContext } from '../context/modal'
 const Played = ({
 	games,
 	playthroughs,
-	year
+	currentDate
 }) => {
 	const { dispatch } = useContext(ModalContext)
 
-	const generateGameRows = () => {
+	const currentYear = currentDate.getFullYear()
+
+	const currentYearPlaythroughs = playthroughs
+		.filter((playthrough) => {
+			const yearFinished = new Date(playthrough.dateFinished).getFullYear()
+
+			return playthrough.dateFinished && yearFinished === currentYear
+		})
+		.sort((playthroughA, playthroughB) => {
+			const gameTitleA = games.find((game) => game.id === playthroughA.gameId).title
+			const gameTitleB = games.find((game) => game.id === playthroughB.gameId).title
+
+			if (new Date(playthroughA.dateFinished) > new Date(playthroughB.dateFinished)) return 1
+			if (new Date(playthroughA.dateFinished) < new Date(playthroughB.dateFinished)) return -1
+
+			if (gameTitleA > gameTitleB) return 1
+			if (gameTitleA < gameTitleB) return -1
+
+			return 0
+		})
+
+	const getGamesPlayed = () => {
 		const gamesPlayed = []
 
-		return playthroughs.map((playthrough, i) => {
+		return currentYearPlaythroughs.map((playthrough, i) => {
 			const game = games.find((game) => game.id === playthrough.gameId)
 			const gameTitle = game.title
-
-			const titleClasses = classNames({
-				'gameDataTable__cell gameDataTable__title': true,
-				'gameDataTable__title--dropped': playthrough.timesCompleted === 0
-			})
-
-			const displayTitle = !gamesPlayed.includes(gameTitle)
-				? gameTitle
-				: `((${gameTitle}))`
 
 			if (!gamesPlayed.includes(gameTitle)) {
 				gamesPlayed.push(gameTitle)
 			}
 
+			const titleClasses = classNames('gameDataTable__cell gameDataTable__title', {
+				'gameDataTable__title--dropped': playthrough.timesCompleted === 0
+			})
+
 			return (
 				<tr className="gameDataTable__game" onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game})} key={`played-${i}`}>
-					<td className={titleClasses}>{displayTitle}</td>
+					<td className={titleClasses}>{gameTitle}</td>
 					<td className="gameDataTable__cell gameDataTable__hours">{playthrough.hoursPlayed}</td>
 					<td className="gameDataTable__cell gameDataTable__date">{playthrough.dateFinished}</td>
 				</tr>
@@ -43,7 +59,7 @@ const Played = ({
 
 	return (
 		<div className="box">
-			<h1>Games played in {year}</h1>
+			<h1>Games played in {currentYear}</h1>
 
 			{ playthroughs.length > 0 &&
 				<table className="gameDataTable" cellPadding="0" cellSpacing="0">
@@ -55,7 +71,7 @@ const Played = ({
 						</tr>
 					</thead>
 					<tbody>
-						{generateGameRows()}
+						{getGamesPlayed()}
 					</tbody>
 				</table>
 			}
@@ -70,7 +86,7 @@ const Played = ({
 Played.propTypes = {
 	games: PropTypes.array.isRequired,
 	playthroughs: PropTypes.array.isRequired,
-	year: PropTypes.number
+	currentDate: PropTypes.instanceOf(Date).isRequired
 }
 
 export default Played

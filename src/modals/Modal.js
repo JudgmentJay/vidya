@@ -9,14 +9,14 @@ const Modal = ({ children }) => {
 	const modalBackgroundRef = useRef(null)
 
 	useEffect(() => {
-		const toggleDiv = modalBackgroundRef.current
+		const backgroundDiv = modalBackgroundRef.current
 
 		document.addEventListener('keydown', (e) => handleKeyPress(e))
-		toggleDiv.addEventListener('click', () => dispatch({ type: 'CLOSE_MODAL' }))
+		backgroundDiv.addEventListener('click', () => dispatch({ type: 'CLOSE_MODAL' }))
 
 		return () => {
 			document.removeEventListener('keydown', (e) => handleKeyPress(e))
-			toggleDiv.removeEventListener('click', () => dispatch({ type: 'CLOSE_MODAL' }))
+			backgroundDiv.removeEventListener('click', () => dispatch({ type: 'CLOSE_MODAL' }))
 		}
 	})
 
