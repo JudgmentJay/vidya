@@ -61,7 +61,7 @@ const Played = ({
 		<div className="box">
 			<h1>Games played in {currentYear}</h1>
 
-			{ playthroughs.length > 0 &&
+			{ currentYearPlaythroughs.length > 0 &&
 				<table className="gameDataTable" cellPadding="0" cellSpacing="0">
 					<thead>
 						<tr>
@@ -76,8 +76,8 @@ const Played = ({
 				</table>
 			}
 
-			{ playthroughs.length === 0 &&
-				<div id="emptyBox">Nothing yet!</div>
+			{ currentYearPlaythroughs.length === 0 &&
+				<div className="emptyBox">Nothing yet!</div>
 			}
 		</div>
 	)

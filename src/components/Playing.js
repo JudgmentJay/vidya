@@ -14,7 +14,7 @@ const Playing = ({ games }) => {
 		<div className="box noshrink">
 			<h1>Currently Playing</h1>
 
-			{ games.length > 0 &&
+			{ currentlyPlaying.length > 0 &&
 				<table className="gameDataTable" cellPadding="0" cellSpacing="0">
 					<thead>
 						<tr>
@@ -37,8 +37,8 @@ const Playing = ({ games }) => {
 				</table>
 			}
 
-			{ games.length === 0 &&
-				<div id="emptyBox">Nothing!</div>
+			{ currentlyPlaying.length === 0 &&
+				<div className="emptyBox">Nothing!</div>
 			}
 		</div>
 	)
