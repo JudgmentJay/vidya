@@ -11,10 +11,6 @@ const Wishlist = ({
 }) => {
 	const { dispatch } = useContext(ModalContext)
 
-	const currentYear = currentDate.getFullYear()
-
-	const [view, setView] = useState({ section: 'games', year: currentYear })
-
 	const unreleasedGames = games
 		.filter((game) => {
 			const releaseDate = new Date(game.releaseDate)
@@ -32,6 +28,8 @@ const Wishlist = ({
 			unreleasedGameYears.push(releaseYear)
 		}
 	})
+
+	const [view, setView] = useState({ section: 'games', year: unreleasedGameYears[0] })
 
 	const unreleasedGamesInSelectedYear = unreleasedGames.filter((game) => {
 		const releaseYear = new Date(game.releaseDate).getFullYear()
