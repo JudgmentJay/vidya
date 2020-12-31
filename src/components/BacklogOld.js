@@ -5,11 +5,9 @@ import { ModalContext } from '../context/modal'
 
 const BacklogOld = ({
 	games,
-	currentDate
+	currentYear
 }) => {
 	const { dispatch } = useContext(ModalContext)
-
-	const currentYear = currentDate.getFullYear()
 
 	const olderUnplayedGames = games
 		.filter((game) => {
@@ -49,7 +47,7 @@ const BacklogOld = ({
 
 BacklogOld.propTypes = {
 	games: PropTypes.array.isRequired,
-	currentDate: PropTypes.instanceOf(Date).isRequired
+	currentYear: PropTypes.number.isRequired
 }
 
 export default BacklogOld

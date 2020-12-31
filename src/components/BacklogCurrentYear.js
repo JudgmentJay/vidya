@@ -5,28 +5,25 @@ import { ModalContext } from '../context/modal'
 
 const BacklogCurrentYear = ({
 	games,
-	currentDate
+	currentDate,
+	currentYear
 }) => {
 	const { dispatch } = useContext(ModalContext)
-
-	const currentYear = currentDate.getFullYear()
 
 	const startOfYear = new Date(`January 1, ${currentYear}`)
 	const endOfYear = new Date(`January 1, ${currentYear + 1}`)
 
-	const unplayedGamesFromCurrentYear = games
+	const releasedUnplayedGames = games
 		.filter((game) => {
 			const releaseDate = new Date(game.releaseDate)
 
-			return game.playthroughs.length === 0 && releaseDate >= startOfYear && releaseDate < endOfYear
+			return game.playthroughs.length === 0 && releaseDate >= startOfYear && releaseDate < endOfYear && releaseDate <= currentDate
 		})
 		.sort((gameA, gameB) => new Date(gameA.releaseDate) - new Date(gameB.releaseDate))
 
-	const releasedGames = unplayedGamesFromCurrentYear.filter((game) => new Date(game.releaseDate) <= currentDate)
-
 	return (
 		<React.Fragment>
-			{ releasedGames.length > 0 &&
+			{ releasedUnplayedGames.length > 0 &&
 				<div className="box noshrink">
 					<h1>{currentYear} Backlog</h1>
 
@@ -39,7 +36,7 @@ const BacklogCurrentYear = ({
 						</thead>
 						<tbody>
 							{
-								releasedGames.map((game) => {
+								releasedUnplayedGames.map((game) => {
 									const releaseDate = !game.releaseDate.includes('December 31')
 										? game.releaseDate
 										: currentYear
@@ -62,7 +59,8 @@ const BacklogCurrentYear = ({
 
 BacklogCurrentYear.propTypes = {
 	games: PropTypes.array.isRequired,
-	currentDate: PropTypes.instanceOf(Date).isRequired
+	currentDate: PropTypes.instanceOf(Date).isRequired,
+	currentYear: PropTypes.number.isRequired
 }
 
 export default BacklogCurrentYear

@@ -11,13 +11,15 @@ exports.getStats = (games, year) => {
 		return completedPlaythroughs.length > 0
 	}).length
 
-	let totalHoursPlayed = 0
 	let totalPlaythroughs = 0
+	let totalHoursPlayed = 0
 
 	const gameHoursPlayed = []
 	const gamePlaythroughCounts = []
 	const scores = []
 	const platforms = {}
+
+	const gamesAccountedFor = []
 
 	games.forEach((game) => {
 		let hoursPlayed = 0
@@ -37,9 +39,23 @@ exports.getStats = (games, year) => {
 			totalPlaythroughs += playthrough.timesCompleted
 
 			if (!platforms[playthrough.platform]) {
-				platforms[playthrough.platform] = 1
+				platforms[playthrough.platform] = {
+					completed: timesCompleted && !gamesAccountedFor.includes(game.title) ? 1 : 0,
+					dropped: !playthrough.timesCompleted && !gamesAccountedFor.includes(game.title) ? 1 : 0,
+					hours: playthrough.hoursPlayed
+				}
 			} else {
-				platforms[playthrough.platform] += 1
+				platforms[playthrough.platform] = {
+					completed: platforms[playthrough.platform].completed += timesCompleted && !gamesAccountedFor.includes(game.title) ? 1 : 0,
+					dropped: platforms[playthrough.platform].dropped += !playthrough.timesCompleted && !gamesAccountedFor.includes(game.title) ? 1 : 0,
+					hours: platforms[playthrough.platform].hours += playthrough.hoursPlayed
+				}
+			}
+
+			const gameWasFinished = game.playthroughs.some((playthrough) => playthrough.timesCompleted > 0)
+
+			if (!gamesAccountedFor.includes(game.title) && (playthrough.timesCompleted || !gameWasFinished)) {
+				gamesAccountedFor.push(game.title)
 			}
 		})
 
@@ -59,8 +75,8 @@ exports.getStats = (games, year) => {
 	})
 
 	const platformData = Object.entries(platforms).sort((platformA, platformB) => {
-		if (platformA[1] < platformB[1]) return 1
-		if (platformA[1] > platformB[1]) return -1
+		if (platformA[1].completed < platformB[1].completed) return 1
+		if (platformA[1].completed > platformB[1].completed) return -1
 
 		if (platformA[0].toLowerCase() < platformB[0].toLowerCase()) return 1
 		if (platformA[0].toLowerCase() > platformB[0].toLowerCase()) return -1
@@ -95,7 +111,7 @@ exports.getStats = (games, year) => {
 	const totalPoints = scores.length
 		? scores.reduce((acc, cur) => acc + cur)
 		: 0
-	const averageScore = (totalPoints / scores.length).toFixed(1)
+	const averageScore = (totalPoints / scores.length).toFixed(2)
 
 	return({
 		gamesPlayed,

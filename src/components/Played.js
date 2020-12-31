@@ -7,11 +7,9 @@ import { ModalContext } from '../context/modal'
 const Played = ({
 	games,
 	playthroughs,
-	currentDate
+	currentYear
 }) => {
 	const { dispatch } = useContext(ModalContext)
-
-	const currentYear = currentDate.getFullYear()
 
 	const currentYearPlaythroughs = playthroughs
 		.filter((playthrough) => {
@@ -86,7 +84,7 @@ const Played = ({
 Played.propTypes = {
 	games: PropTypes.array.isRequired,
 	playthroughs: PropTypes.array.isRequired,
-	currentDate: PropTypes.instanceOf(Date).isRequired
+	currentYear: PropTypes.number.isRequired
 }
 
 export default Played

@@ -12,8 +12,7 @@ import BacklogCurrentYear from './BacklogCurrentYear'
 import Wishlist from './Wishlist'
 import BacklogOld from './BacklogOld'
 import Details from './Details'
-import StatsCurrentYear from './StatsCurrentYear'
-import StatsOld from './StatsOld'
+import Stats from './Stats'
 import Modal from '../modals/Modal'
 import AddGame from '../modals/AddGame'
 import ViewAndSearch from '../modals/ViewAndSearch'
@@ -53,6 +52,7 @@ const Vidya = () => {
 	}
 
 	const now = new Date()
+	const currentYear = now.getFullYear()
 
 	const columnClasses = classNames('column', {
 		'column--twoCol': view === 'details'
@@ -70,7 +70,7 @@ const Vidya = () => {
 						<Played
 							games={data.gameData}
 							playthroughs={data.playthroughData}
-							currentDate={now} />
+							currentYear={currentYear} />
 					</section>
 
 					{ view === 'home' &&
@@ -78,7 +78,8 @@ const Vidya = () => {
 							<section className={columnClasses}>
 								<BacklogCurrentYear
 									games={data.gameData}
-									currentDate={now} />
+									currentDate={now}
+									currentYear={currentYear} />
 								<Wishlist
 									games={data.gameData}
 									currentDate={now} />
@@ -87,7 +88,7 @@ const Vidya = () => {
 							<section className={columnClasses}>
 								<BacklogOld
 									games={data.gameData}
-									currentDate={now} />
+									currentYear={currentYear} />
 							</section>
 						</React.Fragment>
 					}
@@ -103,13 +104,15 @@ const Vidya = () => {
 					{ view === 'stats' &&
 						<React.Fragment>
 							<section className={columnClasses}>
-								<StatsOld games={data.gameData} />
+								<Stats
+									games={data.gameData}
+									playthroughs={data.playthroughData} />
 							</section>
 							<section className={columnClasses}>
-								<StatsCurrentYear
+								<Stats
+									year={currentYear}
 									games={data.gameData}
-									playthroughs={data.playthroughData}
-									currentDate={now} />
+									playthroughs={data.playthroughData} />
 							</section>
 						</React.Fragment>
 					}

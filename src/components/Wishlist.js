@@ -37,13 +37,9 @@ const Wishlist = ({
 		return releaseYear === view.year
 	})
 
-	const getTitleTag = () => {
-		if (unreleasedGameYears.length === 1) {
-			return <h1>{view.year} Wishlist</h1>
-		} else {
-			return <h1 className="clickable"><span onClick={() => setView({ section: 'years', year: view.year })}>{view.year}</span> Wishlist</h1>
-		}
-	}
+	const title = unreleasedGameYears.length === 1
+		? <h1>{view.year} Wishlist</h1>
+		: <h1 className="clickable"><span onClick={() => setView({ section: 'years', year: view.year })}>{view.year}</span> Wishlist</h1>
 
 	return (
 		<React.Fragment>
@@ -51,7 +47,7 @@ const Wishlist = ({
 				<React.Fragment>
 					{ view.section === 'games' &&
 						<div className="box">
-							{getTitleTag()}
+							{title}
 
 							<table className="gameDataTable" cellPadding="0" cellSpacing="0">
 								<thead>
