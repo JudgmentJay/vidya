@@ -2,30 +2,33 @@ import React, { useContext, useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { validateForm } from '../util/validation'
+import { validateForm, formatDate } from '../util/validation'
 import { fetchData } from '../util/fetch'
 
 import { ModalContext } from '../context/modal'
 
 const FinishPlaythrough = ({
 	setView,
-	fetchGameData
+	fetchGameData,
+	currentDate
 }) => {
 	const { game, dispatch } = useContext(ModalContext)
 
+	const formattedDate = formatDate(currentDate)
+
 	const [password, setPassword] = useState('')
 	const [dateStarted, setDateStarted] = useState(game.playthroughs[0].dateStarted)
-	const [dateFinished, setDateFinished] = useState('')
+	const [dateFinished, setDateFinished] = useState(formattedDate)
 	const [hoursPlayed, setHoursPlayed] = useState('')
 	const [timesCompleted, setTimesCompleted] = useState('0')
 	const [score, setScore] = useState(game.score ? game.score.toString() : '')
 	const [platform, setPlatform] = useState(game.playthroughs[0].platform)
 	const [invalidFields, setInvalidFields] = useState([])
 
-	const dateFinishedRef = useRef(null)
+	const hoursPlayedRef = useRef(null)
 
 	useEffect(() => {
-		dateFinishedRef.current.focus()
+		hoursPlayedRef.current.focus()
 	}, [])
 
 	const handleSubmitForm = () => {
@@ -96,11 +99,11 @@ const FinishPlaythrough = ({
 			</div>
 			<div className="modal__field">
 				<label className="modal__label" htmlFor="gameDateFinished">Date Finished</label>
-				<input type="text" id="gameDateFinished" className={finishFieldClasses} value={dateFinished} onChange={(e) => setDateFinished(e.target.value)} ref={dateFinishedRef} />
+				<input type="text" id="gameDateFinished" className={finishFieldClasses} value={dateFinished} onChange={(e) => setDateFinished(e.target.value)} />
 			</div>
 			<div className="modal__field">
 				<label className="modal__label" htmlFor="gameHoursPlayed">Hours Played</label>
-				<input type="text" id="gameHoursPlayed" className={hoursFieldClasses} value={hoursPlayed} onChange={(e) => setHoursPlayed(e.target.value)} />
+				<input type="text" id="gameHoursPlayed" className={hoursFieldClasses} value={hoursPlayed} onChange={(e) => setHoursPlayed(e.target.value)} ref={hoursPlayedRef} />
 			</div>
 			<div className="modal__field">
 				<label className="modal__label" htmlFor="gameTimesCompleted">Times Completed</label>
@@ -125,7 +128,8 @@ const FinishPlaythrough = ({
 
 FinishPlaythrough.propTypes = {
 	setView: PropTypes.func.isRequired,
-	fetchGameData: PropTypes.func.isRequired
+	fetchGameData: PropTypes.func.isRequired,
+	currentDate: PropTypes.instanceOf(Date).isRequired
 }
 
 export default FinishPlaythrough

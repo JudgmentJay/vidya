@@ -66,7 +66,9 @@ const Vidya = () => {
 						<Nav
 							view={view}
 							setView={setView} />
-						<Playing games={data.gameData} />
+						<Playing
+							games={data.gameData}
+							currentDate={now} />
 						<Played
 							games={data.gameData}
 							playthroughs={data.playthroughData}
@@ -127,7 +129,8 @@ const Vidya = () => {
 						<Modal>
 							<ViewAndSearch
 								games={data.gameData}
-								fetchGameData={fetchGameData} />
+								fetchGameData={fetchGameData}
+								currentDate={now} />
 						</Modal>
 					}
 				</React.Fragment>

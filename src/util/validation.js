@@ -12,22 +12,22 @@ exports.validateForm = (fieldsToValidate) => {
 	return validationResults
 }
 
-const validateField = (type, value) => {
-	const months = [
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
-		'August',
-		'September',
-		'October',
-		'November',
-		'December'
-	]
+const months = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December'
+]
 
+const validateField = (type, value) => {
 	const validPlatforms = [
 		'PC',
 		'PS5',
@@ -183,4 +183,12 @@ const validateField = (type, value) => {
 		default:
 			return false
 	}
+}
+
+exports.formatDate = (date) => {
+	const month = months[date.getMonth()]
+	const day = date.getDate()
+	const year = date.getFullYear()
+
+	return `${month} ${day}, ${year}`
 }

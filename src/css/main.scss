@@ -285,6 +285,14 @@ h3 {
 	}
 }
 
+.emptyBox {
+	&__link {
+		text-decoration: underline;
+
+		cursor: pointer;
+	}
+}
+
 .gameDataTable {
 	width: 100%;
 	table-layout: fixed;
@@ -568,6 +576,12 @@ h3 {
 
 .gameInfo {
 	text-align: center;
+
+	&__header {
+		&--withRating {
+			margin-bottom: $gapSize;
+		}
+	}
 
 	&__starRating {
 		margin-bottom: $gapSize;
@@ -948,10 +962,6 @@ h3 {
 	h1 {
 		margin-bottom: $gapSize;
 		padding: 0 $gapSize;
-	}
-
-	h2 {
-		margin-bottom: $gapSize * 1.5;
 	}
 
 	.column {

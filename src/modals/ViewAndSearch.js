@@ -16,7 +16,8 @@ import DeletePlaythrough from './DeletePlaythrough'
 
 const ViewAndSearch = ({
 	games,
-	fetchGameData
+	fetchGameData,
+	currentDate
 }) => {
 	const { modalType } = useContext(ModalContext)
 
@@ -53,13 +54,15 @@ const ViewAndSearch = ({
 			{ view === 'startplaythrough' &&
 				<StartPlaythrough
 					setView={setView}
-					fetchGameData={fetchGameData} />
+					fetchGameData={fetchGameData}
+					currentDate={currentDate} />
 			}
 
 			{ view === 'finishplaythrough' &&
 				<FinishPlaythrough
 					setView={setView}
-					fetchGameData={fetchGameData} />
+					fetchGameData={fetchGameData}
+					currentDate={currentDate} />
 			}
 
 			{ view === 'playthroughs' && <Playthroughs setView={setView} /> }
@@ -87,7 +90,8 @@ const ViewAndSearch = ({
 
 ViewAndSearch.propTypes = {
 	games: PropTypes.array.isRequired,
-	fetchGameData: PropTypes.func.isRequired
+	fetchGameData: PropTypes.func.isRequired,
+	currentDate: PropTypes.instanceOf(Date).isRequired
 }
 
 export default ViewAndSearch

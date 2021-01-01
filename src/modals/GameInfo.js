@@ -54,9 +54,13 @@ const GameInfo = ({ setView }) => {
 		})
 	}
 
+	const headerClasses = classNames({
+		'gameInfo__header--withRating': game.score
+	})
+
 	return (
 		<React.Fragment>
-			<h2>{game.title}</h2>
+			<h2 className={headerClasses}>{game.title}</h2>
 
 			<div className="gameInfo">
 				{ game.score &&

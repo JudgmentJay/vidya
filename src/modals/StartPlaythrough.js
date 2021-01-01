@@ -2,26 +2,29 @@ import React, { useContext, useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { validateForm } from '../util/validation'
+import { validateForm, formatDate } from '../util/validation'
 import { fetchData } from '../util/fetch'
 
 import { ModalContext } from '../context/modal'
 
 const FinishPlaythrough = ({
 	setView,
-	fetchGameData
+	fetchGameData,
+	currentDate
 }) => {
 	const { game, dispatch } = useContext(ModalContext)
 
+	const formattedDate = formatDate(currentDate)
+
 	const [password, setPassword] = useState('')
-	const [dateStarted, setDateStarted] = useState('')
+	const [dateStarted, setDateStarted] = useState(formattedDate)
 	const [platform, setPlatform] = useState('')
 	const [invalidFields, setInvalidFields] = useState([])
 
-	const dateStartedRef = useRef(null)
+	const platformRef = useRef(null)
 
 	useEffect(() => {
-		dateStartedRef.current.focus()
+		platformRef.current.focus()
 	}, [])
 
 	const handleSubmitForm = () => {
@@ -73,11 +76,11 @@ const FinishPlaythrough = ({
 			</div>
 			<div className="modal__field">
 				<label className="modal__label" htmlFor="gameDateStarted">Date Started</label>
-				<input type="text" id="gameDateStarted" className={startFieldClasses} value={dateStarted} onChange={(e) => setDateStarted(e.target.value)} ref={dateStartedRef} />
+				<input type="text" id="gameDateStarted" className={startFieldClasses} value={dateStarted} onChange={(e) => setDateStarted(e.target.value)} />
 			</div>
 			<div className="modal__field">
 				<label className="modal__label" htmlFor="gamePlatform">Platform</label>
-				<input type="text" id="gamePlatform" className={platformFieldClasses} value={platform} onChange={(e) => setPlatform(e.target.value)} />
+				<input type="text" id="gamePlatform" className={platformFieldClasses} value={platform} onChange={(e) => setPlatform(e.target.value)} ref={platformRef} />
 			</div>
 
 			<div className="modal__buttons">
@@ -90,7 +93,8 @@ const FinishPlaythrough = ({
 
 FinishPlaythrough.propTypes = {
 	setView: PropTypes.func.isRequired,
-	fetchGameData: PropTypes.func.isRequired
+	fetchGameData: PropTypes.func.isRequired,
+	currentDate: PropTypes.instanceOf(Date).isRequired
 }
 
 export default FinishPlaythrough

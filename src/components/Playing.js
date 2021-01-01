@@ -3,7 +3,12 @@ import PropTypes from 'prop-types'
 
 import { ModalContext } from '../context/modal'
 
-const Playing = ({ games }) => {
+import RecommendGame from './RecommendGame'
+
+const Playing = ({
+	games,
+	currentDate
+}) => {
 	const { dispatch } = useContext(ModalContext)
 
 	const currentlyPlaying = games.filter((game) => game.playing).sort((gameA, gameB) => {
@@ -38,14 +43,17 @@ const Playing = ({ games }) => {
 			}
 
 			{ currentlyPlaying.length === 0 &&
-				<div className="emptyBox">Nothing!</div>
+				<RecommendGame
+					games={games}
+					currentDate={currentDate} />
 			}
 		</div>
 	)
 }
 
 Playing.propTypes = {
-	games: PropTypes.array.isRequired
+	games: PropTypes.array.isRequired,
+	currentDate: PropTypes.instanceOf(Date).isRequired
 }
 
 export default Playing
