@@ -7,8 +7,6 @@ import Vidya from './components/Vidya'
 
 import './css/main.scss'
 
-require.context('./img', true, /\.(jpe?g|png|gif|svg|webp)$/)
-
 const App = () => {
 	return (
 		<ModalProvider>

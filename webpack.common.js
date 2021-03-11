@@ -7,6 +7,7 @@ module.exports = {
 		path: path.resolve(__dirname, 'public'),
 		filename: 'index_bundle.js'
 	},
+	target: 'web',
 	module: {
 		rules: [
 			{
