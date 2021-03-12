@@ -12,18 +12,6 @@ module.exports = merge(common, {
 					'sass-loader'
 				],
 				include: /src/
-			},
-			{
-				test: /\.(jpe?g|png|gif|svg|webp)$/,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: '[name].[ext]',
-							outputPath: 'img'
-						}
-					}
-				]
 			}
 		]
 	},
@@ -32,6 +20,5 @@ module.exports = merge(common, {
 		proxy: {
 			'/games': 'http://localhost:3010'
 		}
-	},
-	devtool: false
+	}
 })

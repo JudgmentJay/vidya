@@ -17,29 +17,27 @@ module.exports = merge(common, {
 						}
 					},
 					'css-loader',
-					'postcss-loader',
+					{
+						loader: 'postcss-loader',
+						options: {
+							postcssOptions: {
+								plugins: [
+									[
+										'cssnano',
+										'autoprefixer'
+									]
+								]
+							}
+						}
+					},
 					'sass-loader'
 				],
 				include: /src/
-			},
-			{
-				test: /\.(jpe?g|png|gif|svg|webp)$/,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: '[name].[ext]',
-							outputPath: 'img'
-						}
-					}
-				]
 			}
 		]
 	},
 	mode: 'production',
-	devtool: false,
 	optimization: {
-		minimize: true,
 		minimizer: [
 			new TerserPlugin({
 				extractComments: false,

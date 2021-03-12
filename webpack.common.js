@@ -5,7 +5,8 @@ module.exports = {
 	entry: './src/index.js',
 	output: {
 		path: path.resolve(__dirname, 'public'),
-		filename: 'index_bundle.js'
+		filename: 'index_bundle.js',
+		assetModuleFilename: 'img/[name][ext]'
 	},
 	target: 'web',
 	module: {
@@ -14,6 +15,10 @@ module.exports = {
 				test: /\.(js)$/,
 				use: 'babel-loader',
 				include: /src/
+			},
+			{
+				test: /\.(jpg?g|png|gif|svg|webp)$/,
+				type: 'asset/resource'
 			}
 		]
 	},
@@ -21,8 +26,5 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: './src/index.html'
 		})
-	],
-	resolve: {
-		symlinks: false
-	}
+	]
 }
