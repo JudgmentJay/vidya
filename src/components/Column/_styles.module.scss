@@ -1,0 +1,36 @@
+@use '../../css/variables' as *;
+
+.column {
+	position: relative;
+	z-index: 1;
+
+	margin-bottom: $gapSizeA;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	.column {
+		display: flex;
+		flex-direction: column;
+		width: calc((100% / 3) - ((#{$gapSizeA} * 2) / 3));
+		height: 100%;
+		margin-bottom: 0;
+
+		&--wide {
+			width: calc(100% - ((100% / 3) - (#{$gapSizeA * 2} / 3) + #{$gapSizeA}));
+		}
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	.column {
+		width: calc((100% / 3) - ((#{$gapSizeB} * 2) / 3));
+
+		&--wide {
+			width: calc(100% - ((100% / 3) - (#{$gapSizeB * 2} / 3) + #{$gapSizeB}));
+		}
+	}
+}

@@ -1,0 +1,63 @@
+@use '../../css/variables.scss' as *;
+@use '../../css/themes.scss' as *;
+
+.divider {
+	display: flex;
+	align-items: center;
+	padding: 0 $gapSizeA;
+	margin: calc(#{($gapSizeA) + $itemPaddingA}) 0 calc(#{$gapSizeA} * 2);
+
+	font-size: $fontSizeAMd;
+	font-weight: 600;
+
+	cursor: default;
+
+	&:after {
+		content: '';
+
+		display: block;
+		width: 100%;
+		height: 1px;
+		margin-left: $gapSizeA;
+		opacity: 0.5
+	}
+
+	@each $theme, $attribute in $themes {
+		&--#{$theme} {
+			&:after {
+				background-color: #{map-get($attribute, 'fontColor')};
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.divider {
+		font-size: $fontSizeBMd;
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	.divider {
+		font-size: $fontSizeAMd;
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	.divider {
+		padding: 0 $gapSizeB;
+		margin: calc(#{$gapSizeB + $itemPaddingA}) 0 calc(#{$gapSizeB} * 1.5);
+
+		font-size: $fontSizeBMd;
+
+		&:after {
+			margin-left: $gapSizeB;
+		}
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.divider {
+		font-size: $fontSizeCMd;
+	}
+}

@@ -1,0 +1,119 @@
+@use '../../css/variables.scss' as *;
+
+.tableCell {
+	&--title {
+		overflow: hidden;
+
+		text-align: left;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	&--box, &--details {
+		padding: $itemPaddingA $gapSizeA;
+	}
+
+	&--modal {
+		padding: $itemPaddingB $gapSizeA;
+	}
+
+	&--box {
+		&.tableCell {
+			&--hours {
+				display: none;
+
+				text-align: center;
+			}
+
+			&--date {
+				text-align: right;
+			}
+		}
+	}
+
+	&--details {
+		&.tableCell {
+			&--hours, &--detail {
+				display: none;
+
+				text-align: center;
+			}
+
+			&--date {
+				text-align: right;
+			}
+		}
+	}
+
+	&--modal {
+		&.tableCell {
+			&--hours, &--timesCompleted, &--platform {
+				text-align: center;
+			}
+
+			&--timesCompleted {
+				display: none;
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.tableCell {
+		&--box {
+			&.tableCell {
+				&--hours {
+					display: table-cell;
+				}
+			}
+		}
+
+		&--details {
+			&.tableCell {
+				&--hours {
+					display: table-cell;
+				}
+			}
+		}
+
+		&--modal {
+			&.tableCell {
+				&--timesCompleted {
+					display: table-cell;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	.tableCell {
+		&--details {
+			&.tableCell {
+				&--detail {
+					display: table-cell;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	.tableCell {
+		&--box, &--details {
+			padding: $itemPaddingA $gapSizeB;
+		}
+
+		&--modal {
+			padding: $itemPaddingB $gapSizeB;
+		}
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.tableCell {
+		&--box, &--detail, &--modal {
+			padding: $itemPaddingC $gapSizeB;
+		}
+	}
+}

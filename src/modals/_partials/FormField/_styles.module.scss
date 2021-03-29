@@ -1,0 +1,70 @@
+@use '../../../css/variables.scss' as *;
+
+.field {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 0 $gapSizeA 0;
+
+	&--hasPlaceholder {
+		flex-basis: 100%;
+	}
+
+	&:last-of-type {
+		margin: 0;
+	}
+}
+
+.label, .input {
+	font-size: $fontSizeASm;
+}
+
+.label {
+	flex-basis: 120px;
+	flex-shrink: 0;
+	margin-right: $gapSizeA;
+
+	text-align: right;
+}
+
+.input {
+	flex-basis: 100%;
+	padding: 7px;
+
+	background: #fff;
+	border: 2px solid #aaa;
+
+	&--search {
+		margin-right: 5px;
+		padding: 9px;
+	}
+
+	&--invalid {
+		border: 2px solid red;
+	}
+
+	&:focus {
+		border: 2px solid #666;
+		outline: 0;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.label, .input {
+		font-size: $fontSizeBSm;
+	}
+
+	.label {
+		flex-basis: 175px;
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.label, .input {
+		font-size: $fontSizeCSm;
+	}
+
+	.label {
+		flex-basis: 285px;
+	}
+}

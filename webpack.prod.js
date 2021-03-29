@@ -1,35 +1,60 @@
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
+
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+
+const miniCSSExtractPluginLoader = {
+	loader: MiniCssExtractPlugin.loader,
+	options: {
+		publicPath: '../'
+	}
+}
+
+const postCSSLoader = {
+	loader: 'postcss-loader',
+	options: {
+		postcssOptions: {
+			plugins: [
+				[
+					'autoprefixer'
+				]
+			]
+		}
+	}
+}
+
+const cssModuleLoader = {
+	loader: 'css-loader',
+	options: {
+		modules: {
+			localIdentName: '[local]__[hash:base64:5]',
+		}
+	}
+}
 
 module.exports = merge(common, {
 	module: {
 		rules: [
 			{
-				test: /\.s?css$/,
+				test: /\.scss$/,
+				exclude: /\.module\.scss$/,
 				use: [
-					{
-						loader: MiniCssExtractPlugin.loader,
-						options: {
-							publicPath: '../'
-						}
-					},
+					miniCSSExtractPluginLoader,
 					'css-loader',
-					{
-						loader: 'postcss-loader',
-						options: {
-							postcssOptions: {
-								plugins: [
-									[
-										'cssnano',
-										'autoprefixer'
-									]
-								]
-							}
-						}
-					},
+					postCSSLoader,
+					'sass-loader'
+				],
+				include: /src/
+			},
+			{
+				test: /\.module\.scss$/,
+				use: [
+					miniCSSExtractPluginLoader,
+					cssModuleLoader,
+					postCSSLoader,
 					'sass-loader'
 				],
 				include: /src/
@@ -41,13 +66,14 @@ module.exports = merge(common, {
 		minimizer: [
 			new TerserPlugin({
 				extractComments: false,
-			})
-		],
+			}),
+			new CssMinimizerPlugin()
+		]
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: 'css/[name].[hash].css',
-			chunkFilename: 'css/[id].[hash].css'
+			filename: 'css/[name].[fullhash].css',
+			chunkFilename: 'css/[id].[fullhash].css'
 		}),
 		new CleanWebpackPlugin()
 	]

@@ -1,0 +1,56 @@
+@use '../../css/variables.scss' as *;
+
+.list {
+	margin: 0;
+	padding: 0 $gapSizeA;
+
+	font-size: $fontSizeALg;
+
+	list-style: none;
+}
+
+.year {
+	margin-bottom: $gapSizeA;
+
+	cursor: pointer;
+
+	&:hover :after {
+		content: ' \2190';
+
+		position: relative;
+		top: -3px;
+	}
+
+	&--isSelected :after {
+		content: ' \2190';
+
+		position: relative;
+		top: -3px;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.list {
+		font-size: $fontSizeBLg;
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	.list {
+		font-size: $fontSizeALg;
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	.list {
+		padding: 0 $gapSizeB;
+
+		font-size: $fontSizeBLg;
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.list {
+		font-size: $fontSizeCLg;
+	}
+}

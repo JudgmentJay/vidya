@@ -1,0 +1,48 @@
+@use '../../../css/variables.scss' as *;
+
+.button {
+	width: 100%;
+	margin: 0 0 $gapSizeA 0;
+	padding: $gapSizeA $gapSizeA * 2;
+
+	font-size: $fontSizeAMd;
+
+	background: white;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+
+	&--delete {
+		color: white;
+
+		background: red;
+	}
+
+	&--search {
+		flex-basis: 125px;
+		flex-shrink: 0;
+		width: auto;
+
+		border: 2px solid #aaa;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.button {
+		width: auto;
+		margin: 0 #{$gapSizeA / 2};
+
+		font-size: $fontSizeBSm;
+
+		&--search {
+			margin: 0;
+		}
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.button {
+		font-size: $fontSizeCSm;
+	}
+}

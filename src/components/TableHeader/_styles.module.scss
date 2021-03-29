@@ -1,0 +1,166 @@
+@use '../../css/variables' as *;
+
+.tableHeader {
+	font-weight: 600;
+	text-align: left;
+
+	cursor: default;
+
+	&--box, &--details, &--modal {
+		padding: 0 $gapSizeA $itemPaddingB;
+	}
+
+	&--title {
+		overflow: hidden;
+
+		text-align: left;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	&--hours, &--detail {
+		display: none;
+
+		text-align: center;
+	}
+
+	&--date {
+		text-align: right;
+		width: 155px;
+	}
+
+	&--modal {
+		&.tableHeader {
+			&--timesCompleted, &--platform {
+				text-align: center;
+			}
+
+			&--hours {
+				display: table-cell;
+				width: 70px;
+			}
+
+			&--timesCompleted {
+				display: none;
+			}
+
+			&--platform {
+				width: 82px;
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.tableHeader {
+		&--date {
+			width: 210px;
+		}
+
+		&--hours {
+			display: table-cell;
+			width: 80px;
+		}
+
+		&--modal {
+			&.tableHeader {
+				&--timesCompleted {
+					display: table-cell;
+					width: 85px;
+				}
+
+				&--platform {
+					width: 105px;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	.tableHeader {
+		&--date {
+			width: 155px;
+		}
+
+		&--box {
+			&.tableHeader {
+				&--hours {
+					width: 62px;
+				}
+			}
+		}
+
+		&--details {
+			&.tableHeader {
+				&--hours, &--detail {
+					width: 80px;
+				}
+
+				&--detail {
+					display: table-cell;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	.tableHeader {
+		&--box, &--details, &--modal {
+			padding: 0 $gapSizeB $itemPaddingC;
+		}
+
+		&--date {
+			width: 230px;
+		}
+
+		&--box {
+			&.tableHeader {
+				&--hours {
+					width: 100px;
+				}
+			}
+		}
+
+		&--details {
+			&.tableHeader {
+				&--hours, &--detail {
+					width: 125px;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.tableHeader {
+		&--date {
+			width: 345px;
+		}
+
+		&--box {
+			&.tableHeader {
+				&--hours {
+					width: 135px;
+				}
+			}
+		}
+
+		&--details {
+			&.tableHeader {
+				&--hours, &--detail {
+					width: 175px;
+				}
+			}
+		}
+
+		&--modal {
+			&.tableHeader {
+				&--hours, &--timesCompleted, &--platform {
+					width: 175px;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,55 @@
+@use '../../../css/variables.scss' as *;
+@use '../../../css/themes.scss' as *;
+
+.starRating {
+	margin-bottom: $gapSizeA * 2;
+}
+
+.star {
+	position: relative;
+
+	display: inline-block;
+
+	font-size: 30px;
+
+	cursor: default;
+
+	&:before {
+		content: '\2605';
+
+		display: block;
+		height: 100%;
+	}
+
+	&--full {
+		@each $theme, $attribute in $themes {
+			color: map-get($attribute, 'accent2');
+		}
+	}
+
+	&--half {
+		@each $theme, $attribute in $themes {
+			&:after {
+				color: map-get($attribute, 'accent2');
+			}
+		}
+
+		&:after {
+			content: '\2605';
+
+			position: absolute;
+			top: 0;
+			left: 0;
+
+			width: 50%;
+			height: 100%;
+			overflow: hidden;
+		}
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.star {
+		font-size: 40px;
+	}
+}

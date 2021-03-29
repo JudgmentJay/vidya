@@ -1,0 +1,49 @@
+@use '../../css/variables.scss' as *;
+
+.table {
+	width: 100%;
+	table-layout: fixed;
+
+	font-size: $fontSizeASm;
+
+	&--modal {
+		font-weight: 400;
+
+		/* TODO: Figure out a better way to do this */
+		tr:nth-child(2n) {
+			background: rgba(255, 255, 255, 0.15);
+
+			&:hover {
+				background: rgba(255, 255, 255, 0.5);
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.table {
+		font-size: $fontSizeBSm;
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	.table {
+		font-size: $fontSizeASm;
+
+		&--modal {
+			font-size: $fontSizeBSm;
+		}
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	.table {
+		font-size: $fontSizeBSm;
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.table {
+		font-size: $fontSizeCSm;
+	}
+}

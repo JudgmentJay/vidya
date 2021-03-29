@@ -1,0 +1,58 @@
+@use '../../css/variables.scss' as *;
+
+.nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	font-size: $fontSizeAMd;
+	font-weight: 600;
+}
+
+.link {
+	width: calc(100% / 4);
+	display: inline-block;
+	padding: $gapSizeA;
+
+	text-align: center;
+
+	cursor: pointer;
+
+	&.is-selected {
+		background: rgba(255, 255, 255, 0.5);
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.nav {
+		font-size: $fontSizeBMd;
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	.nav {
+		font-size: $fontSizeAMd;
+	}
+
+	.link {
+		&:hover {
+			background: rgba(255, 255, 255, 0.5);
+		}
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	.nav {
+		font-size: $fontSizeBMd
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.nav {
+		font-size: $fontSizeCMd
+	}
+
+	.link {
+		padding: $gapSizeA * 1.5;
+	}
+}

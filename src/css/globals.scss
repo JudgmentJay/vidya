@@ -1,0 +1,171 @@
+@use './variables.scss' as *;
+@use './themes.scss' as *;
+
+@import url('./reset.scss');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@600&family=Open+Sans:wght@400;600&display=swap');
+
+@each $theme, $attribute in $themes {
+	body.#{$theme} {
+		color: map-get($attribute, 'fontColor');
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		.background {
+			background: map-get($attribute, 'background-mobile');
+			background-size: cover;
+		}
+	}
+
+	@media only screen and (min-width: 1400px) {
+		body.#{$theme} {
+			.background {
+				background: map-get($attribute, 'background');
+				background-size: cover;
+			}
+		}
+	}
+}
+
+.noshrink {
+	flex-shrink: 0;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+.strikethrough {
+	text-decoration: line-through;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.textAlignCenter {
+	text-align: center;
+}
+
+.textAlignRight {
+	text-align: right;
+}
+
+h1,
+h2 {
+	font-size: 1.8em;
+}
+
+body {
+	min-height: 100%;
+	padding: $gapSizeA;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	font-family: 'Open Sans', Arial, sans-serif;
+
+	&.modal-is-open {
+		overflow-y: hidden;
+	}
+}
+
+h1 {
+	margin-bottom: calc(#{$gapSizeA} * 1.5);
+	padding: 0 $gapSizeA;
+
+	font-family: 'Fira Code', monospace;
+	font-weight: 600;
+
+	cursor: default;
+
+	&.clickable span {
+		display: inline-block;
+
+		border-bottom: 2px solid;
+
+		cursor: pointer;
+	}
+}
+
+h2 {
+	margin-bottom: $gapSizeA * 2;
+	padding: 0 40px;
+
+	font-family: 'Fira Code', monospace;
+	font-weight: 600;
+	text-align: center;
+
+	cursor: default;
+}
+
+h3 {
+	margin-bottom: $gapSizeA;
+
+	font-weight: 600;
+
+	cursor: default;
+}
+
+.background {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 0;
+
+	width: 100vw;
+	height: 100vh;
+}
+
+@media only screen and (min-width: 1000px) {
+	h1,
+	h2 {
+		font-size: 2.4em;
+	}
+}
+
+@media only screen and (min-width: 1400px) {
+	h1 {
+		font-size: 1.8em;
+	}
+
+	body, html {
+		width: 100%;
+		height: 100%;
+		overflow-y: hidden;
+	}
+
+	#vidya {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		height: 100%;
+	}
+}
+
+@media only screen and (min-width: 2500px) {
+	h1,
+	h2 {
+		font-size: 2.4em;
+	}
+
+	body {
+		padding: $gapSizeB;
+	}
+
+	h1 {
+		margin-bottom: $gapSizeB;
+		padding: 0 $gapSizeB;
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	h1,
+	h2 {
+		font-size: 3.6em;
+	}
+
+	h1 {
+		margin-bottom: calc(#{$gapSizeB} * 1.5);
+	}
+}

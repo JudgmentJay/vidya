@@ -1,0 +1,72 @@
+$themes: (
+	bloodborne: (
+		"background": url(../img/background-bb.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-bb-m.webp) black center bottom no-repeat,
+		"accent1": #6e697b,
+		"accent2": #d13f31,
+		"fontColor": #20263c
+	),
+	hyperLightDrifter: (
+		"background": url(../img/background-hld.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-hld-m.webp) black center bottom no-repeat,
+		"accent1": #47508b,
+		"accent2": #d26398,
+		"fontColor": #1e2e47
+	),
+	darkSouls: (
+		"background": url(../img/background-ds.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-ds-m.webp) black center bottom no-repeat,
+		"accent1": #81a7c9,
+		"accent2": #bf7b2a,
+		"fontColor": #031c23
+	),
+	hollowKnight: (
+		"background": url(../img/background-hk.webp) black center center no-repeat,
+		"background-mobile": url(../img/background-hk-m.webp) black center center no-repeat,
+		"accent1": #09272b,
+		"accent2": #a24558,
+		"fontColor": #061a20
+	),
+	journey: (
+		"background": url(../img/background-journey.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-journey-m.webp) black center bottom no-repeat,
+		"accent1": #e2b26b,
+		"accent2": #a84535,
+		"fontColor": #704537
+	),
+	muramasa: (
+		"background": url(../img/background-muramasa.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-muramasa-m.webp) black center bottom no-repeat,
+		"accent1": #ecba67,
+		"accent2": #c85158,
+		"fontColor": #471e18
+	),
+	sekiro: (
+		"background": url(../img/background-sekiro.webp) black center center no-repeat,
+		"background-mobile": url(../img/background-sekiro-m.webp) black center center no-repeat,
+		"accent1": #505976,
+		"accent2": #a85684,
+		"fontColor": #212639
+	),
+	metroid: (
+		"background": url(../img/background-metroid.webp) black center center no-repeat,
+		"background-mobile": url(../img/background-metroid-m.webp) black center center no-repeat,
+		"accent1": #56545f,
+		"accent2": #efeb83,
+		"fontColor": #1a161a
+	),
+	zelda: (
+		"background": url(../img/background-zelda.webp) black center center no-repeat,
+		"background-mobile": url(../img/background-zelda-m.webp) black center center no-repeat,
+		"accent1": #fadbc7,
+		"accent2": #7c6aa4,
+		"fontColor": #783d35
+	),
+	ffix: (
+		"background": url(../img/background-ffix.webp) black center bottom no-repeat,
+		"background-mobile": url(../img/background-ffix-m.webp) black center bottom no-repeat,
+		"accent1": #553230,
+		"accent2": #c35530,
+		"fontColor": #3a2124
+	)
+);

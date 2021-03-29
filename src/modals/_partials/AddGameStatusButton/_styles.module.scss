@@ -1,0 +1,32 @@
+@use '../../../css/variables' as *;
+
+.button {
+	display: inline-block;
+	width: calc((100% / 3) - 1%);
+	margin: 0 0 #{$gapSizeA * 2} 0;
+	padding: $gapSizeA;
+
+	font-size: $fontSizeAMd;
+	text-align: center;
+
+	background: rgba(255, 255, 255, 0.5);
+	border: 2px solid #aaa;
+
+	cursor: pointer;
+
+	&--selected, &:hover {
+		background: rgba(255, 255, 255, 1);
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.button {
+		font-size: $fontSizeBSm;
+	}
+}
+
+@media only screen and (min-width: 3500px) {
+	.button {
+		font-size: $fontSizeCSm;
+	}
+}

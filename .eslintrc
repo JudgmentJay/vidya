@@ -1,24 +1,22 @@
 {
 	"extends": [
 		"eslint:recommended",
-		"plugin:react/recommended"
+		"plugin:react/recommended",
+		"plugin:react-hooks/recommended"
 	],
-	"plugins": [
-		"react-hooks"
-	],
-	"parser": "@babel/eslint-parser",
 	"env": {
 		"browser": true,
 		"es6": true,
 		"node": true
 	},
 	"parserOptions": {
-		"ecmaVersion": 6,
+		"ecmaVersion": 2021,
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"jsx": true
 		}
 	},
+	"ignorePatterns": ["node_modules/", "public/"],
 	"rules": {
 		"eol-last": [
 			2,
