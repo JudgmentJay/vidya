@@ -22,7 +22,7 @@ const Wishlist = ({
 		.filter((game) => {
 			const releaseDate = new Date(game.releaseDate)
 
-			return releaseDate > currentDate
+			return game.playthroughs.length === 0 && releaseDate > currentDate
 		})
 		.sort((gameA, gameB) => new Date(gameA.releaseDate) - new Date(gameB.releaseDate))
 
