@@ -1,29 +1,25 @@
+const axios = require('axios')
+
 exports.fetchAll = (callback) => {
-	fetch('/games/all')
-		.then((response) => {
-			if (response.status === 404) {
-				console.log('Bad Response')
-			} else if (response.ok) {
-				return response.json()
-			}
-		})
-		.then((result) => callback(result))
+	axios.get('/games/all')
+		.then((response) => callback(response.data))
+		.catch((error) => console.error(error.response.data))
 }
 
 exports.fetchData = (path, method, data, callback) => {
-	fetch(`/${path}`, {
+	const options = {
+		url: `/${path}`,
 		method,
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data)
-	}).then((response) => {
-		if (response.status === 400) {
-			alert('Invalid Password')
-		} else if (response.status === 404) {
-			console.log('Bad Response')
-		} else if (response.ok) {
-			callback()
-		}
-	})
+		data
+	}
+
+	axios(options)
+		.then(() => callback())
+		.catch((error) => {
+			if (error.response.status === 401) {
+				alert('Invalid password')
+			} else {
+				console.error(error.response.data)
+			}
+		})
 }
