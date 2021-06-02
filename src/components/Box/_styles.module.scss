@@ -51,6 +51,8 @@
 		overflow-x: hidden;
 		overflow-y: auto;
 
+		scrollbar-width: thin;
+
 		& > p {
 			font-size: $fontSizeASm;
 		}
@@ -58,6 +60,7 @@
 		@each $theme, $attribute in $themes {
 			&--#{$theme} {
 				border: 2px solid #{map-get($attribute, 'accent1')};
+				scrollbar-color: map-get($attribute, 'accent1') darkgrey;
 
 				&::-webkit-scrollbar-thumb {
 					background-color: map-get($attribute, 'accent1');
@@ -65,6 +68,7 @@
 
 				&:hover {
 					border: 2px solid #{map-get($attribute, 'accent2')};
+					scrollbar-color: map-get($attribute, 'accent2') darkgrey;
 
 					&::-webkit-scrollbar-thumb {
 						background-color: map-get($attribute, 'accent2'); 
