@@ -37,7 +37,7 @@ module.exports = merge(common, {
 	mode: 'development',
 	devServer: {
 		proxy: {
-			'/games': 'http://localhost:3010'
+			'/games': 'http://localhost:3000'
 		}
 	}
 })
