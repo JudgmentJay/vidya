@@ -21,7 +21,7 @@ const Nav = ({
 
 	return (
 		<Box
-			noshrink={true}
+			noShrink={true}
 			modifier="nav">
 			<nav className={styles.nav}>
 				<span className={homeClasses} onClick={() => setView('home')}>Home</span>
