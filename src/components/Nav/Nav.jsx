@@ -15,9 +15,9 @@ const Nav = ({
 	const { dispatch } = useContext(ModalContext)
 
 	const navBarItemClass = styles.link
-	const homeClasses = classNames(navBarItemClass, { 'is-selected': view === 'home' })
-	const detailsClasses = classNames(navBarItemClass, { 'is-selected': view === 'details' })
-	const statsClasses = classNames(navBarItemClass, { 'is-selected': view === 'stats' })
+	const homeClasses = classNames(navBarItemClass, { [styles['link--selected']]: view === 'home' })
+	const detailsClasses = classNames(navBarItemClass, { [styles['link--selected']]: view === 'details' })
+	const statsClasses = classNames(navBarItemClass, { [styles['link--selected']]: view === 'stats' })
 
 	return (
 		<Box
