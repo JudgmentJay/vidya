@@ -87,7 +87,7 @@ const EditGame = ({
 				value={releaseDate}
 				onChange={(e) => setReleaseDate(e.target.value)}
 				isInvalid={invalidFields.includes('release')} />
-			{ (game.playthroughs.length > 0 && !game.playing) &&
+			{ Boolean(game.playthroughs.some((game) => game.dateFinished)) &&
 				<FormField
 					type="text"
 					id="gameScore"
