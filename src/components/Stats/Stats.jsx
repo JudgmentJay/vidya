@@ -73,7 +73,7 @@ const Stats = ({
 
 	const title = year
 		? <h1 className="clickable"><span onClick={() => setView({ section: 'years', year: view.year })}>{view.year}</span> Stats</h1>
-		: <h1>2015&ndash;Present Statss</h1>
+		: <h1>2015&ndash;Present Stats</h1>
 
 	return (
 		<React.Fragment>
@@ -85,10 +85,13 @@ const Stats = ({
 						<h3>Totals</h3>
 
 						<Stat>
-							Games played: {data.gamesPlayed}{droppedGames ? ` (${data.gamesCompleted} finished, ${data.gamesPlayed - data.gamesCompleted} dropped)` : ''}
+							Unique games played: {data.gamesPlayed}{droppedGames ? ` (${data.gamesCompleted} finished, ${data.gamesPlayed - data.gamesCompleted} dropped)` : ''}
 						</Stat>
 						<Stat>
 							Hours played: {data.totalHoursPlayed}
+						</Stat>
+						<Stat>
+							Playthroughs completed: {data.totalPlaythroughs}
 						</Stat>
 						<Stat>
 							Average game score: {data.averageScore}
@@ -125,7 +128,7 @@ const Stats = ({
 													modifier="linked"
 													onClick={() => dispatch({type: 'OPEN_MODAL', modalType: 'view', game: game.gameData})}
 													key={`${view.year}-stats-mostPlaythroughs-${i}`}>
-													{i + 1}. {game.gameData.title} - {game.timesCompleted}
+													{i + 1}. {game.gameData.title} - {game.playthroughCount}
 												</Stat>
 											)
 										})
@@ -138,9 +141,14 @@ const Stats = ({
 
 								{
 									data.platformData.map((platform, i) => {
+										const platformName = platform[0]
+										const completed = platform[1].completed
+										const dropped = platform[1].dropped
+										const hoursPlayed = platform[1].hours
+
 										return (
 											<Stat key={`${view.year}-stats-platform-${i}`}>
-												{i + 1}. {platform[0]} - {platform[1].completed} finished, {platform[1].dropped ? `${platform[1].dropped} dropped, ` : ''} {platform[1].hours} hours
+												{i + 1}. {platformName} - {completed} finished, { Boolean(dropped) && <React.Fragment>{dropped} dropped, </React.Fragment> } {hoursPlayed} hours
 											</Stat>
 										)
 									})

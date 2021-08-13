@@ -54,7 +54,7 @@ const ModalContent = ({
 				break
 			}
 			case 'addgame': {
-				content = <AddGame fetchGameData={fetchGameData} />
+				content = <AddGame fetchGameData={fetchGameData} currentDate={currentDate} />
 				break
 			}
 			case 'editgame': {

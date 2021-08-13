@@ -63,7 +63,7 @@ const FinishPlaythrough = ({
 
 	return (
 		<React.Fragment>
-			<h2>{game.playing ? `Finish ${game.title} Playthrough` : `Start New ${game.title} Playthrough`}</h2>
+			<h2>Start New {game.title} Playthrough</h2>
 
 			<FormField
 				type="password"

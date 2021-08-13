@@ -28,6 +28,8 @@ const months = [
 ]
 
 const validateField = (type, value) => {
+	if (!value) return false
+
 	const validPlatforms = [
 		'PC',
 		'PS5',
@@ -42,130 +44,117 @@ const validateField = (type, value) => {
 	]
 
 	const twoDigit = /^[0-9]{1,2}$/
-	const score = /^[0-9]{1,2}([.][5]{1})?$/
-	const fourDigit = /^[0-9]{1,4}$/
-	const hours = /^[0-9]{1,4}([.][5]{1})?$/
+	const score = /^[1-9]{1,2}(.5)?$/
+	const hours = /^[0-9]{1,4}(.5)?$/
+	const validDate = /^\w+\s[0-9]{1,2}\s[0-9]{4}$/
 
 	switch (type) {
 		case 'title': {
-			if (
-				value === '' ||
-				value.length < 2
-			) {
+			if (value.length < 2) {
 				return false
-			} else {
-				return true
 			}
+
+			return true
 		}
 		case 'release': {
-			if (value.includes(',')) {
-				value = value.replace(/,/g, '')
-			}
+			value = value.replace(',', '')
 
 			const dateParts = value.split(' ')
+			const month = dateParts[0]
+			const date = parseInt(dateParts[1])
+			const year = parseInt(dateParts[2])
 
 			const now = new Date()
 
 			if (
-				dateParts.length < 3 ||
-				!months.includes(dateParts[0]) ||
-				!dateParts[1].match(twoDigit) ||
-				(parseInt(dateParts[1]) <= 0 || parseInt(dateParts[1]) > 31) ||
-				!dateParts[2].match(fourDigit) ||
-				(parseInt(dateParts[2]) < 1970 || parseInt(dateParts[2]) > now.getFullYear() + 3)
+				!value.match(validDate) ||
+				!months.includes(month) ||
+				(date <= 0 || date > 31) ||
+				(year < 1970 || year > now.getFullYear() + 5)
 			) {
 				return false
-			} else {
-				return true
 			}
+
+			return true
 		}
 		case 'score': {
-			if (
-				value === '' ||
-				!value.match(score) ||
-				parseInt(value) < 1 ||
-				parseFloat(value) > 10
-			) {
+			if (!value.match(score) || parseFloat(value) > 10) {
 				return false
-			} else {
-				return true
 			}
+
+			return true
 		}
 		case 'start': {
-			let dateStarted = value.dateStarted
+			const started = value.dateStarted.replace(',', '')
 
-			if (dateStarted.includes(',')) {
-				dateStarted = dateStarted.replace(/,/g, '')
-			}
-
-			const dateParts = dateStarted.split(' ')
+			const dateParts = started.split(' ')
+			const month = dateParts[0]
+			const date = dateParts[1]
+			const year = dateParts[2]
 
 			const now = new Date()
+			const releaseDate = new Date(value.releaseDate)
+			const dateStarted = new Date(value.dateStarted)
+			const timeStarted = dateStarted.getTime()
 
 			if (
-				dateParts.length < 3 ||
-				!months.includes(dateParts[0]) ||
-				!dateParts[1].match(twoDigit) ||
-				(parseInt(dateParts[1]) <= 0 || parseInt(dateParts[1]) > 31) ||
-				!dateParts[2].match(fourDigit) ||
-				(parseInt(dateParts[2]) < 1970 || parseInt(dateParts[2]) > now.getFullYear() + 3) ||
-				new Date(value.dateStarted).getTime() < new Date(value.releaseDate).getTime() - 60 * 60 * 24 * 2 * 1000 ||
-				new Date(value.dateStarted) > new Date()
+				!started.match(validDate) ||
+				!months.includes(month) ||
+				(date <= 0 || date > 31) ||
+				(year < 1970 || year > now.getFullYear() + 5) ||
+				timeStarted < releaseDate - 60 * 60 * 24 * 3 * 1000 ||
+				dateStarted > now
 			) {
 				return false
-			} else {
-				return true
 			}
+
+			return true
 		}
 		case 'finish': {
-			let dateFinished = value.dateFinished
+			const finished = value.dateFinished.replace(',', '')
 
-			if (dateFinished.includes(',')) {
-				dateFinished = dateFinished.replace(/,/g, '')
-			}
-
-			const dateParts = dateFinished.split(' ')
+			const dateParts = finished.split(' ')
+			const month = dateParts[0]
+			const date = dateParts[1]
+			const year = dateParts[2]
 
 			const now = new Date()
+			const dateStarted = new Date(value.dateStarted)
+			const dateFinished = new Date(value.dateFinished)
 
 			if (
-				dateParts.length < 3 ||
-				!months.includes(dateParts[0]) ||
-				!dateParts[1].match(twoDigit) ||
-				(parseInt(dateParts[1]) <= 0 || parseInt(dateParts[1]) > 31) ||
-				!dateParts[2].match(fourDigit) ||
-				(parseInt(dateParts[2]) < 2015 || parseInt(dateParts[2]) > now.getFullYear()) ||
-				new Date(value.dateFinished) < new Date(value.dateStarted) ||
-				new Date(value.dateFinished) > new Date()
+				!finished.match(validDate) ||
+				!months.includes(month) ||
+				(date <= 0 || date > 31) ||
+				(year < 2015 || year > now.getFullYear()) ||
+				dateFinished < dateStarted ||
+				dateFinished > now
 			) {
 				return false
-			} else {
-				return true
 			}
+
+			return true
 		}
 		case 'hours': {
-			if (!value.match(hours) || parseInt(value) <= 0) {
+			if (!value.match(hours) || parseFloat(value) <= 0) {
 				return false
-			} else {
-				return true
 			}
+
+			return true
 		}
 		case 'completed': {
-			if (
-				!value.match(twoDigit) ||
-				parseInt(value) < 0
-			) {
+			if (!value.match(twoDigit) || parseInt(value) < 0) {
 				return false
-			} else {
-				return true
 			}
+
+			return true
 		}
 		case 'platform': {
-			if (value === '' || !validPlatforms.includes(value)) {
+			if (!validPlatforms.includes(value)) {
 				return false
-			} else {
-				return true
 			}
+
+			return true
 		}
 		default:
 			return false

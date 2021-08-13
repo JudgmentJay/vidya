@@ -8,7 +8,7 @@ import {
 
 import { Vidya } from './components'
 
-import './css/globals.scss'
+import './scss/globals.scss'
 
 const App = () => {
 	const themes = ['hyperLightDrifter', 'bloodborne', 'darkSouls', 'hollowKnight', 'journey', 'muramasa', 'sekiro', 'metroid', 'zelda', 'ffix']

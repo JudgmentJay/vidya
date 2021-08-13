@@ -1,75 +1,67 @@
 exports.getStats = (games, year) => {
 	const gamesPlayed = games.length
-
-	const gamesCompleted = games.filter((game) => {
-		let completedPlaythroughs = game.playthroughs.filter((playthrough) => playthrough.dateFinished && playthrough.timesCompleted)
-
-		if (year) {
-			completedPlaythroughs = completedPlaythroughs.filter((playthrough) => new Date(playthrough.dateFinished).getFullYear() === year)
-		}
-
-		return completedPlaythroughs.length > 0
-	}).length
-
-	let totalPlaythroughs = 0
+	let gamesCompleted = 0
 	let totalHoursPlayed = 0
+	let totalPlaythroughs = 0
 
-	const gameHoursPlayed = []
-	const gamePlaythroughCounts = []
+	const gamesWithHoursAndPlaythroughData = []
 	const scores = []
 	const platforms = {}
 
-	const gamesAccountedFor = []
+	const gamesAccountedForInPlatformData = []
 
 	games.forEach((game) => {
 		let hoursPlayed = 0
-		let timesCompleted = 0
+		let finishedPlaythroughCount = 0
 
-		let playthroughsCompletedInCurrentYear = game.playthroughs.filter((playthrough) => playthrough.dateFinished)
+		let playthroughs = game.playthroughs
 
 		if (year) {
-			playthroughsCompletedInCurrentYear = playthroughsCompletedInCurrentYear.filter((playthrough) => new Date(playthrough.dateFinished).getFullYear() === year)
+			playthroughs = playthroughs.filter((playthrough) => {
+				const playthroughYear = new Date(playthrough.dateFinished).getFullYear()
+
+				return playthroughYear === year
+			})
 		}
 
-		playthroughsCompletedInCurrentYear.forEach((playthrough) => {
-			hoursPlayed += playthrough.hoursPlayed
+		playthroughs.forEach((playthrough) => {
 			totalHoursPlayed += playthrough.hoursPlayed
-
-			timesCompleted += playthrough.timesCompleted
+			hoursPlayed += playthrough.hoursPlayed
 			totalPlaythroughs += playthrough.timesCompleted
+			finishedPlaythroughCount += playthrough.timesCompleted
 
-			if (!platforms[playthrough.platform]) {
-				platforms[playthrough.platform] = {
-					completed: timesCompleted && !gamesAccountedFor.includes(game.title) ? 1 : 0,
-					dropped: !playthrough.timesCompleted && !gamesAccountedFor.includes(game.title) ? 1 : 0,
-					hours: playthrough.hoursPlayed
+			const platformData = platforms[playthrough.platform]
+			const key = `${game.title}-${playthrough.platform}`
+
+			if (platformData) {
+				platformData.hours += playthrough.hoursPlayed
+
+				if (!gamesAccountedForInPlatformData.includes(key)) {
+					platformData.completed += playthrough.timesCompleted ? 1 : 0
+					platformData.dropped += playthrough.timesCompleted ? 0 : 1
+
+					gamesAccountedForInPlatformData.push(key)
 				}
 			} else {
 				platforms[playthrough.platform] = {
-					completed: platforms[playthrough.platform].completed += timesCompleted && !gamesAccountedFor.includes(game.title) ? 1 : 0,
-					dropped: platforms[playthrough.platform].dropped += !playthrough.timesCompleted && !gamesAccountedFor.includes(game.title) ? 1 : 0,
-					hours: platforms[playthrough.platform].hours += playthrough.hoursPlayed
+					completed: playthrough.timesCompleted ? 1 : 0,
+					dropped: playthrough.timesCompleted ? 0 : 1,
+					hours: playthrough.hoursPlayed
 				}
-			}
 
-			const gameWasFinished = game.playthroughs.some((playthrough) => playthrough.timesCompleted > 0)
-
-			if (!gamesAccountedFor.includes(game.title) && (playthrough.timesCompleted || !gameWasFinished)) {
-				gamesAccountedFor.push(game.title)
+				gamesAccountedForInPlatformData.push(key)
 			}
 		})
 
-		gameHoursPlayed.push({
-			gameData: game,
-			hoursPlayed: hoursPlayed
-		})
-
-		if (timesCompleted > 1) {
-			gamePlaythroughCounts.push({
-				gameData: game,
-				timesCompleted
-			})
+		if (finishedPlaythroughCount) {
+			gamesCompleted += 1
 		}
+
+		gamesWithHoursAndPlaythroughData.push({
+			gameData: game,
+			hoursPlayed,
+			playthroughCount: finishedPlaythroughCount
+		})
 
 		scores.push(game.score)
 	})
@@ -84,29 +76,10 @@ exports.getStats = (games, year) => {
 		return 0
 	})
 
-	const topGamesByHoursPlayed = gameHoursPlayed
-		.sort((gameA, gameB) => {
-			if (gameB.hoursPlayed > gameA.hoursPlayed) return 1
-			if (gameB.hoursPlayed < gameA.hoursPlayed) return -1
+	const topGamesByHoursPlayed = sortGames(gamesWithHoursAndPlaythroughData, 'hoursPlayed')
 
-			if (gameB.gameData.title.toLowerCase() < gameA.gameData.title.toLowerCase()) return 1
-			if (gameB.gameData.title.toLowerCase() > gameA.gameData.title.toLowerCase()) return -1
-
-			return 0
-		})
-		.slice(0, 5)
-
-	const topGamesByPlaythroughCount = gamePlaythroughCounts
-		.sort((gameA, gameB) => {
-			if (gameB.timesCompleted > gameA.timesCompleted) return 1
-			if (gameB.timesCompleted < gameA.timesCompleted) return -1
-
-			if (gameB.gameData.title.toLowerCase() < gameA.gameData.title.toLowerCase()) return 1
-			if (gameB.gameData.title.toLowerCase() > gameA.gameData.title.toLowerCase()) return -1
-
-			return 0
-		})
-		.slice(0, 5)
+	const gamesWithMultiplePlaythroughs = gamesWithHoursAndPlaythroughData.filter((game) => game.playthroughCount > 1)
+	const topGamesByPlaythroughCount = sortGames(gamesWithMultiplePlaythroughs, 'playthroughCount')
 
 	const totalPoints = scores.length
 		? scores.reduce((acc, cur) => acc + cur)
@@ -116,11 +89,25 @@ exports.getStats = (games, year) => {
 	return({
 		gamesPlayed,
 		gamesCompleted,
-		totalPlaythroughs,
 		totalHoursPlayed,
+		totalPlaythroughs,
 		topGamesByHoursPlayed,
 		topGamesByPlaythroughCount,
 		platformData,
 		averageScore
 	})
+}
+
+const sortGames = (games, attribute) => {
+	return [...games]
+		.sort((gameA, gameB) => {
+			if (gameB[attribute] > gameA[attribute]) return 1
+			if (gameB[attribute] < gameA[attribute]) return -1
+
+			if (gameB.gameData.title.toLowerCase() < gameA.gameData.title.toLowerCase()) return 1
+			if (gameB.gameData.title.toLowerCase() > gameA.gameData.title.toLowerCase()) return -1
+
+			return 0
+		})
+		.slice(0, 5)
 }
