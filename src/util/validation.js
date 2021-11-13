@@ -44,7 +44,7 @@ const validateField = (type, value) => {
 	]
 
 	const twoDigit = /^[0-9]{1,2}$/
-	const score = /^[1-9]{1,2}(.5)?$/
+	const score = /^[0-9]{1,2}(.5)?$/
 	const hours = /^[0-9]{1,4}(.5)?$/
 	const validDate = /^\w+\s[0-9]{1,2}\s[0-9]{4}$/
 
