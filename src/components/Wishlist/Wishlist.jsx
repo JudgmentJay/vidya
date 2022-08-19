@@ -36,23 +36,24 @@ const Wishlist = ({
 		}
 	})
 
-	const [view, setView] = useState({ section: 'games', year: unreleasedGameYears[0] })
+	const [view, setView] = useState('games')
+	const [year, setYear] = useState(unreleasedGameYears[0])
 
 	const unreleasedGamesInSelectedYear = unreleasedGames.filter((game) => {
 		const releaseYear = new Date(game.releaseDate).getFullYear()
 
-		return releaseYear === view.year
+		return releaseYear === year
 	})
 
 	const title = unreleasedGameYears.length === 1
-		? <h1>{view.year} Wishlist</h1>
-		: <h1 className="clickable"><span onClick={() => setView({ section: 'years', year: view.year })}>{view.year}</span> Wishlist</h1>
+		? <h1>{year} Wishlist</h1>
+		: <h1 className="clickable"><span onClick={() => setView('years')}>{year}</span> Wishlist</h1>
 
 	return (
 		<React.Fragment>
 			{ unreleasedGames.length > 0 &&
 				<React.Fragment>
-					{ view.section === 'games' &&
+					{ view === 'games' &&
 						<Box>
 							{title}
 
@@ -68,7 +69,7 @@ const Wishlist = ({
 										unreleasedGamesInSelectedYear.map((game) => {
 											const releaseDate = !game.releaseDate.includes('December 31')
 												? game.releaseDate
-												: view.year
+												: year
 
 											return (
 												<TableRow
@@ -86,11 +87,14 @@ const Wishlist = ({
 						</Box>
 					}
 
-					{ view.section === 'years' &&
+					{ view === 'years' &&
 						<YearSelect
 							years={unreleasedGameYears}
-							selectedYear={view.year}
-							onYearSelect={(year) => setView({ section: 'games', year })} />
+							selectedYear={year}
+							onYearSelect={(year) => {
+								setYear(year)
+								setView('games')
+							}} />
 					}
 				</React.Fragment>
 			}

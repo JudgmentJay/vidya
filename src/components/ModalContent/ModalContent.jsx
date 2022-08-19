@@ -43,7 +43,7 @@ const ModalContent = ({
 
 	const [modal, setModal] = useState(initialModal)
 	const [storedSearchTerm, setStoredSearchTerm] = useState('')
-	const [searchResults, setSearchResults] = useState({ games: [], searched: false })
+	const [searchResults, setSearchResults] = useState([])
 
 	const getModalContent = (modal) => {
 		let content

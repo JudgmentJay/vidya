@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
 import { ModalContext } from '../../context'
@@ -14,27 +14,21 @@ import styles from './_styles.module.scss'
 const GameInfo = ({ setModal }) => {
 	const { game, modalType } = useContext(ModalContext)
 
-	const [gameData, setGameData] = useState({ timesCompleted: 0, hoursPlayed: 0, platforms: [] })
+	let timesCompleted = 0
+	let hoursPlayed = 0
+	const platforms = []
 
-	useEffect(() => {
-		let timesCompleted = 0
-		let hoursPlayed = 0
-		const platforms = []
+	game.playthroughs.forEach((playthrough) => {
+		hoursPlayed += playthrough.hoursPlayed
 
-		game.playthroughs.forEach((playthrough) => {
-			hoursPlayed += playthrough.hoursPlayed
+		if (playthrough.timesCompleted > 0) {
+			timesCompleted += playthrough.timesCompleted
+		}
 
-			if (playthrough.timesCompleted > 0) {
-				timesCompleted += playthrough.timesCompleted
-			}
-
-			if (!platforms.includes(playthrough.platform)) {
-				platforms.push(playthrough.platform)
-			}
-		})
-
-		setGameData({ timesCompleted, hoursPlayed, platforms })
-	}, [game.playthroughs])
+		if (!platforms.includes(playthrough.platform)) {
+			platforms.push(playthrough.platform)
+		}
+	})
 
 	const releaseDate = game.releaseDate.includes('December 31')
 		? new Date(game.releaseDate).getFullYear()
@@ -59,13 +53,13 @@ const GameInfo = ({ setModal }) => {
 				{ (Boolean(game.score)) &&
 					<React.Fragment>
 						<span className={`${styles.stat} clickable`}>
-							<a onClick={() => setModal('playthroughs')}>Times completed: {gameData.timesCompleted}</a>
+							<a onClick={() => setModal('playthroughs')}>Times completed: {timesCompleted}</a>
 						</span>
 						<span className={styles.stat}>
-							Hours played: {gameData.hoursPlayed}
+							Hours played: {hoursPlayed}
 						</span>
 						<span className={styles.stat}>
-							{gameData.platforms.length === 1 ? 'Platform' : 'Platforms'}: {gameData.platforms.join(', ')}
+							{platforms.length === 1 ? 'Platform' : 'Platforms'}: {platforms.join(', ')}
 						</span>
 					</React.Fragment>
 				}

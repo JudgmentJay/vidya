@@ -48,7 +48,7 @@ const Search = ({
 		const filteredGames = games.filter((game) => game.title.toLowerCase().includes(searchTerm.toLowerCase()))
 
 		setStoredSearchTerm(searchTerm)
-		setSearchResults({ games: filteredGames, searched: true })
+		setSearchResults(filteredGames)
 	}
 
 	const handleGameClick = (game) => {
@@ -84,9 +84,9 @@ const Search = ({
 					modifier="search" />
 			</div>
 
-			{ searchResults.searched &&
+			{ Boolean(searchResults.length > 0) &&
 				<SearchResults
-					games={searchResults.games}
+					games={searchResults}
 					onGameClick={handleGameClick} />
 			}
 		</React.Fragment>
@@ -97,7 +97,7 @@ Search.propTypes = {
 	games: PropTypes.array.isRequired,
 	storedSearchTerm: PropTypes.string.isRequired,
 	setStoredSearchTerm: PropTypes.func.isRequired,
-	searchResults: PropTypes.object.isRequired,
+	searchResults: PropTypes.array.isRequired,
 	setSearchResults: PropTypes.func.isRequired,
 	setModal: PropTypes.func.isRequired
 }

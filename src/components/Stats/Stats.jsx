@@ -13,7 +13,7 @@ import {
 } from '../../components'
 
 const Stats = ({
-	year,
+	initialYear,
 	games,
 	playthroughs
 }) => {
@@ -23,19 +23,19 @@ const Stats = ({
 		return game.playthroughs.some((playthrough) => playthrough.dateFinished)
 	})
 
-	if (year) {
+	if (initialYear) {
 		const gamesPlayedInSelectedYear = playedGames.filter((game) => {
 			return game.playthroughs.some((playthrough) => {
-				return new Date(playthrough.dateFinished).getFullYear() === year
+				return new Date(playthrough.dateFinished).getFullYear() === initialYear
 			})
 		})
 
 		if (!gamesPlayedInSelectedYear.length) {
-			year -= 1
+			initialYear -= 1
 
 			playedGames = playedGames.filter((game) => {
 				return game.playthroughs.some((playthrough) => {
-					return new Date(playthrough.dateFinished).getFullYear() === year
+					return new Date(playthrough.dateFinished).getFullYear() === initialYear
 				})
 			})
 		} else {
@@ -43,12 +43,13 @@ const Stats = ({
 		}
 	}
 
-	const initialData = getStats(playedGames, year)
+	const initialData = getStats(playedGames, initialYear)
 
-	const [view, setView] = useState({ section: 'stats', year })
+	const [view, setView] = useState('stats')
+	const [year, setYear] = useState(initialYear)
 	const [data, setData] = useState(initialData)
 
-	const handleSetYear = (year) => {
+	const handleSetYear = (newYear) => {
 		const gamesPlayedInSelectedYear = games.filter((game) => {
 			return game.playthroughs.some((playthrough) => {
 				return playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === year
@@ -56,7 +57,8 @@ const Stats = ({
 		})
 
 		setData(getStats(gamesPlayedInSelectedYear, year))
-		setView({ section: 'stats', year })
+		setYear(newYear)
+		setView('stats')
 	}
 
 	const yearsOnRecord = []
@@ -71,13 +73,13 @@ const Stats = ({
 
 	const droppedGames = data.gamesPlayed - data.gamesCompleted
 
-	const title = year
-		? <h1 className="clickable"><span onClick={() => setView({ section: 'years', year: view.year })}>{view.year}</span> Stats</h1>
+	const title = initialYear
+		? <h1 className="clickable"><span onClick={() => setView('years')}>{year}</span> Stats</h1>
 		: <h1>2015&ndash;Present Stats</h1>
 
 	return (
 		<React.Fragment>
-			{ view.section === 'stats' &&
+			{ view === 'stats' &&
 				<Box modifier="stats">
 					{title}
 
@@ -159,18 +161,18 @@ const Stats = ({
 				</Box>
 			}
 
-			{ view.section === 'years' &&
+			{ view === 'years' &&
 				<YearSelect
 					years={yearsOnRecord}
-					selectedYear={view.year}
-					onYearSelect={(year) => handleSetYear(year)} />
+					selectedYear={year}
+					onYearSelect={(newYear) => handleSetYear(newYear)} />
 			}
 		</React.Fragment>
 	)
 }
 
 Stats.propTypes = {
-	year: PropTypes.number,
+	initialYear: PropTypes.number,
 	games: PropTypes.array.isRequired,
 	playthroughs: PropTypes.array.isRequired,
 	currentDate: PropTypes.instanceOf(Date)

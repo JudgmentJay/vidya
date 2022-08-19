@@ -21,7 +21,8 @@ import {
 const Vidya = () => {
 	const { modalVisible } = useContext(ModalContext)
 
-	const [data, setData] = useState({ gameData: [], playthroughData: [] })
+	const [gameData, setGameData] = useState([])
+	const [playthroughData, setPlaythroughData] = useState([])
 	const [view, setView] = useState('home')
 
 	useEffect(() => {
@@ -40,7 +41,8 @@ const Vidya = () => {
 
 	const fetchGameData = () => {
 		const callback = (result) => {
-			setData({ gameData: result.games, playthroughData: result.playthroughs })
+			setGameData(result.games)
+			setPlaythroughData(result.playthroughs)
 		}
 
 		fetchAll(callback)
@@ -51,18 +53,18 @@ const Vidya = () => {
 
 	return (
 		<React.Fragment>
-			{ data.gameData.length > 0 &&
+			{ gameData.length > 0 &&
 				<React.Fragment>
 					<Column>
 						<Nav
 							view={view}
 							setView={setView} />
 						<Playing
-							games={data.gameData}
+							games={gameData}
 							currentDate={now} />
 						<Played
-							games={data.gameData}
-							playthroughs={data.playthroughData}
+							games={gameData}
+							playthroughs={playthroughData}
 							currentYear={currentYear} />
 					</Column>
 
@@ -70,17 +72,17 @@ const Vidya = () => {
 						<React.Fragment>
 							<Column>
 								<BacklogCurrentYear
-									games={data.gameData}
+									games={gameData}
 									currentDate={now}
 									currentYear={currentYear} />
 								<Wishlist
-									games={data.gameData}
+									games={gameData}
 									currentDate={now} />
 							</Column>
 
 							<Column>
 								<BacklogOld
-									games={data.gameData}
+									games={gameData}
 									currentYear={currentYear} />
 							</Column>
 						</React.Fragment>
@@ -89,8 +91,8 @@ const Vidya = () => {
 					{ view === 'details' &&
 						<Column wide={true}>
 							<Details
-								games={data.gameData}
-								playthroughs={data.playthroughData} />
+								games={gameData}
+								playthroughs={playthroughData} />
 						</Column>
 					}
 
@@ -98,14 +100,14 @@ const Vidya = () => {
 						<React.Fragment>
 							<Column>
 								<Stats
-									games={data.gameData}
-									playthroughs={data.playthroughData} />
+									games={gameData}
+									playthroughs={playthroughData} />
 							</Column>
 							<Column>
 								<Stats
-									year={currentYear}
-									games={data.gameData}
-									playthroughs={data.playthroughData} />
+									initialYear={currentYear}
+									games={gameData}
+									playthroughs={playthroughData} />
 							</Column>
 						</React.Fragment>
 					}
@@ -113,7 +115,7 @@ const Vidya = () => {
 					{ modalVisible &&
 						<Modal>
 							<ModalContent
-								games={data.gameData}
+								games={gameData}
 								fetchGameData={fetchGameData}
 								currentDate={now} />
 						</Modal>

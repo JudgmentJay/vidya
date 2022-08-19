@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 
 import {
 	ModalProvider,
@@ -28,4 +28,6 @@ const App = () => {
 	)
 }
 
-ReactDOM.render(<App />, document.getElementById('vidya'))
+const container = document.getElementById('vidya')
+const root = createRoot(container)
+root.render(<App />)
