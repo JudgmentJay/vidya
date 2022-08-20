@@ -39,13 +39,17 @@
 		padding: 9px;
 	}
 
-	&--invalid {
-		border: 2px solid red;
-	}
-
 	&:focus {
 		border: 2px solid #666;
 		outline: 0;
+	}
+
+	&--invalid {
+		border: 2px solid red;
+
+		&:focus {
+			border: 2px solid red;
+		}
 	}
 }
 

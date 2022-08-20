@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 
 import { ModalContext } from '../../context'
 
-import { validateForm } from '../../util/validation'
-
 import {
 	FormField,
 	ModalButton,
@@ -17,39 +15,15 @@ const Search = ({
 	games,
 	storedSearchTerm,
 	setStoredSearchTerm,
-	searchResults,
-	setSearchResults,
 	setModal
 }) => {
 	const { dispatch } = useContext(ModalContext)
 
 	const [searchTerm, setSearchTerm] = useState(storedSearchTerm)
-	const [invalidFields, setInvalidFields] = useState([])
 
-	const handleSubmitForm = () => {
-		const fieldsToValidate = []
-
-		fieldsToValidate.push({ type: 'title', value: searchTerm })
-
-		const newInvalidFields = validateForm(fieldsToValidate)
-
-		if (newInvalidFields.length) {
-			setInvalidFields(newInvalidFields)
-		} else {
-			if (invalidFields.length) {
-				setInvalidFields([])
-			}
-
-			searchGames()
-		}
-	}
-
-	const searchGames = () => {
-		const filteredGames = games.filter((game) => game.title.toLowerCase().includes(searchTerm.toLowerCase()))
-
-		setStoredSearchTerm(searchTerm)
-		setSearchResults(filteredGames)
-	}
+	const filteredGames = storedSearchTerm.length > 0
+		? games.filter((game) => game.title.toLowerCase().includes(storedSearchTerm.toLowerCase()))
+		: []
 
 	const handleGameClick = (game) => {
 		dispatch({ type: 'ADD_GAME', game })
@@ -59,7 +33,7 @@ const Search = ({
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') {
-			handleSubmitForm()
+			setStoredSearchTerm(searchTerm)
 		}
 	}
 
@@ -75,18 +49,17 @@ const Search = ({
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
 					onKeyDown={(e) => handleKeyPress(e)}
-					isInvalid={invalidFields.includes('title')}
 					focusOnLoad={true}
 					modifier="search" />
 				<ModalButton
 					text="Search"
-					onClick={() => handleSubmitForm()}
+					onClick={() => setStoredSearchTerm(searchTerm)}
 					modifier="search" />
 			</div>
 
-			{ Boolean(searchResults.length > 0) &&
+			{ Boolean(filteredGames.length > 0) &&
 				<SearchResults
-					games={searchResults}
+					games={filteredGames}
 					onGameClick={handleGameClick} />
 			}
 		</React.Fragment>
@@ -97,8 +70,6 @@ Search.propTypes = {
 	games: PropTypes.array.isRequired,
 	storedSearchTerm: PropTypes.string.isRequired,
 	setStoredSearchTerm: PropTypes.func.isRequired,
-	searchResults: PropTypes.array.isRequired,
-	setSearchResults: PropTypes.func.isRequired,
 	setModal: PropTypes.func.isRequired
 }
 

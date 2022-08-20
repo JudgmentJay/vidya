@@ -43,7 +43,6 @@ const ModalContent = ({
 
 	const [modal, setModal] = useState(initialModal)
 	const [storedSearchTerm, setStoredSearchTerm] = useState('')
-	const [searchResults, setSearchResults] = useState([])
 
 	const getModalContent = (modal) => {
 		let content
@@ -95,8 +94,6 @@ const ModalContent = ({
 						games={games}
 						storedSearchTerm={storedSearchTerm}
 						setStoredSearchTerm={setStoredSearchTerm}
-						searchResults={searchResults}
-						setSearchResults={setSearchResults}
 						setModal={setModal} />
 				)
 				break
