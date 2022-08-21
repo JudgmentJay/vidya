@@ -11,17 +11,24 @@ const cssModuleLoader = {
 }
 
 module.exports = merge(common, {
+	mode: 'development',
+	devServer: {
+		open: true,
+		proxy: {
+			'/games': 'http://localhost:3000'
+		}
+	},
 	module: {
 		rules: [
 			{
 				test: /\.scss$/,
-				exclude: /\.module\.scss$/,
 				use: [
 					'style-loader',
 					'css-loader',
 					'sass-loader'
 				],
-				include: /src/
+				include: /src/,
+				exclude: /\.module\.scss$/
 			},
 			{
 				test: /\.module\.scss$/,
@@ -33,11 +40,5 @@ module.exports = merge(common, {
 				include: /src/
 			}
 		]
-	},
-	mode: 'development',
-	devServer: {
-		proxy: {
-			'/games': 'http://localhost:3000'
-		}
 	}
 })

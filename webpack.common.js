@@ -4,27 +4,27 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
 	entry: './src/index.jsx',
 	output: {
-		path: path.resolve(__dirname, 'public'),
-		filename: 'index_bundle.js',
-		assetModuleFilename: 'img/[name][ext]'
+		path: path.resolve(__dirname, 'build'),
+		filename: 'index.js',
+		assetModuleFilename: 'img/[name][ext]',
+		clean: true
 	},
-	target: 'web',
 	module: {
 		rules: [
 			{
 				test: /\.(jsx?)$/,
-				use: 'babel-loader',
+				loader: 'babel-loader',
 				include: /src/
 			},
 			{
-				test: /\.(jpg?g|png|gif|svg|webp)$/,
+				test: /\.(jpe?g|png|gif|svg|webp)$/,
 				type: 'asset/resource'
 			}
 		]
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: './src/index.html'
+			template: path.join(__dirname, 'public', 'index.html')
 		})
 	]
 }
