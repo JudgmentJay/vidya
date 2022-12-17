@@ -52,11 +52,13 @@ const Stats = ({
 	const handleSetYear = (newYear) => {
 		const gamesPlayedInSelectedYear = games.filter((game) => {
 			return game.playthroughs.some((playthrough) => {
-				return playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === year
+				return playthrough.dateFinished && new Date(playthrough.dateFinished).getFullYear() === newYear
 			})
 		})
 
-		setData(getStats(gamesPlayedInSelectedYear, year))
+		const newStats = getStats(gamesPlayedInSelectedYear, newYear)
+
+		setData(newStats)
 		setYear(newYear)
 		setView('stats')
 	}
