@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import styles from './_styles.module.scss'
+import * as styles from './_styles.module.scss'
 
 const TableCell = ({
 	type,
@@ -10,7 +10,7 @@ const TableCell = ({
 	className,
 	children
 }) => {
-	const classes = classNames(styles.tableCell, styles[`tableCell--${type}`], {
+	const classes = classNames(styles[`tableCell--${type}`], {
 		[styles[`tableCell--${modifier}`]]: Boolean(modifier)
 	}, className)
 

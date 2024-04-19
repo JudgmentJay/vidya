@@ -6,7 +6,7 @@ import { fetchData } from '../../util/fetch'
 
 import { ModalContext } from '../../context'
 
-import styles from './_styles.module.scss'
+import * as styles from './_styles.module.scss'
 
 import {
 	AddGameStatusButton,

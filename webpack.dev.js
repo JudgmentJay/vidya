@@ -5,7 +5,8 @@ const cssModuleLoader = {
 	loader: 'css-loader',
 	options: {
 		modules: {
-			localIdentName: '[local]__[hash:base64:5]',
+			mode: 'local',
+			localIdentName: '[path][name]__[local]',
 		}
 	}
 }
@@ -14,9 +15,12 @@ module.exports = merge(common, {
 	mode: 'development',
 	devServer: {
 		open: true,
-		proxy: {
-			'/games': 'http://localhost:3000'
-		}
+		proxy: [
+			{
+				context: ['/games'],
+				target: 'http://localhost:3000'
+			}
+		]
 	},
 	module: {
 		rules: [

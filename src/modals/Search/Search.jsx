@@ -9,7 +9,7 @@ import {
 	SearchResults
 } from '../_partials'
 
-import styles from './_styles.module.scss'
+import * as styles from './_styles.module.scss'
 
 const Search = ({
 	games,

@@ -9,7 +9,7 @@ import {
 	StarRating
 } from '../_partials'
 
-import styles from './_styles.module.scss'
+import * as styles from './_styles.module.scss'
 
 const GameInfo = ({ setModal }) => {
 	const { game, modalType } = useContext(ModalContext)

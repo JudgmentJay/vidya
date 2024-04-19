@@ -1,8 +1,8 @@
 const axios = require('axios')
 
-exports.fetchAll = (callback) => {
-	axios.get('/games/all')
-		.then((response) => callback(response.data))
+exports.fetchAll = () => {
+	return axios.get('/games/all')
+		.then((response) => response.data)
 		.catch((error) => console.error(error.response.data))
 }
 

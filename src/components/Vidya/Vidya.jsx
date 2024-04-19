@@ -39,13 +39,13 @@ const Vidya = () => {
 		}
 	}, [modalVisible])
 
-	const fetchGameData = () => {
-		const callback = (result) => {
-			setGameData(result.games)
-			setPlaythroughData(result.playthroughs)
-		}
+	const fetchGameData = async () => {
+		const data = await fetchAll()
 
-		fetchAll(callback)
+		if (data) {
+			setGameData(data.games)
+			setPlaythroughData(data.playthroughs)
+		}
 	}
 
 	const now = new Date()

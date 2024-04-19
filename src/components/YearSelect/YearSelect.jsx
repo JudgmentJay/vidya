@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { Box } from '../../components'
 
-import styles from './_styles.module.scss'
+import * as styles from './_styles.module.scss'
 
 const YearSelect = ({
 	years,

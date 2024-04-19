@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { ThemeContext } from '../../context'
 
-import styles from './_styles.module.scss'
+import * as styles from './_styles.module.scss'
 
 const Box = ({
 	noShrink,
